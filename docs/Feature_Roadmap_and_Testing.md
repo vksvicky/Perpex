@@ -31,21 +31,21 @@ main / feature/static-dial-background (Base Engine)
 
 ### Feature Branch Breakdown:
 
-#### 🟢 Feature 1: Color Theme Customization Setting
+#### 🟢 Feature 1: Color Theme Customization & On-Watch Menu Settings
 - **Branch**: `feature/color-theme-customization`
 - **Scope**:
   - Add `ThemeColor` property in `resources/properties.xml` and `resources/settings/settings.xml`.
   - Color Options: `Red` (Default), `Teal/Cyan`, `Orange`, `Electric Green`, `Gold/Yellow`, `Pure White`.
-  - Dynamically updates ring date arcs, second hand, and metric icons.
-- **Status**: ⏳ NEXT UP (Ready to create branch).
+  - On-Watch Custom `GarminSettingsCustomView` with live accent colors, dynamic `dc.getFontHeight()` spacing, and 7-item navigation.
+- **Status**: ✅ COMPLETED & MERGED.
 
 #### 🟡 Feature 2: AMOLED Always-On Display (AOD) & Burn-In Protection
 - **Branch**: `feature/amoled-aod-low-power`
 - **Scope**:
   - Implement `onEnterSleep()` and `onExitSleep()` handlers in `GarminBasicWatchFaceView.mc`.
-  - Dim hour/minute hands, hide second hand, and disable animations in Low-Power Mode.
+  - Dim hour/minute hands to stealth grey (`0x777777`), hide second hand, and disable animations in Low-Power Mode.
   - Enforce Garmin's 10% display pixel budget rule for AMOLED screens (`epix2`, `venu3`, `fenix847mm`).
-- **Status**: 📅 QUEUED.
+- **Status**: ✅ COMPLETED & MERGED.
 
 #### 🔵 Feature 3: Weather, Solar & Body Battery Data Fields
 - **Branch**: `feature/weather-solar-body-battery`
@@ -53,7 +53,7 @@ main / feature/static-dial-background (Base Engine)
   - Add `Toybox.Weather` integration: Temperature, Weather Condition Icon, Rain Chance.
   - Add Sunrise / Sunset calculation.
   - Add `Body Battery` metric (0-100%) to data slot dropdown options.
-- **Status**: 📅 QUEUED.
+- **Status**: ⏳ NEXT UP.
 
 #### 🟣 Feature 4: Touch Complication Press-and-Hold Shortcuts (CIQ 4.2+)
 - **Branch**: `feature/touch-complications-shortcuts`
