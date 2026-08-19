@@ -388,10 +388,17 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         
         // Calculate scale factor based on 260px base width
         var w = dc.getWidth();
+        var h = dc.getHeight();
         var scale = w / 260.0;
 
         // Draw the static opaque background dial
-        if (dialBg != null) { dc.drawBitmap(0, 0, dialBg); }
+        if (dialBg != null) {
+            var bgW = dialBg.getWidth();
+            var bgH = dialBg.getHeight();
+            var bgX = (w - bgW) / 2;
+            var bgY = (h - bgH) / 2;
+            dc.drawBitmap(bgX, bgY, dialBg);
+        }
 
         dc.setPenWidth(4);
 
