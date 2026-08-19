@@ -1,0 +1,6 @@
+<properties>
+    <property id="NumberFont" type="number">0</property>
+    <property id="SubdialFont" type="number">0</property>
+    <property id="tempUnit" type="number">0</property>
+    <property id="weatherUpdateInterval" type="number">15</property>
+</properties>

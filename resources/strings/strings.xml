@@ -1,0 +1,13 @@
+<strings>
+    <string id="AppName">Basic Watch Face</string>
+    <string id="TimeLabel">00:00</string>
+    <string id="NumberFontTitle">Hour Numbers Font</string>
+    <string id="SubdialFontTitle">Subdial Font</string>
+    <string id="FontXTiny">Extra Tiny</string>
+    <string id="FontTiny">Tiny</string>
+    <string id="FontSmall">Small</string>
+    
+    <!-- Settings Titles -->
+    <string id="NumberFontTitle">Number Font Size</string>
+    <string id="SubdialFontTitle">Subdial Font Size</string>
+</strings>

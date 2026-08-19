@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
+    <iq:application entry="GarminBasicWatchFaceApp" id="bd57c3bccf764485b28dd4fcc24a9f01" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="3.2.0" name="@Strings.AppName" type="watchface" version="1.0.0">
+        <iq:products>
+            <iq:product id="enduro3"/>
+            <iq:product id="epix2"/>
+            <iq:product id="epix2pro42mm"/>
+            <iq:product id="epix2pro47mm"/>
+            <iq:product id="epix2pro51mm"/>
+            <iq:product id="fenix6"/>
+            <iq:product id="fenix6pro"/>
+            <iq:product id="fenix6s"/>
+            <iq:product id="fenix6spro"/>
+            <iq:product id="fenix6xpro"/>
+            <iq:product id="fenix7"/>
+            <iq:product id="fenix7pro"/>
+            <iq:product id="fenix7pronowifi"/>
+            <iq:product id="fenix7s"/>
+            <iq:product id="fenix7spro"/>
+            <iq:product id="fenix7x"/>
+            <iq:product id="fenix7xpro"/>
+            <iq:product id="fenix7xpronowifi"/>
+            <iq:product id="fenix843mm"/>
+            <iq:product id="fenix847mm"/>
+            <iq:product id="fenix8solar47mm"/>
+            <iq:product id="fenix8solar51mm"/>
+            <iq:product id="fenixe"/>
+            <iq:product id="venu2"/>
+            <iq:product id="venu2plus"/>
+            <iq:product id="venu2s"/>
+            <iq:product id="venu3"/>
+            <iq:product id="venu3s"/>
+            <iq:product id="venusq2"/>
+        </iq:products>
+        <iq:permissions>
+            <iq:uses-permission id="Ant"/>
+            <iq:uses-permission id="Background"/>
+            <iq:uses-permission id="BluetoothLowEnergy"/>
+            <iq:uses-permission id="Communications"/>
+            <iq:uses-permission id="Notifications"/>
+            <iq:uses-permission id="Positioning"/>
+            <iq:uses-permission id="PushNotification"/>
+            <iq:uses-permission id="Sensor"/>
+            <iq:uses-permission id="SensorHistory"/>
+            <iq:uses-permission id="UserProfile"/>
+        </iq:permissions>
+        <iq:languages>
+            <iq:language>eng</iq:language>
+        </iq:languages>
+        <iq:barrels/>
+    </iq:application>
+</iq:manifest>

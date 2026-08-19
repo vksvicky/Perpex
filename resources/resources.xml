@@ -1,0 +1,13 @@
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <layouts>
+        <layout id="MainLayout" />
+    </layouts>
+    <strings>
+        <string id="AppName">Basic Watch Face</string>
+        <string id="TimeLabel">00:00</string>
+    </strings>
+    <drawables>
+        <bitmap id="LauncherIcon" filename="drawables/images/launcher_icon.png" />
+        <bitmap id="footprint" filename="drawables/images/footprint.svg" />
+    </drawables>
+</resources>

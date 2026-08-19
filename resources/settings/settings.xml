@@ -1,0 +1,16 @@
+<settings>
+    <setting propertyKey="@Properties.NumberFont" title="@Strings.NumberFontTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.FontXTiny</listEntry>
+            <listEntry value="1">@Strings.FontTiny</listEntry>
+            <listEntry value="2">@Strings.FontSmall</listEntry>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.SubdialFont" title="@Strings.SubdialFontTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.FontXTiny</listEntry>
+            <listEntry value="1">@Strings.FontTiny</listEntry>
+            <listEntry value="2">@Strings.FontSmall</listEntry>
+        </settingConfig>
+    </setting>
+</settings>

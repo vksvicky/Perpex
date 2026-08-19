@@ -1,0 +1,9 @@
+<resources>
+    <font id="RalewayXXSmall" filename="fonts/RalewayXXSmall.fnt" antialias="true" />
+    <font id="RalewayXSmall"  filename="fonts/RalewayXSmall.fnt"  antialias="true" />
+    <font id="RalewayTiny"    filename="fonts/RalewayTiny.fnt"    antialias="true" />
+    <font id="RalewaySmall"   filename="fonts/RalewaySmall.fnt"   antialias="true" />
+    <font id="RalewayMedium"  filename="fonts/RalewayMedium.fnt"  antialias="true" />
+    <font id="RalewayLarge"   filename="fonts/RalewayLarge.fnt"   antialias="true" />
+    <font id="RalewayXLarge"  filename="fonts/RalewayXLarge.fnt"  antialias="true" />
+</resources>
