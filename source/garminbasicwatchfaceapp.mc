@@ -113,9 +113,10 @@ class GarminSettingsCustomView extends WatchUi.View {
             ]);
         }
 
-        // 6. Sleek Footer Hint
+        // 6. Sleek Footer Hints (Stacked 2 lines to fit inside circular display width)
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (84 * scale).toNumber(), Graphics.FONT_XTINY, "SELECT: Change   BACK: Save", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (66 * scale).toNumber(), Graphics.FONT_XTINY, "SELECT : Change", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (82 * scale).toNumber(), Graphics.FONT_XTINY, "BACK : Save", Graphics.TEXT_JUSTIFY_CENTER);
 
         // 7. Right Edge Page Indicator Dots
         var dotX = w - (14 * scale).toNumber();
