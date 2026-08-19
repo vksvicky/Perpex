@@ -214,14 +214,15 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
     function onTap(evt) {
         var xy = evt.getCoordinates();
         var y = xy[1];
-        var cy = customView.getHeight() / 2;
+        var screenH = System.getDeviceSettings().screenHeight;
+        var cy = screenH / 2;
 
-        // Top half -> Move to Previous Setting
-        // Bottom half -> Move to Next Setting
-        // Exact Center Value Text -> Change Value
-        if (y < cy - 10) {
+        // Top 40% of screen -> Scroll UP (Previous Setting)
+        // Bottom 40% of screen -> Scroll DOWN (Next Setting)
+        // Center 20% box -> Change Value
+        if (y < cy - 15) {
             return cycleUp();
-        } else if (y > cy + 25) {
+        } else if (y > cy + 15) {
             return cycleDown();
         } else {
             return changeCurrentValue();
