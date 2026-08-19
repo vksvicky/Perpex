@@ -20,7 +20,7 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // ON-WATCH CUSTOM SETTINGS VIEW (CENTERED, VIBRANT COLORS, 7 ITEMS)
+    // ON-WATCH CUSTOM SETTINGS VIEW (PERFECT SYMMETRY & INTUITIVE TOUCH)
     // ─────────────────────────────────────────────────────────────────────
     function getSettingsView() {
         var view = new GarminSettingsCustomView();
@@ -81,12 +81,12 @@ class GarminSettingsCustomView extends WatchUi.View {
             subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
         }
 
-        // 2. Top Header (cy - 72px)
+        // 2. Top Header (cy - 68px)
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (72 * scale).toNumber(), Graphics.FONT_XTINY, headerText, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (68 * scale).toNumber(), Graphics.FONT_XTINY, headerText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 3. Top Vector Up Arrow Chevron ▲ (cy - 45px - 100% Symmetrical with Bottom)
-        var pyUp = cy - (45 * scale).toNumber();
+        // 3. Top Vector Up Arrow Chevron ▲ (cy - 38px - EXACTLY 38px Symmetrical)
+        var pyUp = cy - (38 * scale).toNumber();
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyUp],
@@ -94,16 +94,16 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyUp - arrowH]
         ]);
 
-        // 4. Current Item Title (cy - 20px)
+        // 4. Current Item Title (cy - 22px)
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (20 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (22 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 5. Current Sublabel Value in VIBRANT COLOR (cy + 10px)
+        // 5. Current Sublabel Value (cy + 6px)
         dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (10 * scale).toNumber(), Graphics.FONT_MEDIUM, subText, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (6 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 6. Bottom Vector Down Arrow Chevron ▼ (cy + 45px - 100% Symmetrical with Top)
-        var pyDown = cy + (45 * scale).toNumber();
+        // 6. Bottom Vector Down Arrow Chevron ▼ (cy + 38px - EXACTLY 38px Symmetrical)
+        var pyDown = cy + (38 * scale).toNumber();
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyDown],
@@ -111,9 +111,9 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyDown + arrowH]
         ]);
 
-        // 7. Footer Instruction Hint (cy + 72px)
+        // 7. Footer Instruction Hint (cy + 65px)
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (72 * scale).toNumber(), Graphics.FONT_XTINY, "SELECT: Change  •  BACK: Exit", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (65 * scale).toNumber(), Graphics.FONT_XTINY, "Tap Top/Bot: Scroll • Center: Change", Graphics.TEXT_JUSTIFY_CENTER);
 
         // 8. Right Edge Page Indicator Dots
         var dotX = w - (14 * scale).toNumber();
@@ -180,7 +180,17 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
         } else if (key == WatchUi.KEY_UP) {
             return cycleUp();
         } else if (key == WatchUi.KEY_ENTER || key == WatchUi.KEY_START) {
-            return onSelect();
+            return changeCurrentValue();
+        }
+        return false;
+    }
+
+    function onSwipe(evt) {
+        var dir = evt.getDirection();
+        if (dir == WatchUi.SWIPE_DOWN) {
+            return cycleDown();
+        } else if (dir == WatchUi.SWIPE_UP) {
+            return cycleUp();
         }
         return false;
     }
@@ -206,16 +216,19 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
         var y = xy[1];
         var cy = customView.getHeight() / 2;
 
-        if (y < cy - 25) {
+        // Top half -> Move to Previous Setting
+        // Bottom half -> Move to Next Setting
+        // Exact Center Value Text -> Change Value
+        if (y < cy - 10) {
             return cycleUp();
         } else if (y > cy + 25) {
             return cycleDown();
         } else {
-            return onSelect();
+            return changeCurrentValue();
         }
     }
 
-    function onSelect() {
+    function changeCurrentValue() {
         var idx = customView.getSelectedIndex();
         var items = customView.getMenuItems();
         var itemKey = items[idx][1];
