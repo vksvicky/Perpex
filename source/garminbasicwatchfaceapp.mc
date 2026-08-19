@@ -60,11 +60,11 @@ class GarminSettingsCustomView extends WatchUi.View {
 
         // 1. Sleek Top Header
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (78 * scale).toNumber(), Graphics.FONT_XTINY, "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (90 * scale).toNumber(), Graphics.FONT_XTINY, "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size(), Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 2. Vector Up Arrow Chevron (Symmetrical 44px offset)
+        // 2. Vector Up Arrow Chevron
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        var pyUp = cy - (44 * scale).toNumber();
+        var pyUp = cy - (65 * scale).toNumber();
         var sz = (5 * scale).toNumber();
         dc.fillPolygon([
             [cx - sz, pyUp],
@@ -72,13 +72,13 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyUp - sz]
         ]);
 
-        // 3. Current Item Label
+        // 3. Current Item Label (FONT_MEDIUM)
         var itemKey = menuItems[currentIndex][1];
         var itemTitle = menuItems[currentIndex][0];
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (14 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (40 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 4. Current Sublabel Value
+        // 4. Current Sublabel Value (FONT_SMALL)
         var subText = "";
         var subColor = Graphics.COLOR_WHITE;
 
@@ -97,21 +97,21 @@ class GarminSettingsCustomView extends WatchUi.View {
         }
 
         dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (12 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (8 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 5. Vector Down Arrow Chevron (Symmetrical 44px offset)
+        // 5. Vector Down Arrow Chevron
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        var pyDown = cy + (44 * scale).toNumber();
+        var pyDown = cy + (55 * scale).toNumber();
         dc.fillPolygon([
             [cx - sz, pyDown],
             [cx + sz, pyDown],
             [cx, pyDown + sz]
         ]);
 
-        // 6. Sleek Footer Hints (Stacked 2 lines to fit inside circular display width)
+        // 6. Sleek Footer Hints
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (66 * scale).toNumber(), Graphics.FONT_XTINY, "SELECT : Change", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(cx, cy + (82 * scale).toNumber(), Graphics.FONT_XTINY, "BACK : Save", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (75 * scale).toNumber(), Graphics.FONT_XTINY, "SELECT : Change", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (91 * scale).toNumber(), Graphics.FONT_XTINY, "BACK : Save", Graphics.TEXT_JUSTIFY_CENTER);
 
         // 7. Right Edge Page Indicator Dots
         var dotX = w - (14 * scale).toNumber();
