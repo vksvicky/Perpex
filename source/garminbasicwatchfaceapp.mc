@@ -62,23 +62,21 @@ class GarminSettingsCustomView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(cx, cy - (88 * scale).toNumber(), Graphics.FONT_XTINY, "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size(), Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 2. Vector Up Arrow Chevron
-        if (currentIndex > 0) {
-            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            var py = cy - (62 * scale).toNumber();
-            var sz = (5 * scale).toNumber();
-            dc.fillPolygon([
-                [cx - sz, py],
-                [cx + sz, py],
-                [cx, py - sz]
-            ]);
-        }
+        // 2. Vector Up Arrow Chevron (Always visible for infinite carousel)
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        var pyUp = cy - (48 * scale).toNumber();
+        var sz = (5 * scale).toNumber();
+        dc.fillPolygon([
+            [cx - sz, pyUp],
+            [cx + sz, pyUp],
+            [cx, pyUp - sz]
+        ]);
 
         // 3. Current Item Label
         var itemKey = menuItems[currentIndex][1];
         var itemTitle = menuItems[currentIndex][0];
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (28 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (25 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
         // 4. Current Sublabel Value
         var subText = "";
@@ -101,17 +99,14 @@ class GarminSettingsCustomView extends WatchUi.View {
         dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(cx, cy + (10 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 5. Vector Down Arrow Chevron
-        if (currentIndex < menuItems.size() - 1) {
-            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            var py = cy + (48 * scale).toNumber();
-            var sz = (5 * scale).toNumber();
-            dc.fillPolygon([
-                [cx - sz, py],
-                [cx + sz, py],
-                [cx, py + sz]
-            ]);
-        }
+        // 5. Vector Down Arrow Chevron (Always visible for infinite carousel)
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        var pyDown = cy + (48 * scale).toNumber();
+        dc.fillPolygon([
+            [cx - sz, pyDown],
+            [cx + sz, pyDown],
+            [cx, pyDown + sz]
+        ]);
 
         // 6. Sleek Footer Hints (Stacked 2 lines to fit inside circular display width)
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
@@ -179,19 +174,16 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
     function cycleDown() {
         var idx = customView.getSelectedIndex();
         var items = customView.getMenuItems();
-        if (idx < items.size() - 1) {
-            customView.setSelectedIndex(idx + 1);
-            WatchUi.requestUpdate();
-        }
+        customView.setSelectedIndex((idx + 1) % items.size());
+        WatchUi.requestUpdate();
         return true;
     }
 
     function cycleUp() {
         var idx = customView.getSelectedIndex();
-        if (idx > 0) {
-            customView.setSelectedIndex(idx - 1);
-            WatchUi.requestUpdate();
-        }
+        var items = customView.getMenuItems();
+        customView.setSelectedIndex((idx - 1 + items.size()) % items.size());
+        WatchUi.requestUpdate();
         return true;
     }
 
