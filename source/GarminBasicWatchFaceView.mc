@@ -180,12 +180,60 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     function drawSingleDataSlot(dc, slotType, posX, posY, s) {
         if (slotType == 0) { return; }
 
+        var fontValue = Graphics.FONT_XTINY;
+        var fontLabel = Graphics.FONT_XTINY;
+
+        // ─────────────────────────────────────────────────────────────────
+        // BATTERY SLOT: CHARGING ANIMATION & RED-ORANGE-GREEN GRADIENT
+        // ─────────────────────────────────────────────────────────────────
+        if (slotType == 1) {
+            var stats = System.getSystemStats();
+            var pct = (stats.battery + 0.5).toNumber();
+            var isCharging = (stats has :charging && stats.charging != null) ? stats.charging : false;
+
+            var battColor = Graphics.COLOR_WHITE;
+            if (isCharging) {
+                // Charging Animation: Cycle Red -> Orange -> Green every second
+                var sec = System.getClockTime().sec;
+                var step = sec % 3;
+                if (step == 0) { battColor = 0xFF3333; }       // Red
+                else if (step == 1) { battColor = 0xFF8800; }  // Orange
+                else { battColor = 0x00FF66; }                 // Green
+            } else {
+                // Battery Level Gradient: <=20 Red, <=50 Orange, >50 Green
+                if (pct <= 20) { battColor = 0xFF3333; }
+                else if (pct <= 50) { battColor = 0xFF8800; }
+                else { battColor = 0x00FF66; }
+            }
+
+            var battText = pct.toString() + "%";
+            if (isCharging) {
+                battText = "CHG " + battText;
+            }
+
+            // 1. Draw Battery Icon (or Animated Vector Battery outline when charging)
+            if (isCharging) {
+                dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
+                dc.setPenWidth((1.5 * s).toNumber());
+                dc.drawRectangle((posX - 8 * s).toNumber(), (posY - 18 * s).toNumber(), (14 * s).toNumber(), (8 * s).toNumber());
+                dc.fillRectangle((posX + 6 * s).toNumber(), (posY - 16 * s).toNumber(), (2 * s).toNumber(), (4 * s).toNumber());
+                dc.fillRectangle((posX - 6 * s).toNumber(), (posY - 16.5 * s).toNumber(), (9 * s).toNumber(), (5 * s).toNumber());
+            } else {
+                drawMetricIcon(dc, 1, posX, posY - (14 * s).toNumber(), s);
+            }
+
+            // 2. Draw Battery Percentage Text in battColor
+            dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(posX, posY + (5 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            return;
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        // OTHER METRICS
+        // ─────────────────────────────────────────────────────────────────
         var data = getMetricData(slotType);
         var valStr = data[0];
         var labelStr = data[1];
-
-        var fontValue = Graphics.FONT_XTINY;
-        var fontLabel = Graphics.FONT_XTINY;
 
         // 1. Icon (Red Accent)
         drawMetricIcon(dc, slotType, posX, posY - (14 * s).toNumber(), s);
