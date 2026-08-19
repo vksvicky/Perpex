@@ -20,7 +20,7 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // ON-WATCH CUSTOM SETTINGS VIEW (100% EQUIDISTANT & NO CUT-OFF)
+    // ON-WATCH CUSTOM SETTINGS VIEW (DYNAMIC FONT HEIGHT EVEN FORMULA)
     // ─────────────────────────────────────────────────────────────────────
     function getSettingsView() {
         var view = new GarminSettingsCustomView();
@@ -54,8 +54,8 @@ class GarminSettingsCustomView extends WatchUi.View {
         var cx = w / 2;
         var cy = h / 2;
         var scale  = w / 260.0;
-        var sz     = (5 * scale).toNumber();
-        var arrowH = (5 * scale).toNumber();
+        var sz     = (4.5 * scale).toNumber();
+        var arrowH = (4.5 * scale).toNumber();
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
@@ -81,12 +81,39 @@ class GarminSettingsCustomView extends WatchUi.View {
             subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
         }
 
-        // 2. Top Header (cy - 72px)
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (72 * scale).toNumber(), Graphics.FONT_XTINY, headerText, Graphics.TEXT_JUSTIFY_CENTER);
+        // 2. Exact Font Height Metrics & Even Gap Formula
+        var fontHeader = Graphics.FONT_XTINY;
+        var fontTitle  = Graphics.FONT_SMALL;
+        var fontSub    = Graphics.FONT_TINY;
 
-        // 3. Top Vector Up Arrow Chevron ▲ (cy - 49px - EXACT 18px EQUIDISTANT GAP ABOVE TITLE)
-        var pyUp = cy - (49 * scale).toNumber();
+        var hHeader = dc.getFontHeight(fontHeader);
+        var hTitle  = dc.getFontHeight(fontTitle);
+        var hSub    = dc.getFontHeight(fontSub);
+
+        var uniformGap = (16 * scale).toNumber();
+        var itemGap    = (4 * scale).toNumber();
+
+        // Total central block height (title + gap + sublabel)
+        var totalTextH = hTitle + itemGap + hSub;
+
+        // Title Top Y (Centered at cy)
+        var titleY = cy - (totalTextH / 2);
+        var subY   = titleY + hTitle + itemGap;
+
+        // Top Chevron Y (Base placed uniformGap above titleY)
+        var pyUp = titleY - uniformGap;
+
+        // Bottom Chevron Y (Base placed uniformGap below subY + hSub)
+        var pyDown = subY + hSub + uniformGap;
+
+        // Header Text Y (Placed uniformGap above top chevron tip)
+        var headerY = (pyUp - arrowH) - uniformGap - hHeader;
+
+        // 3. Draw Header
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, headerY, fontHeader, headerText, Graphics.TEXT_JUSTIFY_CENTER);
+
+        // 4. Draw Top Vector Chevron ▲
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyUp],
@@ -94,26 +121,21 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyUp - arrowH]
         ]);
 
-        // 4. Current Item Title (cy - 31px)
+        // 5. Draw Title
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (31 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, titleY, fontTitle, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 5. Current Sublabel Value in VIBRANT COLOR (cy + 7px)
+        // 6. Draw Sublabel Value
         dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (7 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, subY, fontSub, subText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 6. Bottom Vector Down Arrow Chevron ▼ (cy + 49px - EXACT 18px EQUIDISTANT GAP BELOW VALUE)
-        var pyDown = cy + (49 * scale).toNumber();
+        // 7. Draw Bottom Vector Chevron ▼
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyDown],
             [cx + sz, pyDown],
             [cx, pyDown + arrowH]
         ]);
-
-        // 7. Compact Footer Hint (cy + 70px - Short 18-char string fits 100% inside circle!)
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (70 * scale).toNumber(), Graphics.FONT_XTINY, "UP / DOWN : SCROLL", Graphics.TEXT_JUSTIFY_CENTER);
 
         // 8. Right Edge Page Indicator Dots
         var dotX = w - (14 * scale).toNumber();
