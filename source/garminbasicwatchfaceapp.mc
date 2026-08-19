@@ -20,7 +20,7 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // ON-WATCH CUSTOM SETTINGS VIEW (PERFECT SYMMETRY & INTUITIVE TOUCH)
+    // ON-WATCH CUSTOM SETTINGS VIEW (100% EQUIDISTANT & NO CUT-OFF)
     // ─────────────────────────────────────────────────────────────────────
     function getSettingsView() {
         var view = new GarminSettingsCustomView();
@@ -73,7 +73,7 @@ class GarminSettingsCustomView extends WatchUi.View {
             subText = (themeVal >= 1 && themeVal <= 6) ? themeNames[themeVal - 1] : themeNames[0];
             subColor = getThemeAccentHex(themeVal);
         } else if (itemKey.equals("ResetDefaults")) {
-            subText = "Tap Value to Reset";
+            subText = "Tap to Reset All";
             subColor = 0xFF4444;
         } else {
             var metricId = getPropVal(itemKey, 1);
@@ -81,12 +81,12 @@ class GarminSettingsCustomView extends WatchUi.View {
             subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
         }
 
-        // 2. Top Header (cy - 68px)
+        // 2. Top Header (cy - 72px)
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (68 * scale).toNumber(), Graphics.FONT_XTINY, headerText, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (72 * scale).toNumber(), Graphics.FONT_XTINY, headerText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 3. Top Vector Up Arrow Chevron ▲ (cy - 38px - EXACTLY 38px Symmetrical)
-        var pyUp = cy - (38 * scale).toNumber();
+        // 3. Top Vector Up Arrow Chevron ▲ (cy - 49px - EXACT 18px EQUIDISTANT GAP ABOVE TITLE)
+        var pyUp = cy - (49 * scale).toNumber();
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyUp],
@@ -94,16 +94,16 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyUp - arrowH]
         ]);
 
-        // 4. Current Item Title (cy - 22px)
+        // 4. Current Item Title (cy - 31px)
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (22 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (31 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 5. Current Sublabel Value (cy + 6px)
+        // 5. Current Sublabel Value in VIBRANT COLOR (cy + 7px)
         dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (6 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (7 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 6. Bottom Vector Down Arrow Chevron ▼ (cy + 38px - EXACTLY 38px Symmetrical)
-        var pyDown = cy + (38 * scale).toNumber();
+        // 6. Bottom Vector Down Arrow Chevron ▼ (cy + 49px - EXACT 18px EQUIDISTANT GAP BELOW VALUE)
+        var pyDown = cy + (49 * scale).toNumber();
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyDown],
@@ -111,9 +111,9 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyDown + arrowH]
         ]);
 
-        // 7. Footer Instruction Hint (cy + 65px)
+        // 7. Compact Footer Hint (cy + 70px - Short 18-char string fits 100% inside circle!)
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (65 * scale).toNumber(), Graphics.FONT_XTINY, "Tap Top/Bot: Scroll • Center: Change", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (70 * scale).toNumber(), Graphics.FONT_XTINY, "UP / DOWN : SCROLL", Graphics.TEXT_JUSTIFY_CENTER);
 
         // 8. Right Edge Page Indicator Dots
         var dotX = w - (14 * scale).toNumber();
@@ -217,9 +217,6 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
         var screenH = System.getDeviceSettings().screenHeight;
         var cy = screenH / 2;
 
-        // Top 40% of screen -> Scroll UP (Previous Setting)
-        // Bottom 40% of screen -> Scroll DOWN (Next Setting)
-        // Center 20% box -> Change Value
         if (y < cy - 15) {
             return cycleUp();
         } else if (y > cy + 15) {
