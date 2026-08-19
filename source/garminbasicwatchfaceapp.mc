@@ -20,7 +20,7 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // ON-WATCH CUSTOM SETTINGS VIEW (CENTER-ALIGNED & PROPORTIONAL FONT)
+    // ON-WATCH CUSTOM SETTINGS VIEW (VECTOR ARROWS & PERFECT SPACING)
     // ─────────────────────────────────────────────────────────────────────
     function getSettingsView() {
         var view = new GarminSettingsCustomView();
@@ -53,25 +53,32 @@ class GarminSettingsCustomView extends WatchUi.View {
         var h = dc.getHeight();
         var cx = w / 2;
         var cy = h / 2;
+        var scale = w / 260.0;
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
 
-        // 1. Top Header
+        // 1. Sleek Top Header
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - 80, Graphics.FONT_TINY, "SETTINGS (" + (currentIndex + 1) + "/7)", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (88 * scale).toNumber(), Graphics.FONT_XTINY, "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size(), Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 2. Up Arrow Indicator
+        // 2. Vector Up Arrow Chevron
         if (currentIndex > 0) {
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(cx, cy - 58, Graphics.FONT_TINY, "^", Graphics.TEXT_JUSTIFY_CENTER);
+            var py = cy - (62 * scale).toNumber();
+            var sz = (5 * scale).toNumber();
+            dc.fillPolygon([
+                [cx - sz, py],
+                [cx + sz, py],
+                [cx, py - sz]
+            ]);
         }
 
         // 3. Current Item Label
         var itemKey = menuItems[currentIndex][1];
         var itemTitle = menuItems[currentIndex][0];
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - 25, Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (28 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
         // 4. Current Sublabel Value
         var subText = "";
@@ -84,25 +91,46 @@ class GarminSettingsCustomView extends WatchUi.View {
             subColor = getThemeAccentHex(themeVal);
         } else if (itemKey.equals("ResetDefaults")) {
             subText = "Press SELECT to Reset";
-            subColor = 0xFF5555;
+            subColor = 0xFF4444;
         } else {
             var metricId = getPropVal(itemKey, 1);
             subText = getMetricNameLabel(metricId);
-            subColor = 0x00CCCC;
+            subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
         }
 
         dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + 12, Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (10 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 5. Down Arrow Indicator
+        // 5. Vector Down Arrow Chevron
         if (currentIndex < menuItems.size() - 1) {
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(cx, cy + 48, Graphics.FONT_TINY, "v", Graphics.TEXT_JUSTIFY_CENTER);
+            var py = cy + (48 * scale).toNumber();
+            var sz = (5 * scale).toNumber();
+            dc.fillPolygon([
+                [cx - sz, py],
+                [cx + sz, py],
+                [cx, py + sz]
+            ]);
         }
 
-        // 6. Footer Navigation Hint
+        // 6. Sleek Footer Hint
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + 74, Graphics.FONT_XTINY, "SELECT: Change | BACK: Save", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (84 * scale).toNumber(), Graphics.FONT_XTINY, "SELECT: Change   BACK: Save", Graphics.TEXT_JUSTIFY_CENTER);
+
+        // 7. Right Edge Page Indicator Dots
+        var dotX = w - (14 * scale).toNumber();
+        var startY = cy - (24 * scale).toNumber();
+        var dotSpacing = (8 * scale).toNumber();
+        for (var i = 0; i < menuItems.size(); i++) {
+            var dotY = startY + i * dotSpacing;
+            if (i == currentIndex) {
+                dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+                dc.fillCircle(dotX, dotY, (2.5 * scale).toNumber());
+            } else {
+                dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+                dc.fillCircle(dotX, dotY, (1.5 * scale).toNumber());
+            }
+        }
     }
 
     function getThemeAccentHex(val) {
