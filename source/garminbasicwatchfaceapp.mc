@@ -54,33 +54,19 @@ class GarminSettingsCustomView extends WatchUi.View {
         var cx = w / 2;
         var cy = h / 2;
         var scale = w / 260.0;
+        var gap   = (22 * scale).toNumber();
+        var arrowH = (6 * scale).toNumber();
+        var sz    = (6 * scale).toNumber();
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
 
-        // 1. Sleek Top Header
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (90 * scale).toNumber(), Graphics.FONT_XTINY, "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size(), Graphics.TEXT_JUSTIFY_CENTER);
-
-        // 2. Vector Up Arrow Chevron
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        var pyUp = cy - (65 * scale).toNumber();
-        var sz = (5 * scale).toNumber();
-        dc.fillPolygon([
-            [cx - sz, pyUp],
-            [cx + sz, pyUp],
-            [cx, pyUp - sz]
-        ]);
-
-        // 3. Current Item Label (FONT_MEDIUM)
-        var itemKey = menuItems[currentIndex][1];
+        // Resolve strings & colors
+        var itemKey   = menuItems[currentIndex][1];
         var itemTitle = menuItems[currentIndex][0];
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (40 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
-
-        // 4. Current Sublabel Value (FONT_SMALL)
-        var subText = "";
-        var subColor = Graphics.COLOR_WHITE;
+        var headerText = "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size();
+        var subText   = "";
+        var subColor  = Graphics.COLOR_WHITE;
 
         if (itemKey.equals("ThemeColor")) {
             var themeVal = getPropVal("ThemeColor", 1);
@@ -96,22 +82,58 @@ class GarminSettingsCustomView extends WatchUi.View {
             subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
         }
 
-        dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (8 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
+        // Measure exact font heights using system text metrics
+        var dimTitle  = dc.getTextDimensions(itemTitle, Graphics.FONT_MEDIUM);
+        var dimSub    = dc.getTextDimensions(subText, Graphics.FONT_SMALL);
+        var dimHeader = dc.getTextDimensions(headerText, Graphics.FONT_XTINY);
+        var dimFoot1  = dc.getTextDimensions("SELECT : Change", Graphics.FONT_XTINY);
 
-        // 5. Vector Down Arrow Chevron
+        var hTitle  = dimTitle[1];
+        var hSub    = dimSub[1];
+        var hHeader = dimHeader[1];
+        var hFoot1  = dimFoot1[1];
+
+        // Central Text Block (Title & Sublabel centered symmetrically around cy)
+        var innerGap = (8 * scale).toNumber();
+        var yTitle = cy - (hTitle / 2) - (innerGap / 2);
+        var ySub   = yTitle + hTitle + innerGap;
+
+        // 1. Current Item Title & Sublabel
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, yTitle, Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+
+        dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, ySub, Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
+
+        // 2. Top Arrow Chevron ▲ (EXACTLY gap = 22px above yTitle)
+        var pyUp = yTitle - gap;
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        var pyDown = cy + (55 * scale).toNumber();
+        dc.fillPolygon([
+            [cx - sz, pyUp],
+            [cx + sz, pyUp],
+            [cx, pyUp - arrowH]
+        ]);
+
+        // 3. Top Header SETTINGS (EXACTLY gap = 22px above Top Arrow tip)
+        var yHeader = pyUp - arrowH - gap - (hHeader / 2);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, yHeader, Graphics.FONT_XTINY, headerText, Graphics.TEXT_JUSTIFY_CENTER);
+
+        // 4. Bottom Arrow Chevron ▼ (EXACTLY gap = 22px below ySub + hSub)
+        var pyDown = ySub + hSub + gap;
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyDown],
             [cx + sz, pyDown],
-            [cx, pyDown + sz]
+            [cx, pyDown + arrowH]
         ]);
 
-        // 6. Sleek Footer Hints
+        // 5. Footer Line 1 & Line 2 (EXACTLY gap = 22px below Bottom Arrow tip)
+        var yFoot1 = pyDown + arrowH + gap;
+        var yFoot2 = yFoot1 + hFoot1 + (2 * scale).toNumber();
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (75 * scale).toNumber(), Graphics.FONT_XTINY, "SELECT : Change", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(cx, cy + (91 * scale).toNumber(), Graphics.FONT_XTINY, "BACK : Save", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, yFoot1, Graphics.FONT_XTINY, "SELECT : Change", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, yFoot2, Graphics.FONT_XTINY, "BACK : Save", Graphics.TEXT_JUSTIFY_CENTER);
 
         // 7. Right Edge Page Indicator Dots
         var dotX = w - (14 * scale).toNumber();
