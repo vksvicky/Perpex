@@ -47,6 +47,13 @@ echo "Building watch face for $DEVICE..."
 # Generate simulator settings XML definition
 python3 /Users/vivek/.gemini/antigravity-ide/brain/71d42b51-5e25-4db8-94a7-530ece43b1ab/scratch/generate_settings_xml.py
 
+# Copy settings definition to simulator app storage BEFORE launch
+SIM_SETTINGS_DIR="$TMPDIR/com.garmin.connectiq/GARMIN/APPS/SETTINGS"
+mkdir -p "$SIM_SETTINGS_DIR"
+cp "bin/GarminWatchFace-settings.json" "$SIM_SETTINGS_DIR/GARMINWATCHFACE.SET" 2>/dev/null || true
+cp "bin/GarminWatchFace-settings.json" "$SIM_SETTINGS_DIR/GARMINWATCHFACE.JSON" 2>/dev/null || true
+cp "bin/GarminWatchFace-settings.xml" "$SIM_SETTINGS_DIR/GARMINWATCHFACE.XML" 2>/dev/null || true
+
 # Start the simulator with the watch face
 "$SDK_PATH/bin/connectiq" &
 sleep 5
