@@ -21,6 +21,16 @@ if [ -z "$DEVICE" ]; then
     done
 fi
 
+SDK_DIR="$HOME/Library/Application Support/Garmin/ConnectIQ/Sdks"
+SDK_PATH=$(ls -td "$SDK_DIR"/connectiq-sdk-mac-* 2>/dev/null | head -n 1)
+
+if [ -z "$SDK_PATH" ]; then
+    echo "Error: No Garmin Connect IQ SDK found in $SDK_DIR"
+    exit 1
+fi
+
+echo "Using Connect IQ SDK at: $SDK_PATH"
+
 # Clean bin directory
 rm -rf "/Users/vivek/Development/GarminWatchFace/bin"
 mkdir -p "/Users/vivek/Development/GarminWatchFace/bin"
@@ -28,16 +38,18 @@ mkdir -p "/Users/vivek/Development/GarminWatchFace/bin"
 echo "Building watch face for $DEVICE..."
 
 # Compile the watch face
-"/Users/vivek/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-8.0.0_Beta-2025-01-07-276916717/bin/monkeyc" \
+"$SDK_PATH/bin/monkeyc" \
     -d "$DEVICE" \
     -f monkey.jungle \
     -o bin/GarminWatchFace.prg \
     -y developer_key.der
 
+# Generate simulator settings XML definition
+python3 /Users/vivek/.gemini/antigravity-ide/brain/71d42b51-5e25-4db8-94a7-530ece43b1ab/scratch/generate_settings_xml.py
+
 # Start the simulator with the watch face
-"/Users/vivek/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-8.0.0_Beta-2025-01-07-276916717/bin/connectiq" \
-    &
+"$SDK_PATH/bin/connectiq" &
 sleep 5
-"/Users/vivek/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-8.0.0_Beta-2025-01-07-276916717/bin/monkeydo" \
+"$SDK_PATH/bin/monkeydo" \
     "/Users/vivek/Development/GarminWatchFace/bin/GarminWatchFace.prg" \
     "$DEVICE"

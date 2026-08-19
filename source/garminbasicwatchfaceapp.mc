@@ -20,4 +20,7 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
         return [ new GarminBasicWatchFaceView() ];
     }
 
+    function onSettingsChanged() {
+        WatchUi.requestUpdate();
+    }
 }

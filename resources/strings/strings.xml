@@ -2,6 +2,14 @@
     <string id="AppName">Garmin Watch Face</string>
     <string id="TimeLabel">00:00</string>
     
+    <string id="ThemeColorTitle">Accent Theme Color</string>
+    <string id="ThemeRed">Vibrant Red</string>
+    <string id="ThemeTeal">Teal / Cyan</string>
+    <string id="ThemeOrange">Warm Orange</string>
+    <string id="ThemeGreen">Electric Green</string>
+    <string id="ThemeGold">Gold / Yellow</string>
+    <string id="ThemeWhite">Pure White</string>
+
     <string id="Slot1Title">Top Slot Metric</string>
     <string id="Slot2Title">Left Slot Metric</string>
     <string id="Slot3Title">Center Badge Metric</string>

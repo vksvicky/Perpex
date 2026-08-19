@@ -84,7 +84,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // CUSTOMIZABLE DATA SLOTS & PROPERTIES
+    // CUSTOMIZABLE DATA SLOTS & THEME COLOR
     // ─────────────────────────────────────────────────────────────────────
     function getPropertyVal(key, defaultVal) {
         try {
@@ -96,34 +96,106 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         return defaultVal;
     }
 
+    function getThemeAccentColor() {
+        var themeId = getPropertyVal("ThemeColor", 1);
+        if (themeId == 2) { return 0x00CCCC; }      // Teal / Cyan
+        else if (themeId == 3) { return 0xFF8800; } // Warm Orange
+        else if (themeId == 4) { return 0x00FF66; } // Electric Green
+        else if (themeId == 5) { return 0xFFCC00; } // Gold / Yellow
+        else if (themeId == 6) { return 0xFFFFFF; } // Pure White
+        return 0xFF3333;                            // Vibrant Red (Default)
+    }
+
     // ─────────────────────────────────────────────────────────────────────
-    // BITMAP ICON DRAWERS (Red Accent Bitmaps)
+    // BITMAP ICON DRAWERS (Themed Accent Bitmaps)
     // ─────────────────────────────────────────────────────────────────────
     function drawMetricIcon(dc, type, x, y, s) {
         var bmp = null;
+        var themeId = getPropertyVal("ThemeColor", 1);
+
         if (type == 1) { bmp = imgBattery; }
         else if (type == 2) {
-            // Heart Rate: Pumping Animation during Active Workouts/Activity Monitoring
+            // Heart Rate: Pumping animation ONLY during active workouts/activities!
+            var isActivityRunning = false;
             var actInfo = Activity.getActivityInfo();
-            var isActivityActive = false;
             if (actInfo != null && actInfo has :timerState && actInfo.timerState != null) {
-                isActivityActive = (actInfo.timerState == 3 || actInfo.timerState == 1);
+                isActivityRunning = (actInfo.timerState == 3 || actInfo.timerState == 1);
             }
-            
-            // Pumping pulse state (switches on alternating seconds during heart rate reading / workout)
+
             var sec = System.getClockTime().sec;
-            var isPulseBeat = (sec % 2 == 0);
-            
-            bmp = isPulseBeat ? imgHeartPulse : imgHeart;
+            var isPulseBeat = isActivityRunning ? (sec % 2 == 0) : false;
+
+            if (themeId == 2) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_teal : Rez.Drawables.icon_heart_teal); }
+            else if (themeId == 3) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_orange : Rez.Drawables.icon_heart_orange); }
+            else if (themeId == 4) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_green : Rez.Drawables.icon_heart_green); }
+            else if (themeId == 5) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_gold : Rez.Drawables.icon_heart_gold); }
+            else if (themeId == 6) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_white : Rez.Drawables.icon_heart_white); }
+            else { bmp = isPulseBeat ? imgHeartPulse : imgHeart; }
         }
-        else if (type == 3 || type == 4) { bmp = imgSteps; }
-        else if (type == 5) { bmp = imgFlame; }
-        else if (type == 6) { bmp = imgDistance; }
-        else if (type == 7) { bmp = imgFloors; }
-        else if (type == 9) { bmp = imgStress; }
-        else if (type == 11) { bmp = imgBluetooth; }
-        else if (type == 12) { bmp = imgAltitude; }
-        else if (type == 13) { bmp = imgBarometer; }
+        else if (type == 3 || type == 4) {
+            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_teal); }
+            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_orange); }
+            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_green); }
+            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_gold); }
+            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_white); }
+            else { bmp = imgSteps; }
+        }
+        else if (type == 5) {
+            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_teal); }
+            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_orange); }
+            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_green); }
+            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_gold); }
+            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_white); }
+            else { bmp = imgFlame; }
+        }
+        else if (type == 6) {
+            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_teal); }
+            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_orange); }
+            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_green); }
+            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_gold); }
+            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_white); }
+            else { bmp = imgDistance; }
+        }
+        else if (type == 7) {
+            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_teal); }
+            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_orange); }
+            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_green); }
+            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_gold); }
+            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_white); }
+            else { bmp = imgFloors; }
+        }
+        else if (type == 9) {
+            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_teal); }
+            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_orange); }
+            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_green); }
+            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_gold); }
+            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_white); }
+            else { bmp = imgStress; }
+        }
+        else if (type == 11) {
+            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_teal); }
+            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_orange); }
+            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_green); }
+            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_gold); }
+            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_white); }
+            else { bmp = imgBluetooth; }
+        }
+        else if (type == 12) {
+            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_teal); }
+            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_orange); }
+            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_green); }
+            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_gold); }
+            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_white); }
+            else { bmp = imgAltitude; }
+        }
+        else if (type == 13) {
+            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_teal); }
+            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_orange); }
+            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_green); }
+            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_gold); }
+            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_white); }
+            else { bmp = imgBarometer; }
+        }
 
         if (bmp != null) {
             var iconW = bmp.getWidth();
@@ -253,25 +325,17 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         }
 
         // ─────────────────────────────────────────────────────────────────
-        // OTHER METRICS
+        // OTHER METRICS (Clean Icon + Value Layout)
         // ─────────────────────────────────────────────────────────────────
         var data = getMetricData(slotType);
         var valStr = data[0];
-        var labelStr = data[1];
 
-        // 1. Icon (Red Accent)
-        drawMetricIcon(dc, slotType, posX, posY - (14 * s).toNumber(), s);
+        // 1. Icon (Themed Accent)
+        drawMetricIcon(dc, slotType, posX, posY - (8 * s).toNumber(), s);
 
-        // 2. Bold Value (White)
+        // 2. Bold Value (Crisp White)
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        if (labelStr.length() > 0) {
-            dc.drawText(posX, posY + (1 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-            // 3. Label (Subtle Grey)
-            dc.setColor(0xAAAAAA, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(posX, posY + (13 * s).toNumber(), fontLabel, labelStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-        } else {
-            dc.drawText(posX, posY + (5 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-        }
+        dc.drawText(posX, posY + (7 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 
     function drawDataSlots(dc) {
@@ -327,7 +391,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var degCenter1 = ((- (angle1 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
         
         // Arc below text
-        dc.setColor(COLOR_HAND_SEC, Graphics.COLOR_TRANSPARENT);
+        var themeAccent = getThemeAccentColor();
+        dc.setColor(themeAccent, Graphics.COLOR_TRANSPARENT);
         var r1_arc = r1 - (5 * scale).toNumber();
         dc.drawArc(centerX, centerY, r1_arc, Graphics.ARC_COUNTER_CLOCKWISE, (degCenter1 - 4 + 360) % 360, (degCenter1 + 4 + 360) % 360);
 
@@ -395,7 +460,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var COLOR_STEEL_DARK  = 0x444444;
         var COLOR_STEEL_LIGHT = 0x888888;
         var COLOR_WHITE_LUME  = 0xFFFFFF;
-        var COLOR_RED_ACCENT  = 0xFF2222;
+        var COLOR_RED_ACCENT  = getThemeAccentColor();
 
         // ── HOUR HAND (Heavy-Duty 3D Metallic Fork Hand) ───────────────────
         // 1. 3D Metallic V-Fork Base (Left Dark / Right Light)

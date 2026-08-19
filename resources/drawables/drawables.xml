@@ -1,12 +1,77 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="images/launcher_icon.png" />
     <bitmap id="dial_bg" filename="../../resources-round-416x416/drawables/dial_bg.png" />
-    <bitmap id="icon_battery" filename="../../resources-round-416x416/drawables/icon_battery.png" />
     <bitmap id="icon_battery_red" filename="../../resources-round-416x416/drawables/icon_battery_red.png" />
     <bitmap id="icon_battery_orange" filename="../../resources-round-416x416/drawables/icon_battery_orange.png" />
     <bitmap id="icon_battery_green" filename="../../resources-round-416x416/drawables/icon_battery_green.png" />
+    <bitmap id="icon_battery_red" filename="../../resources-round-416x416/drawables/icon_battery_red.png" />
+    <bitmap id="icon_heart_red" filename="../../resources-round-416x416/drawables/icon_heart_red.png" />
+    <bitmap id="icon_heart_pulse_red" filename="../../resources-round-416x416/drawables/icon_heart_pulse_red.png" />
+    <bitmap id="icon_steps_red" filename="../../resources-round-416x416/drawables/icon_steps_red.png" />
+    <bitmap id="icon_flame_red" filename="../../resources-round-416x416/drawables/icon_flame_red.png" />
+    <bitmap id="icon_bluetooth_red" filename="../../resources-round-416x416/drawables/icon_bluetooth_red.png" />
+    <bitmap id="icon_distance_red" filename="../../resources-round-416x416/drawables/icon_distance_red.png" />
+    <bitmap id="icon_floors_red" filename="../../resources-round-416x416/drawables/icon_floors_red.png" />
+    <bitmap id="icon_stress_red" filename="../../resources-round-416x416/drawables/icon_stress_red.png" />
+    <bitmap id="icon_altitude_red" filename="../../resources-round-416x416/drawables/icon_altitude_red.png" />
+    <bitmap id="icon_barometer_red" filename="../../resources-round-416x416/drawables/icon_barometer_red.png" />
+    <bitmap id="icon_battery_teal" filename="../../resources-round-416x416/drawables/icon_battery_teal.png" />
+    <bitmap id="icon_heart_teal" filename="../../resources-round-416x416/drawables/icon_heart_teal.png" />
+    <bitmap id="icon_heart_pulse_teal" filename="../../resources-round-416x416/drawables/icon_heart_pulse_teal.png" />
+    <bitmap id="icon_steps_teal" filename="../../resources-round-416x416/drawables/icon_steps_teal.png" />
+    <bitmap id="icon_flame_teal" filename="../../resources-round-416x416/drawables/icon_flame_teal.png" />
+    <bitmap id="icon_bluetooth_teal" filename="../../resources-round-416x416/drawables/icon_bluetooth_teal.png" />
+    <bitmap id="icon_distance_teal" filename="../../resources-round-416x416/drawables/icon_distance_teal.png" />
+    <bitmap id="icon_floors_teal" filename="../../resources-round-416x416/drawables/icon_floors_teal.png" />
+    <bitmap id="icon_stress_teal" filename="../../resources-round-416x416/drawables/icon_stress_teal.png" />
+    <bitmap id="icon_altitude_teal" filename="../../resources-round-416x416/drawables/icon_altitude_teal.png" />
+    <bitmap id="icon_barometer_teal" filename="../../resources-round-416x416/drawables/icon_barometer_teal.png" />
+    <bitmap id="icon_battery_orange" filename="../../resources-round-416x416/drawables/icon_battery_orange.png" />
+    <bitmap id="icon_heart_orange" filename="../../resources-round-416x416/drawables/icon_heart_orange.png" />
+    <bitmap id="icon_heart_pulse_orange" filename="../../resources-round-416x416/drawables/icon_heart_pulse_orange.png" />
+    <bitmap id="icon_steps_orange" filename="../../resources-round-416x416/drawables/icon_steps_orange.png" />
+    <bitmap id="icon_flame_orange" filename="../../resources-round-416x416/drawables/icon_flame_orange.png" />
+    <bitmap id="icon_bluetooth_orange" filename="../../resources-round-416x416/drawables/icon_bluetooth_orange.png" />
+    <bitmap id="icon_distance_orange" filename="../../resources-round-416x416/drawables/icon_distance_orange.png" />
+    <bitmap id="icon_floors_orange" filename="../../resources-round-416x416/drawables/icon_floors_orange.png" />
+    <bitmap id="icon_stress_orange" filename="../../resources-round-416x416/drawables/icon_stress_orange.png" />
+    <bitmap id="icon_altitude_orange" filename="../../resources-round-416x416/drawables/icon_altitude_orange.png" />
+    <bitmap id="icon_barometer_orange" filename="../../resources-round-416x416/drawables/icon_barometer_orange.png" />
+    <bitmap id="icon_battery_green" filename="../../resources-round-416x416/drawables/icon_battery_green.png" />
+    <bitmap id="icon_heart_green" filename="../../resources-round-416x416/drawables/icon_heart_green.png" />
+    <bitmap id="icon_heart_pulse_green" filename="../../resources-round-416x416/drawables/icon_heart_pulse_green.png" />
+    <bitmap id="icon_steps_green" filename="../../resources-round-416x416/drawables/icon_steps_green.png" />
+    <bitmap id="icon_flame_green" filename="../../resources-round-416x416/drawables/icon_flame_green.png" />
+    <bitmap id="icon_bluetooth_green" filename="../../resources-round-416x416/drawables/icon_bluetooth_green.png" />
+    <bitmap id="icon_distance_green" filename="../../resources-round-416x416/drawables/icon_distance_green.png" />
+    <bitmap id="icon_floors_green" filename="../../resources-round-416x416/drawables/icon_floors_green.png" />
+    <bitmap id="icon_stress_green" filename="../../resources-round-416x416/drawables/icon_stress_green.png" />
+    <bitmap id="icon_altitude_green" filename="../../resources-round-416x416/drawables/icon_altitude_green.png" />
+    <bitmap id="icon_barometer_green" filename="../../resources-round-416x416/drawables/icon_barometer_green.png" />
+    <bitmap id="icon_battery_gold" filename="../../resources-round-416x416/drawables/icon_battery_gold.png" />
+    <bitmap id="icon_heart_gold" filename="../../resources-round-416x416/drawables/icon_heart_gold.png" />
+    <bitmap id="icon_heart_pulse_gold" filename="../../resources-round-416x416/drawables/icon_heart_pulse_gold.png" />
+    <bitmap id="icon_steps_gold" filename="../../resources-round-416x416/drawables/icon_steps_gold.png" />
+    <bitmap id="icon_flame_gold" filename="../../resources-round-416x416/drawables/icon_flame_gold.png" />
+    <bitmap id="icon_bluetooth_gold" filename="../../resources-round-416x416/drawables/icon_bluetooth_gold.png" />
+    <bitmap id="icon_distance_gold" filename="../../resources-round-416x416/drawables/icon_distance_gold.png" />
+    <bitmap id="icon_floors_gold" filename="../../resources-round-416x416/drawables/icon_floors_gold.png" />
+    <bitmap id="icon_stress_gold" filename="../../resources-round-416x416/drawables/icon_stress_gold.png" />
+    <bitmap id="icon_altitude_gold" filename="../../resources-round-416x416/drawables/icon_altitude_gold.png" />
+    <bitmap id="icon_barometer_gold" filename="../../resources-round-416x416/drawables/icon_barometer_gold.png" />
+    <bitmap id="icon_battery_white" filename="../../resources-round-416x416/drawables/icon_battery_white.png" />
+    <bitmap id="icon_heart_white" filename="../../resources-round-416x416/drawables/icon_heart_white.png" />
+    <bitmap id="icon_heart_pulse_white" filename="../../resources-round-416x416/drawables/icon_heart_pulse_white.png" />
+    <bitmap id="icon_steps_white" filename="../../resources-round-416x416/drawables/icon_steps_white.png" />
+    <bitmap id="icon_flame_white" filename="../../resources-round-416x416/drawables/icon_flame_white.png" />
+    <bitmap id="icon_bluetooth_white" filename="../../resources-round-416x416/drawables/icon_bluetooth_white.png" />
+    <bitmap id="icon_distance_white" filename="../../resources-round-416x416/drawables/icon_distance_white.png" />
+    <bitmap id="icon_floors_white" filename="../../resources-round-416x416/drawables/icon_floors_white.png" />
+    <bitmap id="icon_stress_white" filename="../../resources-round-416x416/drawables/icon_stress_white.png" />
+    <bitmap id="icon_altitude_white" filename="../../resources-round-416x416/drawables/icon_altitude_white.png" />
+    <bitmap id="icon_barometer_white" filename="../../resources-round-416x416/drawables/icon_barometer_white.png" />
+    <bitmap id="icon_battery" filename="../../resources-round-416x416/drawables/icon_battery.png" />
     <bitmap id="icon_heart" filename="../../resources-round-416x416/drawables/icon_heart.png" />
-    <bitmap id="icon_heart_pulse" filename="../../resources-round-416x416/drawables/icon_heart_pulse.png" />
     <bitmap id="icon_steps" filename="../../resources-round-416x416/drawables/icon_steps.png" />
     <bitmap id="icon_flame" filename="../../resources-round-416x416/drawables/icon_flame.png" />
     <bitmap id="icon_bluetooth" filename="../../resources-round-416x416/drawables/icon_bluetooth.png" />
@@ -15,4 +80,5 @@
     <bitmap id="icon_stress" filename="../../resources-round-416x416/drawables/icon_stress.png" />
     <bitmap id="icon_altitude" filename="../../resources-round-416x416/drawables/icon_altitude.png" />
     <bitmap id="icon_barometer" filename="../../resources-round-416x416/drawables/icon_barometer.png" />
+    <bitmap id="icon_heart_pulse" filename="../../resources-round-416x416/drawables/icon_heart_pulse.png" />
 </drawables>
