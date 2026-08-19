@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
-    <iq:application entry="GarminBasicWatchFaceApp" id="bd57c3bccf764485b28dd4fcc24a9f01" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="3.2.0" name="@Strings.AppName" type="watchface" version="1.0.0">
+    <iq:application entry="GarminBasicWatchFaceApp" id="bd57c3bccf764485b28dd4fcc24a9f02" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="3.2.0" name="@Strings.AppName" type="watchface" version="1.0.0">
         <iq:products>
             <iq:product id="enduro3"/>
             <iq:product id="epix2"/>
