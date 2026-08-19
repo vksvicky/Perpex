@@ -1,6 +1,4 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="images/launcher_icon.png" />
-    <bitmap id="ring_weekdays" filename="ring_weekdays.png" />
-    <bitmap id="ring_dates" filename="ring_dates.png" />
-    <bitmap id="ring_months" filename="ring_months.png" />
+    <bitmap id="dial_bg" filename="dial_bg.png" />
 </drawables>

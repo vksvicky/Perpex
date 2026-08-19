@@ -22,9 +22,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     private const COLOR_HAND_SEC   = 0xFF4444;
     private const COLOR_PIN        = 0x888888;
 
-    var ringWeekdays;
-    var ringDates;
-    var ringMonths;
+    var dialBg;
 
     function initialize() {
         WatchFace.initialize();
@@ -37,9 +35,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         centerY = h / 2;
         radius  = (w < h ? w : h) / 2;
         
-        ringWeekdays = WatchUi.loadResource(Rez.Drawables.ring_weekdays);
-        ringDates = WatchUi.loadResource(Rez.Drawables.ring_dates);
-        ringMonths = WatchUi.loadResource(Rez.Drawables.ring_months);
+        dialBg = WatchUi.loadResource(Rez.Drawables.dial_bg);
     }
 
     function onShow() {}
@@ -58,103 +54,55 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         drawHands(dc, clockTime.hour, clockTime.min, clockTime.sec);
     }
 
-    function drawCharAtAngle(dc, char, r, a, isBottom) {
-        var x = (centerX + r * Math.cos(a)).toNumber();
-        var y = (centerY + r * Math.sin(a)).toNumber();
-
-        var aDeg = (a * 180.0 / Math.PI).toNumber();
-        var tangent;
-        if (isBottom) {
-            tangent = 90 - aDeg;
-        } else {
-            tangent = 270 - aDeg;
-        }
-        tangent = ((tangent % 360) + 360) % 360;
-
-        var idx = tangent / 3;
-        var font = CurvedFonts.getFont(idx);
-        if (font != null) {
-            dc.drawText(x, y, font, char,
-                Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-        } else {
-            dc.drawText(x, y, Graphics.FONT_XTINY, char,
-                Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-        }
-    }
-
-    // Draw a multi-char label along the arc at radius r, centred at centerAngle.
-    // Bottom half (sin > 0): reverse character order for head-on left-to-right readability.
-    function drawCurvedLabel(dc, label, r, centerAngle, charArcSpacing) {
-        var chars      = label.toUpper().toCharArray();
-        var n          = chars.size();
-        var charArc    = charArcSpacing / r;
-        var startAngle = centerAngle - ((n - 1.0) * charArc / 2.0);
-        var isBottom   = (Math.sin(centerAngle) > 0.0);
-        for (var i = 0; i < n; i++) {
-            var ci = isBottom ? (n - 1 - i) : i;
-            drawCharAtAngle(dc, chars[ci].toString(), r, startAngle + i * charArc, isBottom);
-        }
-    }
-
     // ─────────────────────────────────────────────────────────────────────
     // CONCENTRIC RINGS
     // ─────────────────────────────────────────────────────────────────────
     function drawConcentricRings(dc, now) {
         var TWO_PI  = Math.PI * 2.0;
         var HALF_PI = Math.PI / 2.0;
-        var arcPenWidth = 14;
+        
+        // Calculate scale factor based on 260px base width
+        var w = dc.getWidth();
+        var scale = w / 260.0;
 
-        // Draw the static rings
-        if (ringMonths != null) { dc.drawBitmap(0, 0, ringMonths); }
-        if (ringDates != null) { dc.drawBitmap(0, 0, ringDates); }
-        if (ringWeekdays != null) { dc.drawBitmap(0, 0, ringWeekdays); }
+        // Draw the static opaque background dial
+        if (dialBg != null) { dc.drawBitmap(0, 0, dialBg); }
+
+        dc.setPenWidth(4);
 
         // ── Highlight: Days ──────────────────────────────────
-        var r1       = 96; // radius from script
+        var r1       = (96 * scale).toNumber(); // radius from script
         var dayStep  = TWO_PI / 31.0;
         var d = now.day;
         var angle1 = (d - 1) * dayStep - HALF_PI;
         var degCenter1 = ((- (angle1 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
         
-        // Arc
-        dc.setPenWidth(arcPenWidth);
+        // Arc below text
         dc.setColor(COLOR_HAND_SEC, Graphics.COLOR_TRANSPARENT);
-        dc.drawArc(centerX, centerY, r1, Graphics.ARC_COUNTER_CLOCKWISE, degCenter1 - 6, degCenter1 + 6);
-        // Highlighted text
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        drawCurvedLabel(dc, d.toString(), r1, angle1, 14.0);
+        var r1_arc = r1 - (5 * scale).toNumber();
+        dc.drawArc(centerX, centerY, r1_arc, Graphics.ARC_COUNTER_CLOCKWISE, (degCenter1 - 4 + 360) % 360, (degCenter1 + 4 + 360) % 360);
 
         // ── Highlight: Months ───────────────────────────────────────
-        var r2       = 117; // radius from script
-        var months   = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+        var r2       = (117 * scale).toNumber(); // radius from script
         var m = now.month;
         var monStep  = TWO_PI / 12.0;
         var angle2 = (m - 1) * monStep - HALF_PI;
         var degCenter2 = ((- (angle2 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
         
-        // Arc
-        dc.setPenWidth(arcPenWidth);
-        dc.setColor(COLOR_HAND_SEC, Graphics.COLOR_TRANSPARENT);
-        dc.drawArc(centerX, centerY, r2, Graphics.ARC_COUNTER_CLOCKWISE, degCenter2 - 14, degCenter2 + 14);
-        // Highlighted text
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        drawCurvedLabel(dc, months[m-1], r2, angle2, 10.0);
+        // Arc below text
+        var r2_arc = r2 - (5 * scale).toNumber();
+        dc.drawArc(centerX, centerY, r2_arc, Graphics.ARC_COUNTER_CLOCKWISE, (degCenter2 - 10 + 360) % 360, (degCenter2 + 10 + 360) % 360);
 
         // ── Highlight: Weekdays ───────────────────────────────────────
-        var r3       = 75; // radius from script
-        var days    = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+        var r3       = (75 * scale).toNumber(); // radius from script
         var wkStep  = TWO_PI / 7.0;
-        var w = now.day_of_week;
-        var angle3 = (w - 1) * wkStep - HALF_PI;
+        var w_day = now.day_of_week;
+        var angle3 = (w_day - 1) * wkStep - HALF_PI;
         var degCenter3 = ((- (angle3 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
         
-        // Arc
-        dc.setPenWidth(arcPenWidth);
-        dc.setColor(COLOR_HAND_SEC, Graphics.COLOR_TRANSPARENT);
-        dc.drawArc(centerX, centerY, r3, Graphics.ARC_COUNTER_CLOCKWISE, degCenter3 - 22, degCenter3 + 22);
-        // Highlighted text
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        drawCurvedLabel(dc, days[w-1], r3, angle3, 10.0);
+        // Arc below text
+        var r3_arc = r3 - (5 * scale).toNumber();
+        dc.drawArc(centerX, centerY, r3_arc, Graphics.ARC_COUNTER_CLOCKWISE, (degCenter3 - 16 + 360) % 360, (degCenter3 + 16 + 360) % 360);
     }
 
     // ─────────────────────────────────────────────────────────────────────
