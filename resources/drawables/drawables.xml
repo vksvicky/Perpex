@@ -1,3 +1,4 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="images/launcher_icon.png" />
+    <bitmap id="dial_bg" filename="dial_bg.png" />
 </drawables>

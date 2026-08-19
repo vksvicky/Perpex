@@ -10,7 +10,7 @@ mkdir -p "/Users/vivek/Development/GarminWatchFace/bin"
 
 # Compile the watch face
 "/Users/vivek/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-8.0.0_Beta-2025-01-07-276916717/bin/monkeyc" \
-    -d fenix6 \
+    -d fenix7 \
     -f monkey.jungle \
     -o bin/GarminWatchFace.prg \
     -y developer_key.der
@@ -21,4 +21,4 @@ mkdir -p "/Users/vivek/Development/GarminWatchFace/bin"
 sleep 5
 "/Users/vivek/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-8.0.0_Beta-2025-01-07-276916717/bin/monkeydo" \
     "/Users/vivek/Development/GarminWatchFace/bin/GarminWatchFace.prg" \
-    fenix6
+    fenix7

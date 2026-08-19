@@ -22,6 +22,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     private const COLOR_HAND_SEC   = 0xFF4444;
     private const COLOR_PIN        = 0x888888;
 
+    var dialBg;
+
     function initialize() {
         WatchFace.initialize();
     }
@@ -32,6 +34,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         centerX = w / 2;
         centerY = h / 2;
         radius  = (w < h ? w : h) / 2;
+        dialBg = WatchUi.loadResource(Rez.Drawables.dial_bg);
     }
 
     function onShow() {}
@@ -42,6 +45,10 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
 
         dc.setColor(COLOR_BG, COLOR_BG);
         dc.clear();
+        
+        if (dialBg != null) {
+            dc.drawBitmap(0, 0, dialBg);
+        }
 
         drawConcentricRings(dc, now);
         drawBrandAndComplications(dc);
@@ -90,62 +97,50 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     // CONCENTRIC RINGS
     // ─────────────────────────────────────────────────────────────────────
     function drawConcentricRings(dc, now) {
-        var r1 = radius - 15;  // Outermost: Days   1–31
-        var r2 = radius - 45;  // Middle:    Months JAN–DEC
-        var r3 = radius - 70;  // Inner:     Weekdays SUN–SAT
+        var TWO_PI  = Math.PI * 2.0;
+        var HALF_PI = Math.PI / 2.0;
 
         // Subtle separator circles
         dc.setPenWidth(2);
         dc.setColor(COLOR_RING_SEP, Graphics.COLOR_TRANSPARENT);
-        dc.drawCircle(centerX, centerY, r1 + 12);
-        dc.drawCircle(centerX, centerY, r1 - 15);
-        dc.drawCircle(centerX, centerY, r2 - 15);
-        dc.drawCircle(centerX, centerY, r3 - 15);
+        dc.drawCircle(centerX, centerY, radius * 0.93 + 12);
 
-        var TWO_PI  = Math.PI * 2.0;
-        var HALF_PI = Math.PI / 2.0;
-
-        // ── Outer ring: Days 1–31 ──────────────────────────────────────
-        var dayStep = TWO_PI / 31.0;
+        // ── Outer ring: Days (1..31) ──────────────────────────────────
+        var r1       = radius * 0.93; // 120.9 for 130r
+        var dayStep  = TWO_PI / 31.0;
         for (var d = 1; d <= 31; d++) {
-            var angle = ((d - 1) * dayStep) - HALF_PI;
+            var angle = (d - 1) * dayStep - HALF_PI;
             if (d == now.day) {
                 dc.setColor(COLOR_HIGHLIGHT, Graphics.COLOR_TRANSPARENT);
-            } else {
-                dc.setColor(COLOR_DIM_OUTER, Graphics.COLOR_TRANSPARENT);
+                // Slightly wider letter spacing (14.0) for numbers
+                drawCurvedLabel(dc, d.toString(), r1, angle, 14.0);
             }
-            // Use tighter spacing (6.0) for numbers so they look like a single unit
-            drawCurvedLabel(dc, d.toString(), r1, angle, 6.0);
         }
 
-        // ── Middle ring: Months ────────────────────────────────────────
-        var months  = ["JAN","FEB","MAR","APR","MAY","JUN",
-                       "JUL","AUG","SEP","OCT","NOV","DEC"];
-        var monStep = TWO_PI / 12.0;
+        // ── Middle ring: Months ───────────────────────────────────────
+        var r2       = radius * 0.77; // 100 for 130r
+        var months   = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+        var monStep  = TWO_PI / 12.0;
         for (var m = 0; m < 12; m++) {
             var angle = (m * monStep) - HALF_PI;
             if (m + 1 == now.month) {
                 dc.setColor(COLOR_HIGHLIGHT, Graphics.COLOR_TRANSPARENT);
-            } else {
-                dc.setColor(COLOR_DIM_MID, Graphics.COLOR_TRANSPARENT);
+                // Normal spacing (10.0) for letters
+                drawCurvedLabel(dc, months[m], r2, angle, 10.0);
             }
-            // Normal spacing (10.0) for letters
-            drawCurvedLabel(dc, months[m], r2, angle, 10.0);
         }
 
         // ── Inner ring: Weekdays ───────────────────────────────────────
-        // day_of_week: 1=SUN … 7=SAT
+        var r3       = radius * 0.63; // 82 for 130r
         var days    = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
         var wkStep  = TWO_PI / 7.0;
         for (var w = 0; w < 7; w++) {
             var angle = (w * wkStep) - HALF_PI;
             if (w + 1 == now.day_of_week) {
                 dc.setColor(COLOR_HIGHLIGHT, Graphics.COLOR_TRANSPARENT);
-            } else {
-                dc.setColor(COLOR_DIM_INNER, Graphics.COLOR_TRANSPARENT);
+                // Normal spacing (10.0) for letters
+                drawCurvedLabel(dc, days[w], r3, angle, 10.0);
             }
-            // Normal spacing (10.0) for letters
-            drawCurvedLabel(dc, days[w], r3, angle, 10.0);
         }
     }
 
