@@ -31,6 +31,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     var imgBatteryOrange;
     var imgBatteryGreen;
     var imgHeart;
+    var imgHeartPulse;
     var imgSteps;
     var imgFlame;
     var imgBluetooth;
@@ -57,6 +58,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         imgBatteryOrange = WatchUi.loadResource(Rez.Drawables.icon_battery_orange);
         imgBatteryGreen  = WatchUi.loadResource(Rez.Drawables.icon_battery_green);
         imgHeart         = WatchUi.loadResource(Rez.Drawables.icon_heart);
+        imgHeartPulse    = WatchUi.loadResource(Rez.Drawables.icon_heart_pulse);
         imgSteps         = WatchUi.loadResource(Rez.Drawables.icon_steps);
         imgFlame         = WatchUi.loadResource(Rez.Drawables.icon_flame);
         imgBluetooth     = WatchUi.loadResource(Rez.Drawables.icon_bluetooth);
@@ -100,7 +102,20 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     function drawMetricIcon(dc, type, x, y, s) {
         var bmp = null;
         if (type == 1) { bmp = imgBattery; }
-        else if (type == 2) { bmp = imgHeart; }
+        else if (type == 2) {
+            // Heart Rate: Pumping Animation during Active Workouts/Activity Monitoring
+            var actInfo = Activity.getActivityInfo();
+            var isActivityActive = false;
+            if (actInfo != null && actInfo has :timerState && actInfo.timerState != null) {
+                isActivityActive = (actInfo.timerState == 3 || actInfo.timerState == 1);
+            }
+            
+            // Pumping pulse state (switches on alternating seconds during heart rate reading / workout)
+            var sec = System.getClockTime().sec;
+            var isPulseBeat = (sec % 2 == 0);
+            
+            bmp = isPulseBeat ? imgHeartPulse : imgHeart;
+        }
         else if (type == 3 || type == 4) { bmp = imgSteps; }
         else if (type == 5) { bmp = imgFlame; }
         else if (type == 6) { bmp = imgDistance; }

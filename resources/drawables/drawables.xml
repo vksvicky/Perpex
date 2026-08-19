@@ -6,6 +6,7 @@
     <bitmap id="icon_battery_orange" filename="../../resources-round-416x416/drawables/icon_battery_orange.png" />
     <bitmap id="icon_battery_green" filename="../../resources-round-416x416/drawables/icon_battery_green.png" />
     <bitmap id="icon_heart" filename="../../resources-round-416x416/drawables/icon_heart.png" />
+    <bitmap id="icon_heart_pulse" filename="../../resources-round-416x416/drawables/icon_heart_pulse.png" />
     <bitmap id="icon_steps" filename="../../resources-round-416x416/drawables/icon_steps.png" />
     <bitmap id="icon_flame" filename="../../resources-round-416x416/drawables/icon_flame.png" />
     <bitmap id="icon_bluetooth" filename="../../resources-round-416x416/drawables/icon_bluetooth.png" />

@@ -5,6 +5,7 @@
     <bitmap id="icon_battery_orange" filename="icon_battery_orange.png" />
     <bitmap id="icon_battery_green" filename="icon_battery_green.png" />
     <bitmap id="icon_heart" filename="icon_heart.png" />
+    <bitmap id="icon_heart_pulse" filename="icon_heart_pulse.png" />
     <bitmap id="icon_steps" filename="icon_steps.png" />
     <bitmap id="icon_flame" filename="icon_flame.png" />
     <bitmap id="icon_bluetooth" filename="icon_bluetooth.png" />
