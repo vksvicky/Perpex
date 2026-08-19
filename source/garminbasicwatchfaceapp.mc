@@ -1,5 +1,6 @@
 using Toybox.Application;
 using Toybox.WatchUi;
+using Toybox.Graphics;
 
 class GarminBasicWatchFaceApp extends Application.AppBase {
 
@@ -19,30 +20,99 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // ON-WATCH NATIVE MENU (WatchUi.Menu2) - SHORT TITLES & RESET DEFAULTS
+    // ON-WATCH CUSTOM SETTINGS VIEW (CENTER-ALIGNED & PROPORTIONAL FONT)
     // ─────────────────────────────────────────────────────────────────────
     function getSettingsView() {
-        var menu = new WatchUi.Menu2({:title=>"Watch Face"});
+        var view = new GarminSettingsCustomView();
+        return [ view, new GarminSettingsCustomDelegate(view) ];
+    }
+}
 
-        var themeVal = getPropVal("ThemeColor", 1);
-        var slot1Val = getPropVal("Slot1Metric", 1);
-        var slot2Val = getPropVal("Slot2Metric", 2);
-        var slot3Val = getPropVal("Slot3Metric", 11);
-        var slot4Val = getPropVal("Slot4Metric", 3);
-        var slot5Val = getPropVal("Slot5Metric", 5);
+class GarminSettingsCustomView extends WatchUi.View {
+    private var currentIndex = 0;
+    private var menuItems = [
+        ["Theme Color", "ThemeColor"],
+        ["Top Field", "Slot1Metric"],
+        ["Left Field", "Slot2Metric"],
+        ["Center Badge", "Slot3Metric"],
+        ["Right Field", "Slot4Metric"],
+        ["Bottom Field", "Slot5Metric"],
+        ["Reset Defaults", "ResetDefaults"]
+    ];
 
-        var themeNames = ["Vibrant Red", "Teal / Cyan", "Warm Orange", "Electric Green", "Gold / Yellow", "Pure White"];
-        var currentThemeName = (themeVal >= 1 && themeVal <= 6) ? themeNames[themeVal - 1] : themeNames[0];
+    function initialize() {
+        View.initialize();
+    }
 
-        menu.addItem(new WatchUi.MenuItem("Theme Color", currentThemeName, "ThemeColor", {}));
-        menu.addItem(new WatchUi.MenuItem("Top Field", getMetricNameLabel(slot1Val), "Slot1Metric", {}));
-        menu.addItem(new WatchUi.MenuItem("Left Field", getMetricNameLabel(slot2Val), "Slot2Metric", {}));
-        menu.addItem(new WatchUi.MenuItem("Center Badge", getMetricNameLabel(slot3Val), "Slot3Metric", {}));
-        menu.addItem(new WatchUi.MenuItem("Right Field", getMetricNameLabel(slot4Val), "Slot4Metric", {}));
-        menu.addItem(new WatchUi.MenuItem("Bottom Field", getMetricNameLabel(slot5Val), "Slot5Metric", {}));
-        menu.addItem(new WatchUi.MenuItem("Reset Defaults", "Restore Original", "ResetDefaults", {}));
+    function getSelectedIndex() { return currentIndex; }
+    function setSelectedIndex(idx) { currentIndex = idx; }
+    function getMenuItems() { return menuItems; }
 
-        return [ menu, new GarminSettingsDelegate() ];
+    function onUpdate(dc) {
+        var w = dc.getWidth();
+        var h = dc.getHeight();
+        var cx = w / 2;
+        var cy = h / 2;
+
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        dc.clear();
+
+        // 1. Top Header
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, cy - 80, Graphics.FONT_TINY, "SETTINGS (" + (currentIndex + 1) + "/7)", Graphics.TEXT_JUSTIFY_CENTER);
+
+        // 2. Up Arrow Indicator
+        if (currentIndex > 0) {
+            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(cx, cy - 58, Graphics.FONT_TINY, "^", Graphics.TEXT_JUSTIFY_CENTER);
+        }
+
+        // 3. Current Item Label
+        var itemKey = menuItems[currentIndex][1];
+        var itemTitle = menuItems[currentIndex][0];
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, cy - 25, Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+
+        // 4. Current Sublabel Value
+        var subText = "";
+        var subColor = Graphics.COLOR_WHITE;
+
+        if (itemKey.equals("ThemeColor")) {
+            var themeVal = getPropVal("ThemeColor", 1);
+            var themeNames = ["Vibrant Red", "Teal / Cyan", "Warm Orange", "Electric Green", "Gold / Yellow", "Pure White"];
+            subText = (themeVal >= 1 && themeVal <= 6) ? themeNames[themeVal - 1] : themeNames[0];
+            subColor = getThemeAccentHex(themeVal);
+        } else if (itemKey.equals("ResetDefaults")) {
+            subText = "Press SELECT to Reset";
+            subColor = 0xFF5555;
+        } else {
+            var metricId = getPropVal(itemKey, 1);
+            subText = getMetricNameLabel(metricId);
+            subColor = 0x00CCCC;
+        }
+
+        dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, cy + 12, Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
+
+        // 5. Down Arrow Indicator
+        if (currentIndex < menuItems.size() - 1) {
+            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(cx, cy + 48, Graphics.FONT_TINY, "v", Graphics.TEXT_JUSTIFY_CENTER);
+        }
+
+        // 6. Footer Navigation Hint
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, cy + 74, Graphics.FONT_XTINY, "SELECT: Change | BACK: Save", Graphics.TEXT_JUSTIFY_CENTER);
+    }
+
+    function getThemeAccentHex(val) {
+        if (val == 1) { return 0xFF3333; } // Red
+        if (val == 2) { return 0x00CCCC; } // Teal
+        if (val == 3) { return 0xFF8800; } // Orange
+        if (val == 4) { return 0x00FF66; } // Green
+        if (val == 5) { return 0xFFCC00; } // Gold
+        if (val == 6) { return 0xFFFFFF; } // White
+        return 0xFF3333;
     }
 
     function getPropVal(key, defaultVal) {
@@ -57,63 +127,74 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
 
     function getMetricNameLabel(id) {
         var names = [
-            "Hidden",        // 0
-            "Battery",       // 1
-            "Heart Rate",    // 2
-            "Steps",         // 3
-            "Step Goal",     // 4
-            "Calories",      // 5
-            "Distance",      // 6
-            "Floors",        // 7
-            "Active Mins",   // 8
-            "Stress",        // 9
-            "Digital Clock", // 10
-            "Notifications", // 11
-            "Altitude",      // 12
-            "Barometer"      // 13
+            "Hidden", "Battery", "Heart Rate", "Steps", "Step Goal",
+            "Calories", "Distance", "Floors", "Active Mins", "Stress",
+            "Digital Clock", "Notifications", "Altitude", "Barometer"
         ];
-        if (id >= 0 && id < names.size()) {
-            return names[id];
-        }
+        if (id >= 0 && id < names.size()) { return names[id]; }
         return "Hidden";
     }
 }
 
-class GarminSettingsDelegate extends WatchUi.Menu2InputDelegate {
-    function initialize() {
-        Menu2InputDelegate.initialize();
+class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
+    private var customView;
+
+    function initialize(view) {
+        BehaviorDelegate.initialize();
+        customView = view;
     }
 
-    function onSelect(item) {
-        var id = item.getId();
+    function onNextPage() { return cycleDown(); }
+    function onPreviousPage() { return cycleUp(); }
 
-        if (id.equals("ThemeColor")) {
+    function cycleDown() {
+        var idx = customView.getSelectedIndex();
+        var items = customView.getMenuItems();
+        if (idx < items.size() - 1) {
+            customView.setSelectedIndex(idx + 1);
+            WatchUi.requestUpdate();
+        }
+        return true;
+    }
+
+    function cycleUp() {
+        var idx = customView.getSelectedIndex();
+        if (idx > 0) {
+            customView.setSelectedIndex(idx - 1);
+            WatchUi.requestUpdate();
+        }
+        return true;
+    }
+
+    function onSelect() {
+        var idx = customView.getSelectedIndex();
+        var items = customView.getMenuItems();
+        var itemKey = items[idx][1];
+
+        if (itemKey.equals("ThemeColor")) {
             var current = getPropVal("ThemeColor", 1);
             current = (current % 6) + 1;
             setPropVal("ThemeColor", current);
-
-            var themeNames = ["Vibrant Red", "Teal / Cyan", "Warm Orange", "Electric Green", "Gold / Yellow", "Pure White"];
-            item.setSubLabel(themeNames[current - 1]);
-
-        } else if (id.equals("Slot1Metric") || id.equals("Slot2Metric") || id.equals("Slot3Metric") || id.equals("Slot4Metric") || id.equals("Slot5Metric")) {
-            var current = getPropVal(id, 0);
-            current = (current + 1) % 14;
-            setPropVal(id, current);
-
-            item.setSubLabel(getMetricNameLabel(current));
-
-        } else if (id.equals("ResetDefaults")) {
+        } else if (itemKey.equals("ResetDefaults")) {
             setPropVal("ThemeColor", 1);
             setPropVal("Slot1Metric", 1);
             setPropVal("Slot2Metric", 2);
             setPropVal("Slot3Metric", 11);
             setPropVal("Slot4Metric", 3);
             setPropVal("Slot5Metric", 5);
-
-            item.setSubLabel("Reset Done!");
+        } else {
+            var current = getPropVal(itemKey, 0);
+            current = (current + 1) % 14;
+            setPropVal(itemKey, current);
         }
 
         WatchUi.requestUpdate();
+        return true;
+    }
+
+    function onBack() {
+        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        return true;
     }
 
     function getPropVal(key, defaultVal) {
@@ -132,28 +213,5 @@ class GarminSettingsDelegate extends WatchUi.Menu2InputDelegate {
                 Application.Properties.setValue(key, val);
             }
         } catch (e) {}
-    }
-
-    function getMetricNameLabel(id) {
-        var names = [
-            "Hidden",        // 0
-            "Battery",       // 1
-            "Heart Rate",    // 2
-            "Steps",         // 3
-            "Step Goal",     // 4
-            "Calories",      // 5
-            "Distance",      // 6
-            "Floors",        // 7
-            "Active Mins",   // 8
-            "Stress",        // 9
-            "Digital Clock", // 10
-            "Notifications", // 11
-            "Altitude",      // 12
-            "Barometer"      // 13
-        ];
-        if (id >= 0 && id < names.size()) {
-            return names[id];
-        }
-        return "Hidden";
     }
 }
