@@ -3,6 +3,9 @@ using Toybox.Graphics;
 using Toybox.System;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
+using Toybox.ActivityMonitor;
+using Toybox.Activity;
+using Toybox.Application.Properties;
 
 class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     private var centerX, centerY;
@@ -23,6 +26,16 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     private const COLOR_PIN        = 0x888888;
 
     var dialBg;
+    var imgBattery;
+    var imgHeart;
+    var imgSteps;
+    var imgFlame;
+    var imgBluetooth;
+    var imgDistance;
+    var imgFloors;
+    var imgStress;
+    var imgAltitude;
+    var imgBarometer;
 
     function initialize() {
         WatchFace.initialize();
@@ -35,7 +48,17 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         centerY = h / 2;
         radius  = (w < h ? w : h) / 2;
         
-        dialBg = WatchUi.loadResource(Rez.Drawables.dial_bg);
+        dialBg       = WatchUi.loadResource(Rez.Drawables.dial_bg);
+        imgBattery   = WatchUi.loadResource(Rez.Drawables.icon_battery);
+        imgHeart     = WatchUi.loadResource(Rez.Drawables.icon_heart);
+        imgSteps     = WatchUi.loadResource(Rez.Drawables.icon_steps);
+        imgFlame     = WatchUi.loadResource(Rez.Drawables.icon_flame);
+        imgBluetooth = WatchUi.loadResource(Rez.Drawables.icon_bluetooth);
+        imgDistance  = WatchUi.loadResource(Rez.Drawables.icon_distance);
+        imgFloors    = WatchUi.loadResource(Rez.Drawables.icon_floors);
+        imgStress    = WatchUi.loadResource(Rez.Drawables.icon_stress);
+        imgAltitude  = WatchUi.loadResource(Rez.Drawables.icon_altitude);
+        imgBarometer = WatchUi.loadResource(Rez.Drawables.icon_barometer);
     }
 
     function onShow() {}
@@ -48,10 +71,164 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         dc.clear();
 
         drawConcentricRings(dc, now);
-        
-        // Leaving the center clean and empty
-        
+        drawDataSlots(dc);
         drawHands(dc, clockTime.hour, clockTime.min, clockTime.sec);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
+    // CUSTOMIZABLE DATA SLOTS & PROPERTIES
+    // ─────────────────────────────────────────────────────────────────────
+    function getPropertyVal(key, defaultVal) {
+        try {
+            if (Toybox.Application has :Properties) {
+                var val = Properties.getValue(key);
+                if (val != null) { return val; }
+            }
+        } catch (e) {}
+        return defaultVal;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
+    // BITMAP ICON DRAWERS (Red Accent Bitmaps)
+    // ─────────────────────────────────────────────────────────────────────
+    function drawMetricIcon(dc, type, x, y, s) {
+        var bmp = null;
+        if (type == 1) { bmp = imgBattery; }
+        else if (type == 2) { bmp = imgHeart; }
+        else if (type == 3 || type == 4) { bmp = imgSteps; }
+        else if (type == 5) { bmp = imgFlame; }
+        else if (type == 6) { bmp = imgDistance; }
+        else if (type == 7) { bmp = imgFloors; }
+        else if (type == 9) { bmp = imgStress; }
+        else if (type == 11) { bmp = imgBluetooth; }
+        else if (type == 12) { bmp = imgAltitude; }
+        else if (type == 13) { bmp = imgBarometer; }
+
+        if (bmp != null) {
+            var iconW = bmp.getWidth();
+            var iconH = bmp.getHeight();
+            dc.drawBitmap((x - iconW / 2).toNumber(), (y - iconH / 2).toNumber(), bmp);
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
+    // DATA VALUES & LABELS FORMATTING
+    // ─────────────────────────────────────────────────────────────────────
+    function getMetricData(type) {
+        if (type == 1) { // Battery
+            var stats = System.getSystemStats();
+            return [(stats.battery + 0.5).toNumber().toString() + "%", ""];
+        } else if (type == 2) { // Heart Rate
+            if (ActivityMonitor has :getHeartRateHistory) {
+                var hrIter = ActivityMonitor.getHeartRateHistory(1, true);
+                var sample = hrIter.next();
+                if (sample != null && sample.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
+                    return [sample.heartRate.toString(), "BPM"];
+                }
+            }
+            return ["--", "BPM"];
+        } else if (type == 3) { // Steps
+            var info = ActivityMonitor.getInfo();
+            var val = (info != null && info.steps != null) ? info.steps.toString() : "0";
+            return [val, "STEPS"];
+        } else if (type == 4) { // Step Goal %
+            var info = ActivityMonitor.getInfo();
+            var val = "0%";
+            if (info != null && info.steps != null && info.stepGoal != null && info.stepGoal > 0) {
+                val = ((info.steps.toDouble() / info.stepGoal.toDouble()) * 100).toNumber().toString() + "%";
+            }
+            return [val, "GOAL"];
+        } else if (type == 5) { // Active Calories
+            var info = ActivityMonitor.getInfo();
+            var val = (info != null && info.calories != null) ? info.calories.toString() : "0";
+            return [val, "kCal"];
+        } else if (type == 6) { // Distance
+            var info = ActivityMonitor.getInfo();
+            var val = (info != null && info.distance != null) ? (info.distance / 100000.0).format("%.1f") : "0.0";
+            return [val, "KM"];
+        } else if (type == 7) { // Floors
+            var info = ActivityMonitor.getInfo();
+            var val = (info != null && info.floorsClimbed != null) ? info.floorsClimbed.toString() : "0";
+            return [val, "FLOORS"];
+        } else if (type == 8) { // Active Minutes
+            var info = ActivityMonitor.getInfo();
+            var val = (info != null && info.activeMinutesWeek != null && info.activeMinutesWeek.total != null) ? info.activeMinutesWeek.total.toString() : "0";
+            return [val, "MINS"];
+        } else if (type == 9) { // Stress
+            var info = ActivityMonitor.getInfo();
+            var val = (info != null && info has :stressScore && info.stressScore != null) ? info.stressScore.toString() : "--";
+            return [val, "STRESS"];
+        } else if (type == 10) { // Digital Time
+            var clock = System.getClockTime();
+            return [clock.hour.format("%02d") + ":" + clock.min.format("%02d"), ""];
+        } else if (type == 11) { // Notifications / Phone Status
+            var device = System.getDeviceSettings();
+            var count = (device has :notificationCount) ? device.notificationCount : 0;
+            return [count.toString(), ""];
+        } else if (type == 12) { // Altitude
+            var info = Activity.getActivityInfo();
+            var val = (info != null && info.altitude != null) ? info.altitude.toNumber().toString() : "--";
+            return [val, "METERS"];
+        } else if (type == 13) { // Barometer
+            var info = Activity.getActivityInfo();
+            var val = (info != null && info.rawAmbientPressure != null) ? (info.rawAmbientPressure / 100.0).toNumber().toString() : "--";
+            return [val, "HPA"];
+        }
+        return ["", ""];
+    }
+
+    function drawSingleDataSlot(dc, slotType, posX, posY, s) {
+        if (slotType == 0) { return; }
+
+        var data = getMetricData(slotType);
+        var valStr = data[0];
+        var labelStr = data[1];
+
+        var fontValue = Graphics.FONT_XTINY;
+        var fontLabel = Graphics.FONT_XTINY;
+
+        // 1. Icon (Red Accent)
+        drawMetricIcon(dc, slotType, posX, posY - (14 * s).toNumber(), s);
+
+        // 2. Bold Value (White)
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        if (labelStr.length() > 0) {
+            dc.drawText(posX, posY + (1 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            // 3. Label (Subtle Grey)
+            dc.setColor(0xAAAAAA, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(posX, posY + (13 * s).toNumber(), fontLabel, labelStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        } else {
+            dc.drawText(posX, posY + (5 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        }
+    }
+
+    function drawDataSlots(dc) {
+        var w = dc.getWidth();
+        var scale = w / 260.0;
+        var s = scale;
+
+        var s1 = getPropertyVal("Slot1Metric", 1);  // Battery
+        var s2 = getPropertyVal("Slot2Metric", 2);  // Heart Rate
+        var s3 = getPropertyVal("Slot3Metric", 11); // Bluetooth / Notifications
+        var s4 = getPropertyVal("Slot4Metric", 3);  // Steps
+        var s5 = getPropertyVal("Slot5Metric", 5);  // Calories
+
+        // Slot 1: Top Center
+        drawSingleDataSlot(dc, s1, centerX, centerY - (50 * s).toNumber(), s);
+
+        // Slot 2: Mid-Left (9 o'clock)
+        drawSingleDataSlot(dc, s2, centerX - (44 * s).toNumber(), centerY - (12 * s).toNumber(), s);
+
+        // Slot 3: Center Badge (just under pin)
+        if (s3 != 0) {
+            drawMetricIcon(dc, s3, centerX, centerY + (16 * s).toNumber(), s);
+        }
+
+        // Slot 4: Mid-Right (3 o'clock)
+        drawSingleDataSlot(dc, s4, centerX + (44 * s).toNumber(), centerY - (12 * s).toNumber(), s);
+
+        // Slot 5: Bottom Center (6 o'clock)
+        drawSingleDataSlot(dc, s5, centerX, centerY + (44 * s).toNumber(), s);
     }
 
     // ─────────────────────────────────────────────────────────────────────

@@ -1,4 +1,14 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="images/launcher_icon.png" />
     <bitmap id="dial_bg" filename="../../resources-round-416x416/drawables/dial_bg.png" />
+    <bitmap id="icon_battery" filename="../../resources-round-416x416/drawables/icon_battery.png" />
+    <bitmap id="icon_heart" filename="../../resources-round-416x416/drawables/icon_heart.png" />
+    <bitmap id="icon_steps" filename="../../resources-round-416x416/drawables/icon_steps.png" />
+    <bitmap id="icon_flame" filename="../../resources-round-416x416/drawables/icon_flame.png" />
+    <bitmap id="icon_bluetooth" filename="../../resources-round-416x416/drawables/icon_bluetooth.png" />
+    <bitmap id="icon_distance" filename="../../resources-round-416x416/drawables/icon_distance.png" />
+    <bitmap id="icon_floors" filename="../../resources-round-416x416/drawables/icon_floors.png" />
+    <bitmap id="icon_stress" filename="../../resources-round-416x416/drawables/icon_stress.png" />
+    <bitmap id="icon_altitude" filename="../../resources-round-416x416/drawables/icon_altitude.png" />
+    <bitmap id="icon_barometer" filename="../../resources-round-416x416/drawables/icon_barometer.png" />
 </drawables>

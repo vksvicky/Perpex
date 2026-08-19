@@ -1,6 +1,7 @@
 <properties>
-    <property id="NumberFont" type="number">0</property>
-    <property id="SubdialFont" type="number">0</property>
-    <property id="tempUnit" type="number">0</property>
-    <property id="weatherUpdateInterval" type="number">15</property>
+    <property id="Slot1Metric" type="number">1</property>
+    <property id="Slot2Metric" type="number">2</property>
+    <property id="Slot3Metric" type="number">11</property>
+    <property id="Slot4Metric" type="number">3</property>
+    <property id="Slot5Metric" type="number">5</property>
 </properties>

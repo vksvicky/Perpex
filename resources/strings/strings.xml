@@ -1,13 +1,25 @@
 <strings>
-    <string id="AppName">Basic Watch Face</string>
+    <string id="AppName">Garmin Watch Face</string>
     <string id="TimeLabel">00:00</string>
-    <string id="NumberFontTitle">Hour Numbers Font</string>
-    <string id="SubdialFontTitle">Subdial Font</string>
-    <string id="FontXTiny">Extra Tiny</string>
-    <string id="FontTiny">Tiny</string>
-    <string id="FontSmall">Small</string>
     
-    <!-- Settings Titles -->
-    <string id="NumberFontTitle">Number Font Size</string>
-    <string id="SubdialFontTitle">Subdial Font Size</string>
+    <string id="Slot1Title">Top Slot Metric</string>
+    <string id="Slot2Title">Left Slot Metric</string>
+    <string id="Slot3Title">Center Badge Metric</string>
+    <string id="Slot4Title">Right Slot Metric</string>
+    <string id="Slot5Title">Bottom Slot Metric</string>
+
+    <string id="MetricNone">None (Hidden)</string>
+    <string id="MetricBattery">Battery Level (%)</string>
+    <string id="MetricHeartRate">Heart Rate (BPM)</string>
+    <string id="MetricSteps">Step Count</string>
+    <string id="MetricStepGoal">Step Goal Progress (%)</string>
+    <string id="MetricCalories">Active Calories (kCal)</string>
+    <string id="MetricDistance">Distance Walked</string>
+    <string id="MetricFloors">Floors Climbed</string>
+    <string id="MetricActiveMinutes">Active Minutes</string>
+    <string id="MetricStress">Stress Level</string>
+    <string id="MetricDigitalTime">Digital Clock</string>
+    <string id="MetricNotifications">Unread Notifications</string>
+    <string id="MetricAltitude">Altitude / Elevation</string>
+    <string id="MetricBarometer">Barometer</string>
 </strings>

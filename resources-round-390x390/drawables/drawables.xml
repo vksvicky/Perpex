@@ -1,3 +1,13 @@
 <drawables>
     <bitmap id="dial_bg" filename="dial_bg.png" />
+    <bitmap id="icon_battery" filename="icon_battery.png" />
+    <bitmap id="icon_heart" filename="icon_heart.png" />
+    <bitmap id="icon_steps" filename="icon_steps.png" />
+    <bitmap id="icon_flame" filename="icon_flame.png" />
+    <bitmap id="icon_bluetooth" filename="icon_bluetooth.png" />
+    <bitmap id="icon_distance" filename="icon_distance.png" />
+    <bitmap id="icon_floors" filename="icon_floors.png" />
+    <bitmap id="icon_stress" filename="icon_stress.png" />
+    <bitmap id="icon_altitude" filename="icon_altitude.png" />
+    <bitmap id="icon_barometer" filename="icon_barometer.png" />
 </drawables>
