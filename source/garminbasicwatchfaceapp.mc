@@ -20,7 +20,7 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // ON-WATCH CUSTOM SETTINGS VIEW (VECTOR ARROWS & PERFECT SPACING)
+    // ON-WATCH CUSTOM SETTINGS VIEW (TOUCH + BUTTON DELEGATE & SYMMETRY)
     // ─────────────────────────────────────────────────────────────────────
     function getSettingsView() {
         var view = new GarminSettingsCustomView();
@@ -63,7 +63,7 @@ class GarminSettingsCustomView extends WatchUi.View {
         // 1. Resolve strings & colors
         var itemKey    = menuItems[currentIndex][1];
         var itemTitle  = menuItems[currentIndex][0];
-        var headerText = "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size();
+        var headerText = "SETTING " + (currentIndex + 1) + " OF " + menuItems.size();
         var subText    = "";
         var subColor   = Graphics.COLOR_WHITE;
 
@@ -73,7 +73,7 @@ class GarminSettingsCustomView extends WatchUi.View {
             subText = (themeVal >= 1 && themeVal <= 6) ? themeNames[themeVal - 1] : themeNames[0];
             subColor = getThemeAccentHex(themeVal);
         } else if (itemKey.equals("ResetDefaults")) {
-            subText = "Press SELECT to Reset";
+            subText = "Tap Value to Reset";
             subColor = 0xFF4444;
         } else {
             var metricId = getPropVal(itemKey, 1);
@@ -85,8 +85,8 @@ class GarminSettingsCustomView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(cx, cy - (72 * scale).toNumber(), Graphics.FONT_XTINY, headerText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 3. Top Vector Up Arrow Chevron ▲ (cy - 46px)
-        var pyUp = cy - (46 * scale).toNumber();
+        // 3. Top Vector Up Arrow Chevron ▲ (cy - 45px - 100% Symmetrical with Bottom)
+        var pyUp = cy - (45 * scale).toNumber();
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyUp],
@@ -94,16 +94,16 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyUp - arrowH]
         ]);
 
-        // 4. Current Item Title (cy - 18px)
+        // 4. Current Item Title (cy - 20px)
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (18 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (20 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
         // 5. Current Sublabel Value (cy + 10px)
         dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(cx, cy + (10 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 6. Bottom Vector Down Arrow Chevron ▼ (cy + 40px)
-        var pyDown = cy + (40 * scale).toNumber();
+        // 6. Bottom Vector Down Arrow Chevron ▼ (cy + 45px - 100% Symmetrical with Top)
+        var pyDown = cy + (45 * scale).toNumber();
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyDown],
@@ -111,9 +111,9 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyDown + arrowH]
         ]);
 
-        // 7. Compact Single-Line Footer Hint (cy + 68px - 100% inside circular display width)
+        // 7. Footer Instruction Hint (cy + 72px)
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (68 * scale).toNumber(), Graphics.FONT_XTINY, "SELECT: Change  •  BACK: Exit", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (72 * scale).toNumber(), Graphics.FONT_XTINY, "UP/DN: Navigate  •  SELECT: Change", Graphics.TEXT_JUSTIFY_CENTER);
 
         // 8. Right Edge Page Indicator Dots
         var dotX = w - (14 * scale).toNumber();
@@ -187,6 +187,24 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
         customView.setSelectedIndex((idx - 1 + items.size()) % items.size());
         WatchUi.requestUpdate();
         return true;
+    }
+
+    function onTap(evt) {
+        var xy = evt.getCoordinates();
+        var y = xy[1];
+        var cy = customView.getHeight() / 2;
+
+        // Touch zone detection:
+        // Top 30% of screen -> Scroll UP
+        // Bottom 30% of screen -> Scroll DOWN
+        // Center 40% of screen -> Change Value
+        if (y < cy - 25) {
+            return cycleUp();
+        } else if (y > cy + 25) {
+            return cycleDown();
+        } else {
+            return onSelect();
+        }
     }
 
     function onSelect() {
