@@ -70,4 +70,6 @@ for w in range(7):
     angle = -HALF_PI + (w * wk_step)
     draw_rotated_text(bg_img, days[w], angle, INNER_R, font_weeks, COLOR_DIM_INNER)
 
+# Convert to 256-color palette (optimized) to force Garmin compiler to use 8bpp
+bg_img = bg_img.convert('P', palette=Image.ADAPTIVE, colors=256)
 bg_img.save("resources/drawables/dial_bg.png")
