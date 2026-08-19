@@ -60,11 +60,11 @@ class GarminSettingsCustomView extends WatchUi.View {
 
         // 1. Sleek Top Header
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (88 * scale).toNumber(), Graphics.FONT_XTINY, "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (78 * scale).toNumber(), Graphics.FONT_XTINY, "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size(), Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 2. Vector Up Arrow Chevron (Always visible for infinite carousel)
+        // 2. Vector Up Arrow Chevron (Symmetrical 44px offset)
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        var pyUp = cy - (48 * scale).toNumber();
+        var pyUp = cy - (44 * scale).toNumber();
         var sz = (5 * scale).toNumber();
         dc.fillPolygon([
             [cx - sz, pyUp],
@@ -76,7 +76,7 @@ class GarminSettingsCustomView extends WatchUi.View {
         var itemKey = menuItems[currentIndex][1];
         var itemTitle = menuItems[currentIndex][0];
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy - (25 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy - (14 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
         // 4. Current Sublabel Value
         var subText = "";
@@ -97,11 +97,11 @@ class GarminSettingsCustomView extends WatchUi.View {
         }
 
         dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, cy + (10 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (12 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 5. Vector Down Arrow Chevron (Always visible for infinite carousel)
+        // 5. Vector Down Arrow Chevron (Symmetrical 44px offset)
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        var pyDown = cy + (48 * scale).toNumber();
+        var pyDown = cy + (44 * scale).toNumber();
         dc.fillPolygon([
             [cx - sz, pyDown],
             [cx + sz, pyDown],
