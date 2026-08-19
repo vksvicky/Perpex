@@ -93,6 +93,6 @@ To test any feature across all 5 supported devices, run:
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Base Watch Face & 5 Slots** | ✅ Passed | ✅ Passed | ✅ Passed | ✅ Passed | ✅ Passed |
 | **1. `feature/color-theme-customization`** | ✅ Passed | ✅ Passed | ✅ Passed | ✅ Passed | ✅ Passed |
-| **2. `feature/amoled-aod-low-power`** | ⏳ Pending | ⏳ Pending | ⏳ Pending | ⏳ Pending | ⏳ Pending |
+| **2. `feature/amoled-aod-low-power`** | ✅ Passed | ✅ Passed | ✅ Passed | ✅ Passed | ✅ Passed |
 | **3. `feature/weather-solar-body-battery`** | ⏳ Pending | ⏳ Pending | ⏳ Pending | ⏳ Pending | ⏳ Pending |
 | **4. `feature/touch-complications-shortcuts`** | ⏳ Pending | ⏳ Pending | ⏳ Pending | ⏳ Pending | ⏳ Pending |

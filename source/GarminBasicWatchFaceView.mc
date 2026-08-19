@@ -41,6 +41,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     var imgAltitude;
     var imgBarometer;
 
+    private var isLowPower = false;
+
     function initialize() {
         WatchFace.initialize();
     }
@@ -70,6 +72,16 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     }
 
     function onShow() {}
+
+    function onEnterSleep() {
+        isLowPower = true;
+        WatchUi.requestUpdate();
+    }
+
+    function onExitSleep() {
+        isLowPower = false;
+        WatchUi.requestUpdate();
+    }
 
     function onUpdate(dc) {
         var now       = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
@@ -391,7 +403,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var degCenter1 = ((- (angle1 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
         
         // Arc below text
-        var themeAccent = getThemeAccentColor();
+        var themeAccent = isLowPower ? 0x555555 : getThemeAccentColor();
         dc.setColor(themeAccent, Graphics.COLOR_TRANSPARENT);
         var r1_arc = r1 - (5 * scale).toNumber();
         dc.drawArc(centerX, centerY, r1_arc, Graphics.ARC_COUNTER_CLOCKWISE, (degCenter1 - 4 + 360) % 360, (degCenter1 + 4 + 360) % 360);
@@ -457,10 +469,10 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var cosM = Math.cos(minAngle);  var sinM = Math.sin(minAngle);
         var cosS = Math.cos(secAngle);  var sinS = Math.sin(secAngle);
 
-        var COLOR_STEEL_DARK  = 0x444444;
-        var COLOR_STEEL_LIGHT = 0x888888;
-        var COLOR_WHITE_LUME  = 0xFFFFFF;
-        var COLOR_RED_ACCENT  = getThemeAccentColor();
+        var COLOR_STEEL_DARK  = isLowPower ? 0x222222 : 0x444444;
+        var COLOR_STEEL_LIGHT = isLowPower ? 0x444444 : 0x888888;
+        var COLOR_WHITE_LUME  = isLowPower ? 0x777777 : 0xFFFFFF;
+        var COLOR_RED_ACCENT  = isLowPower ? 0x555555 : getThemeAccentColor();
 
         // ── HOUR HAND (Heavy-Duty 3D Metallic Fork Hand) ───────────────────
         // 1. 3D Metallic V-Fork Base (Left Dark / Right Light)
@@ -546,7 +558,15 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         drawRotatedPolygon(dc, centerX, centerY, cosM, sinM, ptsMinBodyOuter, COLOR_WHITE_LUME);
         drawRotatedPolygon(dc, centerX, centerY, cosM, sinM, ptsMinBodyInner, COLOR_BG);
 
-        // ── SECOND HAND (Metallic Needle + Red Arrow Tip) ──────────────────
+        // ── SECOND HAND (Hidden in Low-Power Ambient Mode for AMOLED Burn-In Protection) ──
+        if (isLowPower) {
+            dc.setColor(COLOR_STEEL_DARK, Graphics.COLOR_TRANSPARENT);
+            dc.fillCircle(centerX, centerY, (7.0 * s).toNumber());
+            dc.setColor(COLOR_STEEL_LIGHT, Graphics.COLOR_TRANSPARENT);
+            dc.fillCircle(centerX, centerY, (4.5 * s).toNumber());
+            return;
+        }
+
         dc.setPenWidth((2.5 * s).toNumber());
         dc.setColor(COLOR_STEEL_DARK, Graphics.COLOR_TRANSPARENT);
 
