@@ -27,6 +27,9 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
 
     var dialBg;
     var imgBattery;
+    var imgBatteryRed;
+    var imgBatteryOrange;
+    var imgBatteryGreen;
     var imgHeart;
     var imgSteps;
     var imgFlame;
@@ -48,17 +51,20 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         centerY = h / 2;
         radius  = (w < h ? w : h) / 2;
         
-        dialBg       = WatchUi.loadResource(Rez.Drawables.dial_bg);
-        imgBattery   = WatchUi.loadResource(Rez.Drawables.icon_battery);
-        imgHeart     = WatchUi.loadResource(Rez.Drawables.icon_heart);
-        imgSteps     = WatchUi.loadResource(Rez.Drawables.icon_steps);
-        imgFlame     = WatchUi.loadResource(Rez.Drawables.icon_flame);
-        imgBluetooth = WatchUi.loadResource(Rez.Drawables.icon_bluetooth);
-        imgDistance  = WatchUi.loadResource(Rez.Drawables.icon_distance);
-        imgFloors    = WatchUi.loadResource(Rez.Drawables.icon_floors);
-        imgStress    = WatchUi.loadResource(Rez.Drawables.icon_stress);
-        imgAltitude  = WatchUi.loadResource(Rez.Drawables.icon_altitude);
-        imgBarometer = WatchUi.loadResource(Rez.Drawables.icon_barometer);
+        dialBg           = WatchUi.loadResource(Rez.Drawables.dial_bg);
+        imgBattery       = WatchUi.loadResource(Rez.Drawables.icon_battery);
+        imgBatteryRed    = WatchUi.loadResource(Rez.Drawables.icon_battery_red);
+        imgBatteryOrange = WatchUi.loadResource(Rez.Drawables.icon_battery_orange);
+        imgBatteryGreen  = WatchUi.loadResource(Rez.Drawables.icon_battery_green);
+        imgHeart         = WatchUi.loadResource(Rez.Drawables.icon_heart);
+        imgSteps         = WatchUi.loadResource(Rez.Drawables.icon_steps);
+        imgFlame         = WatchUi.loadResource(Rez.Drawables.icon_flame);
+        imgBluetooth     = WatchUi.loadResource(Rez.Drawables.icon_bluetooth);
+        imgDistance      = WatchUi.loadResource(Rez.Drawables.icon_distance);
+        imgFloors        = WatchUi.loadResource(Rez.Drawables.icon_floors);
+        imgStress        = WatchUi.loadResource(Rez.Drawables.icon_stress);
+        imgAltitude      = WatchUi.loadResource(Rez.Drawables.icon_altitude);
+        imgBarometer     = WatchUi.loadResource(Rez.Drawables.icon_barometer);
     }
 
     function onShow() {}
@@ -211,15 +217,18 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
                 battText = "CHG " + battText;
             }
 
-            // 1. Draw Battery Icon (or Animated Vector Battery outline when charging)
-            if (isCharging) {
-                dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
-                dc.setPenWidth((1.5 * s).toNumber());
-                dc.drawRectangle((posX - 8 * s).toNumber(), (posY - 18 * s).toNumber(), (14 * s).toNumber(), (8 * s).toNumber());
-                dc.fillRectangle((posX + 6 * s).toNumber(), (posY - 16 * s).toNumber(), (2 * s).toNumber(), (4 * s).toNumber());
-                dc.fillRectangle((posX - 6 * s).toNumber(), (posY - 16.5 * s).toNumber(), (9 * s).toNumber(), (5 * s).toNumber());
-            } else {
-                drawMetricIcon(dc, 1, posX, posY - (14 * s).toNumber(), s);
+            // 1. Draw Custom Battery Icon in matching color (Red, Orange, or Green)
+            var battBmp = imgBatteryRed;
+            if (battColor == 0xFF8800) {
+                battBmp = imgBatteryOrange;
+            } else if (battColor == 0x00FF66) {
+                battBmp = imgBatteryGreen;
+            }
+
+            if (battBmp != null) {
+                var iconW = battBmp.getWidth();
+                var iconH = battBmp.getHeight();
+                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - (14 * s)) - iconH / 2).toNumber(), battBmp);
             }
 
             // 2. Draw Battery Percentage Text in battColor

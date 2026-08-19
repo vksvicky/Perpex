@@ -1,6 +1,9 @@
 <drawables>
     <bitmap id="dial_bg" filename="dial_bg.png" />
     <bitmap id="icon_battery" filename="icon_battery.png" />
+    <bitmap id="icon_battery_red" filename="icon_battery_red.png" />
+    <bitmap id="icon_battery_orange" filename="icon_battery_orange.png" />
+    <bitmap id="icon_battery_green" filename="icon_battery_green.png" />
     <bitmap id="icon_heart" filename="icon_heart.png" />
     <bitmap id="icon_steps" filename="icon_steps.png" />
     <bitmap id="icon_flame" filename="icon_flame.png" />

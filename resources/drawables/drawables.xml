@@ -2,6 +2,9 @@
     <bitmap id="LauncherIcon" filename="images/launcher_icon.png" />
     <bitmap id="dial_bg" filename="../../resources-round-416x416/drawables/dial_bg.png" />
     <bitmap id="icon_battery" filename="../../resources-round-416x416/drawables/icon_battery.png" />
+    <bitmap id="icon_battery_red" filename="../../resources-round-416x416/drawables/icon_battery_red.png" />
+    <bitmap id="icon_battery_orange" filename="../../resources-round-416x416/drawables/icon_battery_orange.png" />
+    <bitmap id="icon_battery_green" filename="../../resources-round-416x416/drawables/icon_battery_green.png" />
     <bitmap id="icon_heart" filename="../../resources-round-416x416/drawables/icon_heart.png" />
     <bitmap id="icon_steps" filename="../../resources-round-416x416/drawables/icon_steps.png" />
     <bitmap id="icon_flame" filename="../../resources-round-416x416/drawables/icon_flame.png" />
