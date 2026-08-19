@@ -53,20 +53,19 @@ class GarminSettingsCustomView extends WatchUi.View {
         var h = dc.getHeight();
         var cx = w / 2;
         var cy = h / 2;
-        var scale = w / 260.0;
-        var gap   = (22 * scale).toNumber();
-        var arrowH = (6 * scale).toNumber();
-        var sz    = (6 * scale).toNumber();
+        var scale  = w / 260.0;
+        var sz     = (5 * scale).toNumber();
+        var arrowH = (5 * scale).toNumber();
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
 
-        // Resolve strings & colors
-        var itemKey   = menuItems[currentIndex][1];
-        var itemTitle = menuItems[currentIndex][0];
+        // 1. Resolve strings & colors
+        var itemKey    = menuItems[currentIndex][1];
+        var itemTitle  = menuItems[currentIndex][0];
         var headerText = "SETTINGS  " + (currentIndex + 1) + " / " + menuItems.size();
-        var subText   = "";
-        var subColor  = Graphics.COLOR_WHITE;
+        var subText    = "";
+        var subColor   = Graphics.COLOR_WHITE;
 
         if (itemKey.equals("ThemeColor")) {
             var themeVal = getPropVal("ThemeColor", 1);
@@ -82,31 +81,12 @@ class GarminSettingsCustomView extends WatchUi.View {
             subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
         }
 
-        // Measure exact font heights using system text metrics
-        var dimTitle  = dc.getTextDimensions(itemTitle, Graphics.FONT_MEDIUM);
-        var dimSub    = dc.getTextDimensions(subText, Graphics.FONT_SMALL);
-        var dimHeader = dc.getTextDimensions(headerText, Graphics.FONT_XTINY);
-        var dimFoot1  = dc.getTextDimensions("SELECT : Change", Graphics.FONT_XTINY);
+        // 2. Top Header (cy - 72px)
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, cy - (72 * scale).toNumber(), Graphics.FONT_XTINY, headerText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        var hTitle  = dimTitle[1];
-        var hSub    = dimSub[1];
-        var hHeader = dimHeader[1];
-        var hFoot1  = dimFoot1[1];
-
-        // Central Text Block (Title & Sublabel centered symmetrically around cy)
-        var innerGap = (8 * scale).toNumber();
-        var yTitle = cy - (hTitle / 2) - (innerGap / 2);
-        var ySub   = yTitle + hTitle + innerGap;
-
-        // 1. Current Item Title & Sublabel
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, yTitle, Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
-
-        dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, ySub, Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
-
-        // 2. Top Arrow Chevron ▲ (EXACTLY gap = 22px above yTitle)
-        var pyUp = yTitle - gap;
+        // 3. Top Vector Up Arrow Chevron ▲ (cy - 46px)
+        var pyUp = cy - (46 * scale).toNumber();
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyUp],
@@ -114,13 +94,16 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyUp - arrowH]
         ]);
 
-        // 3. Top Header SETTINGS (EXACTLY gap = 22px above Top Arrow tip)
-        var yHeader = pyUp - arrowH - gap - (hHeader / 2);
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, yHeader, Graphics.FONT_XTINY, headerText, Graphics.TEXT_JUSTIFY_CENTER);
+        // 4. Current Item Title (cy - 18px)
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, cy - (18 * scale).toNumber(), Graphics.FONT_MEDIUM, itemTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 4. Bottom Arrow Chevron ▼ (EXACTLY gap = 22px below ySub + hSub)
-        var pyDown = ySub + hSub + gap;
+        // 5. Current Sublabel Value (cy + 10px)
+        dc.setColor(subColor, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(cx, cy + (10 * scale).toNumber(), Graphics.FONT_SMALL, subText, Graphics.TEXT_JUSTIFY_CENTER);
+
+        // 6. Bottom Vector Down Arrow Chevron ▼ (cy + 40px)
+        var pyDown = cy + (40 * scale).toNumber();
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon([
             [cx - sz, pyDown],
@@ -128,14 +111,11 @@ class GarminSettingsCustomView extends WatchUi.View {
             [cx, pyDown + arrowH]
         ]);
 
-        // 5. Footer Line 1 & Line 2 (EXACTLY gap = 22px below Bottom Arrow tip)
-        var yFoot1 = pyDown + arrowH + gap;
-        var yFoot2 = yFoot1 + hFoot1 + (2 * scale).toNumber();
+        // 7. Compact Single-Line Footer Hint (cy + 68px - 100% inside circular display width)
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(cx, yFoot1, Graphics.FONT_XTINY, "SELECT : Change", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(cx, yFoot2, Graphics.FONT_XTINY, "BACK : Save", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(cx, cy + (68 * scale).toNumber(), Graphics.FONT_XTINY, "SELECT: Change  •  BACK: Exit", Graphics.TEXT_JUSTIFY_CENTER);
 
-        // 7. Right Edge Page Indicator Dots
+        // 8. Right Edge Page Indicator Dots
         var dotX = w - (14 * scale).toNumber();
         var startY = cy - (24 * scale).toNumber();
         var dotSpacing = (8 * scale).toNumber();
