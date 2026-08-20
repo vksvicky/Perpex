@@ -203,16 +203,9 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         else if (type == 15) { bmp = loadThemedBitmap("icon_weather_cond", themeId); }
         else if (type == 16) {
             var isSunrise = true;
-            if (Toybox has :Weather && Weather has :getSunrise && Weather has :getSunset) {
-                var cond = (Weather has :getCurrentConditions) ? Weather.getCurrentConditions() : null;
-                var pos = (cond != null && cond.observationLocationPosition != null) ? cond.observationLocationPosition : null;
-                if (pos != null) {
-                    var nowTime = Time.now();
-                    var sunrise = Weather.getSunrise(pos, nowTime);
-                    if (sunrise != null && !nowTime.lessThan(sunrise)) {
-                        isSunrise = false;
-                    }
-                }
+            var nowInfo = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+            if (nowInfo.hour >= 12) {
+                isSunrise = false;
             }
             bmp = loadThemedBitmap(isSunrise ? "icon_sunrise" : "icon_sunset", themeId);
         }
@@ -323,27 +316,31 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             }
             return ["CLOUDY", ""];
         } else if (type == 16) { // Sunrise / Sunset (Dynamic)
-            if (Toybox has :Weather && Weather has :getSunset && Weather has :getSunrise) {
-                var pos = null;
-                var cond = (Weather has :getCurrentConditions) ? Weather.getCurrentConditions() : null;
-                if (cond != null && cond.observationLocationPosition != null) {
-                    pos = cond.observationLocationPosition;
-                }
-                if (pos != null) {
-                    var nowTime = Time.now();
-                    var sunrise = Weather.getSunrise(pos, nowTime);
-                    var sunset  = Weather.getSunset(pos, nowTime);
-
-                    if (sunrise != null && nowTime.lessThan(sunrise)) {
+            var pos = LocationHelper.getBestLocation();
+            if (pos != null) {
+                var nowTime = Time.now();
+                var sc = new SunCalc();
+                var posRad = pos.toRadians();
+                var nowInfo = Gregorian.info(nowTime, Time.FORMAT_SHORT);
+                
+                if (nowInfo.hour < 12) {
+                    var sunrise = sc.calculate(nowTime, posRad, 4); // 4 = SUNRISE
+                    if (sunrise != null) {
                         var info = Gregorian.info(sunrise, Time.FORMAT_SHORT);
-                        return [info.hour.format("%02d") + ":" + info.min.format("%02d"), "SUNRISE"];
-                    } else if (sunset != null) {
-                        var info = Gregorian.info(sunset, Time.FORMAT_SHORT);
-                        return [info.hour.format("%02d") + ":" + info.min.format("%02d"), "SUNSET"];
+                        return [info.hour.format("%d") + ":" + info.min.format("%02d"), "SUNRISE"];
                     }
+                    return ["--:--", "SUNRISE"];
+                } else {
+                    var sunset = sc.calculate(nowTime, posRad, 10); // 10 = SUNSET
+                    if (sunset != null) {
+                        var info = Gregorian.info(sunset, Time.FORMAT_SHORT);
+                        return [info.hour.format("%d") + ":" + info.min.format("%02d"), "SUNSET"];
+                    }
+                    return ["--:--", "SUNSET"];
                 }
             }
-            return ["06:14", "SUNRISE"];
+            var fallbackInfo = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+            return ["--:--", fallbackInfo.hour < 12 ? "SUNRISE" : "SUNSET"];
         } else if (type == 17) { // Body Battery
             if (Toybox has :SensorHistory && SensorHistory has :getBodyBatteryHistory) {
                 var bbIter = SensorHistory.getBodyBatteryHistory({:period => 1});
@@ -388,7 +385,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     function drawSingleDataSlot(dc, slotType, posX, posY, s) {
         if (slotType == 0) { return; }
 
-        var fontValue = Graphics.FONT_GLANCE;
+        var fontValue = Graphics.FONT_XTINY;
 
         // ─────────────────────────────────────────────────────────────────
         // BATTERY SLOT: CHARGING ANIMATION & RED-ORANGE-GREEN GRADIENT
@@ -471,10 +468,10 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         drawSingleDataSlot(dc, s1, centerX, centerY - (48 * s).toNumber(), s);
 
         // Slot 2: Upper-Left (10 o'clock - Heart Rate)
-        drawSingleDataSlot(dc, s2, centerX - (44 * s).toNumber(), centerY - (26 * s).toNumber(), s);
+        drawSingleDataSlot(dc, s2, centerX - (50 * s).toNumber(), centerY - (30 * s).toNumber(), s);
 
         // Slot 3: Upper-Right (2 o'clock - Steps shifted slightly inward to clear MON cleanly)
-        drawSingleDataSlot(dc, s3, centerX + (40 * s).toNumber(), centerY - (26 * s).toNumber(), s);
+        drawSingleDataSlot(dc, s3, centerX + (46 * s).toNumber(), centerY - (30 * s).toNumber(), s);
 
         // Slot 4: Center Badge (just under pin)
         if (s4 != 0) {
@@ -482,10 +479,10 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         }
 
         // Slot 5: Lower-Left (8 o'clock - Sunrise)
-        drawSingleDataSlot(dc, s5, centerX - (44 * s).toNumber(), centerY + (36 * s).toNumber(), s);
+        drawSingleDataSlot(dc, s5, centerX - (50 * s).toNumber(), centerY + (40 * s).toNumber(), s);
 
         // Slot 6: Lower-Right (4 o'clock - Weather Temp)
-        drawSingleDataSlot(dc, s6, centerX + (44 * s).toNumber(), centerY + (36 * s).toNumber(), s);
+        drawSingleDataSlot(dc, s6, centerX + (50 * s).toNumber(), centerY + (40 * s).toNumber(), s);
 
         // Slot 7: Bottom Center (6 o'clock)
         drawSingleDataSlot(dc, s7, centerX, centerY + (54 * s).toNumber(), s);
