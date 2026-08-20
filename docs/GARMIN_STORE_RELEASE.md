@@ -15,7 +15,39 @@
 ### Full Description:
 **Perpex Tactical** combines old-world mechanical watchmaking elegance with modern Garmin data technology. Designed for outdoorsmen, tactical operators, and daily fitness enthusiasts, Perpex delivers instant situational awareness on MIP and AMOLED Garmin displays.
 
-#### ⚙️ Key Features:
+---
+
+## 📸 Real App Store Screenshots (Multi-Device & Multi-Theme)
+
+Here are official real-device simulator screenshots taken across supported watch resolution classes, color themes, night mode, and low-power AOD mode:
+
+### 1. Vibrant Red Theme — Epix Gen 2 (416x416 AMOLED)
+![Epix Gen 2 Vibrant Red](images/store/epix2_vibrant_red.png)
+
+### 2. Teal & Cyan Theme — Fenix 7 (260x260 MIP)
+![Fenix 7 Teal Cyan](images/store/fenix7_teal_cyan.png)
+
+### 3. Warm Orange Theme — Enduro 3 (280x280 MIP)
+![Enduro 3 Warm Orange](images/store/enduro3_warm_orange.png)
+
+### 4. Electric Green Theme — Venu 3 (390x390 AMOLED)
+![Venu 3 Electric Green](images/store/venu3_electric_green.png)
+
+### 5. Gold & Yellow Theme — Fenix 8 47mm (454x454 AMOLED)
+![Fenix 8 Gold Yellow](images/store/fenix8_gold_yellow.png)
+
+### 6. Tactical Red Night Mode — Epix Gen 2
+![Epix Gen 2 Tactical Red Night Mode](images/store/epix2_tactical_night_red.png)
+
+### 7. Stealth Green Night Mode — Epix Gen 2
+![Epix Gen 2 Stealth Green Night Mode](images/store/epix2_stealth_night_green.png)
+
+### 8. Low-Power Always-On-Display (AOD) Mode — Epix Gen 2
+![Epix Gen 2 Low Power AOD Mode](images/store/epix2_low_power_aod.png)
+
+---
+
+## ⚙️ Key Features Highlighted in Screenshots:
 * **Mechanical Perpetual Calendar Dial**: Dedicated concentric rings highlighting Day of Week, Month, and Day of Month in real time.
 * **3D Heavy-Duty Industrial Hands**: Custom metallic hands with lume bevels, polished pivot hub, and high-contrast red second hand.
 * **7 Customizable Data Fields**: Choose from 19 real-time metrics including Heart Rate (with live pulse animation), Weather Temperature (°C / °F), Body Battery, Solar Intensity, Dedicated Sunrise/Sunset times, Steps, Active Calories, Elevation, and Stress.
@@ -25,39 +57,14 @@
 
 ---
 
-## 🎨 Future Enhancement Roadmap
-
-### 👆 Future Feature A: Interactive Touch Hotspots (CIQ 4.0+)
-Directly tap data slots on touchscreen Garmin watches to launch native Garmin Glances & Widgets (Heart Rate, Steps, Weather Forecast, Battery Controls).
-
-![Interactive Touch Hotspots](images/mockup_touch_hotspots.jpg)
-
-### 📈 Future Feature B: Chronograph Sub-Dial Progress Arcs
-Luxury mechanical chronograph progress arcs wrapping around data slots for Step Goal %, Battery %, and Active Minutes %.
-
-![Chronograph Sub-Dial Progress Arcs](images/mockup_progress_arcs.jpg)
-
----
-
 ## 🛠️ Production Build & `.iq` Package Export Instructions
 
 To build the production `.iq` file package for submission to the **Garmin Connect IQ Developer Store Portal**:
 
 ```bash
-# 1. Verify build clean across test devices
-./build.sh fenix7
-./build.sh epix2
-
-# 2. Export production App Package (.iq file)
-export SDK_PATH="$HOME/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-9.2.0-2026-06-09-92a1605b2"
-"$SDK_PATH/bin/monkeyc" -e -y developer_key.der -o bin/PerpexWatchFace.iq -f manifest.xml
+# Export production App Package (.iq file)
+./export_iq.sh
 ```
 
----
-
-## 📋 Pre-Submission Checklist:
-- [x] Manifest includes all 5 resolution classes (260x260, 280x280, 390x390, 416x416, 454x454)
-- [x] All 823 unreferenced bloat PNG assets purged
-- [x] Tested on MIP (Fenix 7) and AMOLED (Epix Gen 2)
-- [x] Settings parity verified on-watch and via Connect IQ Mobile app
-- [x] Low-power AOD burn-in protection compliant (< 5% screen luminance)
+- **Output Store Package**: `bin/PerpexTacticalWatchFace.iq` (Size: 3.0 MB)
+- **Device Support**: Multi-device `.iq` bundle targeting 44 Garmin watch models.
