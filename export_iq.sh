@@ -7,18 +7,29 @@ OUTPUT_IQ="bin/PerpexTacticalWatchFace.iq"
 MANIFEST_PATH="manifest.xml"
 
 BUMP_TYPE="$1"
+CUSTOM_VERSION=""
 
 # ─────────────────────────────────────────────────────────────────────────────
-# VERSION BUMP LOGIC (patch, minor, major, or skip)
+# DETECT DIRECT VERSION NUMBERS (e.g. ./export_iq.sh 1.2.3)
 # ─────────────────────────────────────────────────────────────────────────────
+if [[ "$BUMP_TYPE" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    CUSTOM_VERSION="$BUMP_TYPE"
+    BUMP_TYPE="custom"
+fi
+
 if [ -z "$BUMP_TYPE" ]; then
     if [ -t 0 ]; then
-        echo "Select version bump type for this store release:"
-        select opt in "patch (1.0.0 -> 1.0.1)" "minor (1.0.0 -> 1.1.0)" "major (1.0.0 -> 2.0.0)" "skip (keep current version)"; do
+        echo "Select version bump option for this store release:"
+        select opt in "patch (1.0.0 -> 1.0.1)" "minor (1.0.0 -> 1.1.0)" "major (1.0.0 -> 2.0.0)" "custom (specify exact version)" "skip (keep current version)"; do
             case $opt in
                 "patch (1.0.0 -> 1.0.1)") BUMP_TYPE="patch"; break ;;
                 "minor (1.0.0 -> 1.1.0)") BUMP_TYPE="minor"; break ;;
                 "major (1.0.0 -> 2.0.0)") BUMP_TYPE="major"; break ;;
+                "custom (specify exact version)")
+                    BUMP_TYPE="custom"
+                    read -p "Enter exact version number (e.g. 1.0.1): " CUSTOM_VERSION
+                    break
+                    ;;
                 "skip (keep current version)") BUMP_TYPE="skip"; break ;;
                 *) echo "Invalid option." ;;
             esac
@@ -34,6 +45,7 @@ import re
 
 manifest_path = '$MANIFEST_PATH'
 bump_type = '$BUMP_TYPE'
+custom_ver = '$CUSTOM_VERSION'
 
 with open(manifest_path, 'r') as f:
     content = f.read()
@@ -43,23 +55,21 @@ if match:
     major, minor, patch = map(int, match.groups())
     old_version = f'{major}.{minor}.{patch}'
     
-    if bump_type == 'major':
-        major += 1
-        minor = 0
-        patch = 0
+    if bump_type == 'custom' and custom_ver:
+        new_version = custom_ver
+    elif bump_type == 'major':
+        new_version = f'{major + 1}.0.0'
     elif bump_type == 'minor':
-        minor += 1
-        patch = 0
+        new_version = f'{major}.{minor + 1}.0'
     else: # patch
-        patch += 1
+        new_version = f'{major}.{minor}.{patch + 1}'
         
-    new_version = f'{major}.{minor}.{patch}'
     new_content = re.sub(r'version=\"\d+\.\d+\.\d+\"', f'version=\"{new_version}\"', content, count=1)
     
     with open(manifest_path, 'w') as f:
         f.write(new_content)
         
-    print(f'🏷️  Version bumped in manifest.xml: {old_version} -> {new_version}')
+    print(f'🏷️  Version updated in manifest.xml: {old_version} -> {new_version}')
 else:
     print('⚠️ Could not parse version in manifest.xml')
 "
