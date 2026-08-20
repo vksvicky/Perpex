@@ -76,6 +76,17 @@ print(f"Verifying {len(SCENARIOS)} Exhaustive Test Scenarios across 5 Device Res
 print("========================================================")
 
 def get_simulator_window_bounds():
+    for _ in range(15):
+        try:
+            script = 'tell application "System Events" to tell process "simulator" to get {position, size} of window 1'
+            res = subprocess.run(['osascript', '-e', script], capture_output=True, text=True)
+            if res.returncode == 0 and res.stdout.strip():
+                parts = [int(x.strip()) for x in res.stdout.strip().split(',')]
+                return parts[0], parts[1], parts[2], parts[3]
+        except Exception as e:
+            pass
+        time.sleep(2)
+    print("Warning: Could not get simulator bounds after 30 seconds.")
     try:
         script = 'tell application "System Events" to tell process "simulator" to get {position, size} of window 1'
         res = subprocess.run(['osascript', '-e', script], capture_output=True, text=True)
@@ -87,6 +98,10 @@ def get_simulator_window_bounds():
     return None
 
 report_rows = []
+
+print("Starting Connect IQ Simulator...")
+subprocess.run(["open", os.path.join(SDK_PATH, "bin", "ConnectIQ.app")])
+time.sleep(10) # Give simulator time to boot up initially
 
 for dev_id, res_info, dev_name in DEVICES:
     print(f"\n📱 Generating Visual UI Snapshot for: {dev_name} ({dev_id})...")
@@ -113,7 +128,7 @@ for dev_id, res_info, dev_name in DEVICES:
         dev_id
     ]
     subprocess.Popen(cmd_do, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    time.sleep(5)
+    time.sleep(8)
     
     # Bring simulator to front
     subprocess.run(['osascript', '-e', 'tell application "System Events" to set frontmost of (first process whose name is "simulator") to true'])
