@@ -78,7 +78,7 @@ class GarminSettingsCustomView extends WatchUi.View {
         } else if (itemKey.equals("TemperatureUnit")) {
             var unitVal = getPropVal("TemperatureUnit", 0);
             subText = (unitVal == 1) ? "Fahrenheit (°F)" : "Celsius (°C)";
-            subColor = Graphics.COLOR_WHITE;
+            subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
         } else if (itemKey.equals("ResetDefaults")) {
             subText = "Tap to Reset All";
             subColor = 0xFF4444;
