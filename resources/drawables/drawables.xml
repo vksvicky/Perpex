@@ -78,13 +78,6 @@
     <bitmap id="icon_stress_green" filename="../../resources-round-416x416/drawables/icon_stress_green.png" />
     <bitmap id="icon_stress_gold" filename="../../resources-round-416x416/drawables/icon_stress_gold.png" />
     <bitmap id="icon_stress_white" filename="../../resources-round-416x416/drawables/icon_stress_white.png" />
-    <bitmap id="icon_digital_clock" filename="../../resources-round-416x416/drawables/icon_digital_clock.png" />
-    <bitmap id="icon_digital_clock_red" filename="../../resources-round-416x416/drawables/icon_digital_clock_red.png" />
-    <bitmap id="icon_digital_clock_teal" filename="../../resources-round-416x416/drawables/icon_digital_clock_teal.png" />
-    <bitmap id="icon_digital_clock_orange" filename="../../resources-round-416x416/drawables/icon_digital_clock_orange.png" />
-    <bitmap id="icon_digital_clock_green" filename="../../resources-round-416x416/drawables/icon_digital_clock_green.png" />
-    <bitmap id="icon_digital_clock_gold" filename="../../resources-round-416x416/drawables/icon_digital_clock_gold.png" />
-    <bitmap id="icon_digital_clock_white" filename="../../resources-round-416x416/drawables/icon_digital_clock_white.png" />
     <bitmap id="icon_altitude" filename="../../resources-round-416x416/drawables/icon_altitude.png" />
     <bitmap id="icon_altitude_red" filename="../../resources-round-416x416/drawables/icon_altitude_red.png" />
     <bitmap id="icon_altitude_teal" filename="../../resources-round-416x416/drawables/icon_altitude_teal.png" />

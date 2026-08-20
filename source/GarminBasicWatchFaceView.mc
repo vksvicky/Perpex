@@ -98,8 +98,47 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // CUSTOMIZABLE DATA SLOTS & THEME COLOR
+    // NIGHT MODE & THEME ACCENT COLOR RESOLVER
     // ─────────────────────────────────────────────────────────────────────
+    function isNightModeActive() {
+        var mode = getPropertyVal("NightMode", 1);
+        if (mode == 0) { return false; } // Disabled / Off
+        if (mode == 3) { return true; }  // Always On
+
+        if (mode == 1) { // Auto (Sunset to Sunrise)
+            if (Toybox has :Weather && Weather has :getSunset && Weather has :getSunrise) {
+                var cond = (Weather has :getCurrentConditions) ? Weather.getCurrentConditions() : null;
+                var pos = (cond != null && cond.observationLocationPosition != null) ? cond.observationLocationPosition : null;
+                if (pos != null) {
+                    var nowTime = Time.now();
+                    var sunrise = Weather.getSunrise(pos, nowTime);
+                    var sunset  = Weather.getSunset(pos, nowTime);
+                    if (sunrise != null && nowTime.lessThan(sunrise)) { return true; }
+                    if (sunset != null && !nowTime.lessThan(sunset)) { return true; }
+                }
+            }
+            var hour = System.getClockTime().hour;
+            return (hour < 6 || hour >= 22);
+        } else if (mode == 2) { // Scheduled
+            var startH = getPropertyVal("NightStartHour", 22);
+            var endH   = getPropertyVal("NightEndHour", 6);
+            var hour   = System.getClockTime().hour;
+            if (startH > endH) {
+                return (hour >= startH || hour < endH);
+            } else {
+                return (hour >= startH && hour < endH);
+            }
+        }
+        return false;
+    }
+
+    function getNightColorHex() {
+        var ncVal = getPropertyVal("NightModeColor", 0);
+        if (ncVal == 1) { return 0xFF8800; } // Night Amber
+        if (ncVal == 2) { return 0x00FF00; } // Stealth Green
+        return 0xFF0000;                     // Tactical Red (Default)
+    }
+
     function getPropertyVal(key, defaultVal) {
         try {
             if (Toybox.Application has :Properties) {
@@ -111,6 +150,9 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     }
 
     function getThemeAccentColor() {
+        if (isNightModeActive()) {
+            return getNightColorHex();
+        }
         var themeId = getPropertyVal("ThemeColor", 1);
         if (themeId == 2) { return 0x00CCCC; }      // Teal / Cyan
         else if (themeId == 3) { return 0xFF8800; } // Warm Orange
@@ -187,14 +229,6 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_stress_gold); }
             if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_stress_white); }
             return WatchUi.loadResource(Rez.Drawables.icon_stress_red);
-        }
-        if (baseName.equals("icon_digital_clock")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_red);
         }
         if (baseName.equals("icon_bluetooth")) {
             if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_teal); }
@@ -546,8 +580,9 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         // 1. Icon (Themed Accent)
         drawMetricIcon(dc, slotType, posX, posY - (9 * s).toNumber(), s);
 
-        // 2. Bold Value (Crisp White)
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        // 2. Bold Value (Crisp White or Dimmed AOD Gray)
+        var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
+        dc.setColor(valColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(posX, posY + (7 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 
@@ -592,6 +627,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     // CONCENTRIC RINGS
     // ─────────────────────────────────────────────────────────────────────
     function drawConcentricRings(dc, now) {
+        if (isLowPower) { return; } // Skip background dial & ring highlight arcs in Low-Power AOD mode
+
         var TWO_PI  = Math.PI * 2.0;
         var HALF_PI = Math.PI / 2.0;
         
@@ -600,8 +637,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var h = dc.getHeight();
         var scale = w / 260.0;
 
-        // Draw the static opaque background dial
-        if (dialBg != null) {
+        // Draw the static opaque background dial (skipped in Low-Power AOD for 80% battery saving)
+        if (!isLowPower && dialBg != null) {
             var bgW = dialBg.getWidth();
             var bgH = dialBg.getHeight();
             var bgX = (w - bgW) / 2;

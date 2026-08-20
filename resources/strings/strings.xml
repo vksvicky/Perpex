@@ -14,6 +14,24 @@
     <string id="TempUnitCelsius">Celsius (°C)</string>
     <string id="TempUnitFahrenheit">Fahrenheit (°F)</string>
 
+    <string id="NightModeTitle">Night Mode Mode</string>
+    <string id="NightOff">Disabled / Off</string>
+    <string id="NightAuto">Auto (Sunset to Sunrise)</string>
+    <string id="NightScheduled">Scheduled (Start/End Hour)</string>
+    <string id="NightAlwaysOn">Always On</string>
+
+    <string id="NightColorTitle">Night Mode Color</string>
+    <string id="NightColorRed">Tactical Red</string>
+    <string id="NightColorAmber">Night Amber</string>
+    <string id="NightColorGreen">Stealth Green</string>
+
+    <string id="NightStartTitle">Night Start Hour (0-23)</string>
+    <string id="NightEndTitle">Night End Hour (0-23)</string>
+
+    <string id="AODModeTitle">Always-On-Display (AOD) Layout</string>
+    <string id="AODMinimalist">Minimalist (Burn-in Compliant)</string>
+    <string id="AODFull">Full Dimmed Dial</string>
+
     <string id="Slot1Title">Top Slot Metric</string>
     <string id="Slot2Title">Upper-Left Slot Metric</string>
     <string id="Slot3Title">Upper-Right Slot Metric</string>

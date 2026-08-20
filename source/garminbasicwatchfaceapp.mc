@@ -33,6 +33,8 @@ class GarminSettingsCustomView extends WatchUi.View {
     private var menuItems = [
         ["Theme Color", "ThemeColor"],
         ["Temp Unit", "TemperatureUnit"],
+        ["Night Mode", "NightMode"],
+        ["Night Color", "NightModeColor"],
         ["Top Field", "Slot1Metric"],
         ["Upper-Left Field", "Slot2Metric"],
         ["Upper-Right Field", "Slot3Metric"],
@@ -79,6 +81,17 @@ class GarminSettingsCustomView extends WatchUi.View {
             var unitVal = getPropVal("TemperatureUnit", 0);
             subText = (unitVal == 1) ? "Fahrenheit (°F)" : "Celsius (°C)";
             subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
+        } else if (itemKey.equals("NightMode")) {
+            var nVal = getPropVal("NightMode", 1);
+            var nNames = ["Disabled / Off", "Auto (Sun)", "Scheduled", "Always On"];
+            subText = (nVal >= 0 && nVal <= 3) ? nNames[nVal] : nNames[1];
+            subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
+        } else if (itemKey.equals("NightModeColor")) {
+            var ncVal = getPropVal("NightModeColor", 0);
+            var ncNames = ["Tactical Red", "Night Amber", "Stealth Green"];
+            var ncColors = [0xFF0000, 0xFF8800, 0x00FF00];
+            subText = (ncVal >= 0 && ncVal <= 2) ? ncNames[ncVal] : ncNames[0];
+            subColor = (ncVal >= 0 && ncVal <= 2) ? ncColors[ncVal] : 0xFF0000;
         } else if (itemKey.equals("ResetDefaults")) {
             subText = "Tap to Reset All";
             subColor = 0xFF4444;
@@ -184,7 +197,7 @@ class GarminSettingsCustomView extends WatchUi.View {
         var names = [
             "Hidden", "Battery", "Heart Rate", "Steps", "Step Goal",
             "Calories", "Distance", "Floors", "Active Mins", "Stress",
-            "Digital Clock", "Notifications", "Altitude", "Barometer",
+            "Unused", "Notifications", "Altitude", "Barometer",
             "Weather Temp", "Weather Condition", "Sunrise / Sunset", "Body Battery",
             "Sunrise Only", "Sunset Only"
         ];
@@ -270,9 +283,19 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
             var current = getPropVal("TemperatureUnit", 0);
             current = (current + 1) % 2;
             setPropVal("TemperatureUnit", current);
+        } else if (itemKey.equals("NightMode")) {
+            var current = getPropVal("NightMode", 1);
+            current = (current + 1) % 4;
+            setPropVal("NightMode", current);
+        } else if (itemKey.equals("NightModeColor")) {
+            var current = getPropVal("NightModeColor", 0);
+            current = (current + 1) % 3;
+            setPropVal("NightModeColor", current);
         } else if (itemKey.equals("ResetDefaults")) {
             setPropVal("ThemeColor", 1);
             setPropVal("TemperatureUnit", 0);
+            setPropVal("NightMode", 1);
+            setPropVal("NightModeColor", 0);
             setPropVal("Slot1Metric", 1);  // Battery
             setPropVal("Slot2Metric", 2);  // Heart Rate
             setPropVal("Slot3Metric", 3);  // Steps

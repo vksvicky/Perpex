@@ -15,6 +15,33 @@
             <listEntry value="1">@Strings.TempUnitFahrenheit</listEntry>
         </settingConfig>
     </setting>
+    <setting propertyKey="@Properties.NightMode" title="@Strings.NightModeTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.NightOff</listEntry>
+            <listEntry value="1">@Strings.NightAuto</listEntry>
+            <listEntry value="2">@Strings.NightScheduled</listEntry>
+            <listEntry value="3">@Strings.NightAlwaysOn</listEntry>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.NightModeColor" title="@Strings.NightColorTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.NightColorRed</listEntry>
+            <listEntry value="1">@Strings.NightColorAmber</listEntry>
+            <listEntry value="2">@Strings.NightColorGreen</listEntry>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.NightStartHour" title="@Strings.NightStartTitle">
+        <settingConfig type="numeric" min="0" max="23" />
+    </setting>
+    <setting propertyKey="@Properties.NightEndHour" title="@Strings.NightEndTitle">
+        <settingConfig type="numeric" min="0" max="23" />
+    </setting>
+    <setting propertyKey="@Properties.AODMode" title="@Strings.AODModeTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.AODMinimalist</listEntry>
+            <listEntry value="1">@Strings.AODFull</listEntry>
+        </settingConfig>
+    </setting>
     <setting propertyKey="@Properties.Slot1Metric" title="@Strings.Slot1Title">
         <settingConfig type="list">
             <listEntry value="0">@Strings.MetricNone</listEntry>
@@ -27,7 +54,6 @@
             <listEntry value="7">@Strings.MetricFloors</listEntry>
             <listEntry value="8">@Strings.MetricActiveMinutes</listEntry>
             <listEntry value="9">@Strings.MetricStress</listEntry>
-            <listEntry value="10">@Strings.MetricDigitalTime</listEntry>
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
@@ -51,7 +77,6 @@
             <listEntry value="7">@Strings.MetricFloors</listEntry>
             <listEntry value="8">@Strings.MetricActiveMinutes</listEntry>
             <listEntry value="9">@Strings.MetricStress</listEntry>
-            <listEntry value="10">@Strings.MetricDigitalTime</listEntry>
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
@@ -75,7 +100,6 @@
             <listEntry value="7">@Strings.MetricFloors</listEntry>
             <listEntry value="8">@Strings.MetricActiveMinutes</listEntry>
             <listEntry value="9">@Strings.MetricStress</listEntry>
-            <listEntry value="10">@Strings.MetricDigitalTime</listEntry>
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
@@ -99,7 +123,6 @@
             <listEntry value="7">@Strings.MetricFloors</listEntry>
             <listEntry value="8">@Strings.MetricActiveMinutes</listEntry>
             <listEntry value="9">@Strings.MetricStress</listEntry>
-            <listEntry value="10">@Strings.MetricDigitalTime</listEntry>
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
@@ -123,7 +146,6 @@
             <listEntry value="7">@Strings.MetricFloors</listEntry>
             <listEntry value="8">@Strings.MetricActiveMinutes</listEntry>
             <listEntry value="9">@Strings.MetricStress</listEntry>
-            <listEntry value="10">@Strings.MetricDigitalTime</listEntry>
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
@@ -147,7 +169,6 @@
             <listEntry value="7">@Strings.MetricFloors</listEntry>
             <listEntry value="8">@Strings.MetricActiveMinutes</listEntry>
             <listEntry value="9">@Strings.MetricStress</listEntry>
-            <listEntry value="10">@Strings.MetricDigitalTime</listEntry>
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
@@ -171,7 +192,6 @@
             <listEntry value="7">@Strings.MetricFloors</listEntry>
             <listEntry value="8">@Strings.MetricActiveMinutes</listEntry>
             <listEntry value="9">@Strings.MetricStress</listEntry>
-            <listEntry value="10">@Strings.MetricDigitalTime</listEntry>
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
