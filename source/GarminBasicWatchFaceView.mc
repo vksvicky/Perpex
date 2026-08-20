@@ -461,7 +461,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     function drawSingleDataSlot(dc, slotType, posX, posY, s) {
         if (slotType == 0) { return; }
 
-        var fontValue = (fontCompact != null) ? fontCompact : Graphics.FONT_XTINY;
+        var fontValue = Graphics.FONT_XTINY;
         var fontLabel = Graphics.FONT_XTINY;
 
         // ─────────────────────────────────────────────────────────────────
