@@ -6,8 +6,15 @@ sleep 1
 DEVICE="$1"
 
 if [ -z "$DEVICE" ]; then
-    echo "Select a target device to build for:"
-    devices=("fenix7" "epix2" "venu3" "enduro3" "fenix847mm" "Quit")
+    echo "Select a target device to build for (3 per resolution class):"
+    devices=(
+        "fenix7" "fenix7pro" "fr255"
+        "enduro3" "fenix7x" "fenix7xpro"
+        "venu3" "fenix843mm" "epix2pro42mm"
+        "epix2" "epix2pro47mm" "venu2"
+        "fenix847mm" "epix2pro51mm" "fr965"
+        "Quit"
+    )
     select sel in "${devices[@]}"; do
         if [ "$sel" = "Quit" ]; then
             echo "Exiting."

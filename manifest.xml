@@ -27,6 +27,9 @@
             <iq:product id="venu3"/>
             <iq:product id="venu3s"/>
             <iq:product id="venusq2"/>
+            <iq:product id="fr255"/>
+            <iq:product id="fr265"/>
+            <iq:product id="fr965"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Ant"/>
