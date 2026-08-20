@@ -1,6 +1,6 @@
-# ⌚ Perpex Tactical Perpetual Calendar — Garmin Connect IQ Store Release Guide
+# ⌚ Perpex Perpetual Calendar — Garmin Connect IQ Store Release Guide
 
-> **App Name**: Perpex Tactical Perpetual Calendar Watch Face  
+> **App Name**: Perpex  
 > **Category**: Watch Face  
 > **Target SDK**: Connect IQ SDK v9.2.0+  
 > **Supported Devices**: Fenix 7/7x/8, Enduro 3, Epix Gen 2/Pro, Venu 2/3, Forerunner 255/265/965 (260x260 to 454x454 resolution)  
@@ -13,7 +13,7 @@
 > High-performance tactical analog watch face featuring a mechanical perpetual calendar dial, 7 customizable data slots, low-power AMOLED AOD protection, and native on-watch settings.
 
 ### Full Description:
-**Perpex Tactical** combines old-world mechanical watchmaking elegance with modern Garmin data technology. Designed for outdoorsmen, tactical operators, and daily fitness enthusiasts, Perpex delivers instant situational awareness on MIP and AMOLED Garmin displays.
+**Perpex** combines old-world mechanical watchmaking elegance with modern Garmin data technology. Designed for outdoorsmen, tactical operators, and daily fitness enthusiasts, Perpex delivers instant situational awareness on MIP and AMOLED Garmin displays.
 
 #### Key Features:
 - 🗓️ **Mechanical Perpetual Calendar Rings**: Inner concentric rings tracking Month, Day of the Month, and Day of the Week.
@@ -77,10 +77,10 @@ Here are the official real-device simulator screenshots taken across supported w
 ---
 
 ## ⚙️ Submission Checklist for Garmin Developer Dashboard:
-- [x] **App Name**: `Perpex Tactical`
+- [x] **App Name**: `Perpex`
 - [x] **App Icon**: `resources/drawables/launcher_icon.png` (40x40 PNG)
 - [x] **App Version**: `1.0.0`
 - [x] **Screenshots Uploaded**: 8 Real-Device Screenshots (Epix 2, Fenix 7, Enduro 3, Fenix 8)
 - [x] **Category**: Watch Face
 - [x] **Min SDK Version**: `4.0.0`
-- [x] **Exported PRG/IQ File**: `bin/PerpexTacticalWatchFace.iq` *(Pending user final approval)*
+- [x] **Exported PRG/IQ File**: `bin/PerpexTacticalWatchFace.iq` *(Built & Ready for Store Upload)*
