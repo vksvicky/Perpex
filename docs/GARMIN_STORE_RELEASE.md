@@ -7,20 +7,26 @@
 
 ---
 
-## 🌟 Store Listing Description
+## Store Listing Description
+
+### What's New (Release v1.0.0):
+Initial store release of Perpex Perpetual Calendar watch face featuring 7 customizable data slots, 6 accent themes, tactical night mode, and low-power AMOLED AOD burn-in protection.
+
+### Official Hero Banner (1440x720 Pixels)
+![Perpex Hero Banner](images/store/hero_banner_1440x720.jpg)
 
 ### Short Description (Tagline):
 > High-performance tactical analog watch face featuring a mechanical perpetual calendar dial, 7 customizable data slots, low-power AMOLED AOD protection, and native on-watch settings.
 
 ### Full Description:
-**Perpex** combines old-world mechanical watchmaking elegance with modern Garmin data technology. Designed for outdoorsmen, tactical operators, and daily fitness enthusiasts, Perpex delivers instant situational awareness on MIP and AMOLED Garmin displays.
+Perpex combines old-world mechanical watchmaking elegance with modern Garmin data technology. Designed for outdoorsmen, tactical operators, and daily fitness enthusiasts, Perpex delivers instant situational awareness on MIP and AMOLED Garmin displays.
 
-#### Key Features:
-- 🗓️ **Mechanical Perpetual Calendar Rings**: Inner concentric rings tracking Month, Day of the Month, and Day of the Week.
-- 🎨 **6 High-Contrast Tactical Color Themes**: Vibrant Red, Teal & Cyan, Warm Orange, Electric Green, Gold & Yellow, Pure White.
-- ⚙️ **Native On-Watch Customizer**: Press `UP/MENU` to configure Theme Colors, Temperature Units (°C / °F), Night Mode, and Data Slot Metrics directly on your watch.
-- 🌙 **Tactical Night Mode & Low-Power AOD**: Burn-in protected low-power mode for AMOLED displays (Epix Gen 2, Fenix 8) with pitch-black background and skeletonized hands.
-- 📊 **7 Dynamic Data Slots**: Customize metrics including Battery %, Heart Rate (with active workout pulse animation), Step Counter, Step Goal, Active Minutes, Calories, Distance, Floors, Stress, Altitude, Barometer, Weather Temp, Weather Condition, Sunrise/Sunset, and Body Battery.
+KEY FEATURES:
+- Mechanical Perpetual Calendar Rings: Inner concentric rings tracking Month, Day of the Month, and Day of the Week.
+- 6 High-Contrast Tactical Color Themes: Vibrant Red, Teal & Cyan, Warm Orange, Electric Green, Gold & Yellow, Pure White.
+- Native On-Watch Customizer: Press UP/MENU to configure Theme Colors, Temperature Units (°C / °F), Night Mode, and Data Slot Metrics directly on your watch face.
+- Tactical Night Mode & Low-Power AOD: Burn-in protected low-power mode for AMOLED displays (Epix Gen 2, Fenix 8) with pitch-black OLED background and minimalist skeleton hands.
+- 7 Dynamic Data Slots: Customize metrics including Battery %, Heart Rate with active workout pulse animation, Step Counter & Goal Progress, Active Calories, Distance, Floors, Stress, Altitude, Barometer, Weather Temp & Condition, Sunrise & Sunset, and Body Battery.
 
 ---
 
@@ -76,13 +82,15 @@ Here are the official real-device simulator screenshots taken across supported w
 
 ---
 
-## ⚙️ Submission Checklist for Garmin Developer Dashboard:
+## ⚙️ Submission Checklist & Status:
 - [x] **App Name**: `Perpex`
 - [x] **App ID**: `bd57c3bccf764485b28dd4fcc24a9f02` *(Verified & Signed by Garmin)*
 - [x] **App Version**: `1.0.0` *(Verified)*
-- [x] **App File (.iq)**: `bin/PerpexTacticalWatchFace.iq` *(Status: Verified, Signature: Verified)*
+- [x] **App File (.iq)**: `bin/PerpexTacticalWatchFace.iq` *(Status: Verified)*
 - [x] **App Icon**: `resources/drawables/launcher_icon.png` (40x40 PNG)
 - [x] **Screenshots Uploaded**: 8 Real-Device Screenshots (Epix 2, Fenix 7, Enduro 3, Fenix 8)
-- [x] **Category**: Watch Face
+- [x] **Cover Image Uploaded**: `500x500.jpg` (49 KB)
+- [x] **Hero Image Uploaded**: `1440x720.jpg` (192 KB)
+- [x] **Category**: `Analog`
 - [x] **Min SDK Version**: `4.0.0`
-- [x] **Verified Compatible Devices**: D2 Mach 1 Pro, Enduro 2/3, Forerunner 255/255 Music/965, Venu 2/2 Plus/2S/3/3S/Sq 2, Epix Gen 2/Pro (42/47/51mm), Fenix 7/7 Pro/7S/7S Pro/7X/7X Pro, Fenix 8 AMOLED (43/47/51mm), Fenix 8 Solar (47/51mm), Fenix E, Tactix 7/8.
+- [x] **Submission Status**: **Submitted & In Preview / Garmin Review Queue** *(Submitted Aug 20, 2026)*
