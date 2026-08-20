@@ -33,10 +33,12 @@ class GarminSettingsCustomView extends WatchUi.View {
     private var menuItems = [
         ["Theme Color", "ThemeColor"],
         ["Top Field", "Slot1Metric"],
-        ["Left Field", "Slot2Metric"],
-        ["Center Badge", "Slot3Metric"],
-        ["Right Field", "Slot4Metric"],
-        ["Bottom Field", "Slot5Metric"],
+        ["Upper-Left Field", "Slot2Metric"],
+        ["Upper-Right Field", "Slot3Metric"],
+        ["Center Badge", "Slot4Metric"],
+        ["Lower-Left Field", "Slot5Metric"],
+        ["Lower-Right Field", "Slot6Metric"],
+        ["Bottom Field", "Slot7Metric"],
         ["Reset Defaults", "ResetDefaults"]
     ];
 
@@ -177,7 +179,8 @@ class GarminSettingsCustomView extends WatchUi.View {
         var names = [
             "Hidden", "Battery", "Heart Rate", "Steps", "Step Goal",
             "Calories", "Distance", "Floors", "Active Mins", "Stress",
-            "Digital Clock", "Notifications", "Altitude", "Barometer"
+            "Digital Clock", "Notifications", "Altitude", "Barometer",
+            "Weather Temp", "Weather Condition", "Sunrise / Sunset", "Body Battery"
         ];
         if (id >= 0 && id < names.size()) { return names[id]; }
         return "Hidden";
@@ -259,14 +262,16 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
             setPropVal("ThemeColor", current);
         } else if (itemKey.equals("ResetDefaults")) {
             setPropVal("ThemeColor", 1);
-            setPropVal("Slot1Metric", 1);
-            setPropVal("Slot2Metric", 2);
-            setPropVal("Slot3Metric", 11);
-            setPropVal("Slot4Metric", 3);
-            setPropVal("Slot5Metric", 5);
+            setPropVal("Slot1Metric", 1);  // Battery
+            setPropVal("Slot2Metric", 2);  // Heart Rate
+            setPropVal("Slot3Metric", 3);  // Steps
+            setPropVal("Slot4Metric", 11); // Bluetooth
+            setPropVal("Slot5Metric", 16); // Sunrise/Sunset
+            setPropVal("Slot6Metric", 14); // Weather Temp
+            setPropVal("Slot7Metric", 5);  // Calories
         } else {
             var current = getPropVal(itemKey, 0);
-            current = (current + 1) % 14;
+            current = (current + 1) % 18;
             setPropVal(itemKey, current);
         }
 

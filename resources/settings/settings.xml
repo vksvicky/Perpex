@@ -25,6 +25,10 @@
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
+            <listEntry value="14">@Strings.MetricWeatherTemp</listEntry>
+            <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
+            <listEntry value="16">@Strings.MetricSunTimes</listEntry>
+            <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot2Metric" title="@Strings.Slot2Title">
@@ -43,6 +47,10 @@
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
+            <listEntry value="14">@Strings.MetricWeatherTemp</listEntry>
+            <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
+            <listEntry value="16">@Strings.MetricSunTimes</listEntry>
+            <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot3Metric" title="@Strings.Slot3Title">
@@ -61,6 +69,10 @@
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
+            <listEntry value="14">@Strings.MetricWeatherTemp</listEntry>
+            <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
+            <listEntry value="16">@Strings.MetricSunTimes</listEntry>
+            <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot4Metric" title="@Strings.Slot4Title">
@@ -79,6 +91,10 @@
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
+            <listEntry value="14">@Strings.MetricWeatherTemp</listEntry>
+            <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
+            <listEntry value="16">@Strings.MetricSunTimes</listEntry>
+            <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot5Metric" title="@Strings.Slot5Title">
@@ -97,6 +113,54 @@
             <listEntry value="11">@Strings.MetricNotifications</listEntry>
             <listEntry value="12">@Strings.MetricAltitude</listEntry>
             <listEntry value="13">@Strings.MetricBarometer</listEntry>
+            <listEntry value="14">@Strings.MetricWeatherTemp</listEntry>
+            <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
+            <listEntry value="16">@Strings.MetricSunTimes</listEntry>
+            <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.Slot6Metric" title="@Strings.Slot6Title">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.MetricNone</listEntry>
+            <listEntry value="1">@Strings.MetricBattery</listEntry>
+            <listEntry value="2">@Strings.MetricHeartRate</listEntry>
+            <listEntry value="3">@Strings.MetricSteps</listEntry>
+            <listEntry value="4">@Strings.MetricStepGoal</listEntry>
+            <listEntry value="5">@Strings.MetricCalories</listEntry>
+            <listEntry value="6">@Strings.MetricDistance</listEntry>
+            <listEntry value="7">@Strings.MetricFloors</listEntry>
+            <listEntry value="8">@Strings.MetricActiveMinutes</listEntry>
+            <listEntry value="9">@Strings.MetricStress</listEntry>
+            <listEntry value="10">@Strings.MetricDigitalTime</listEntry>
+            <listEntry value="11">@Strings.MetricNotifications</listEntry>
+            <listEntry value="12">@Strings.MetricAltitude</listEntry>
+            <listEntry value="13">@Strings.MetricBarometer</listEntry>
+            <listEntry value="14">@Strings.MetricWeatherTemp</listEntry>
+            <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
+            <listEntry value="16">@Strings.MetricSunTimes</listEntry>
+            <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.Slot7Metric" title="@Strings.Slot7Title">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.MetricNone</listEntry>
+            <listEntry value="1">@Strings.MetricBattery</listEntry>
+            <listEntry value="2">@Strings.MetricHeartRate</listEntry>
+            <listEntry value="3">@Strings.MetricSteps</listEntry>
+            <listEntry value="4">@Strings.MetricStepGoal</listEntry>
+            <listEntry value="5">@Strings.MetricCalories</listEntry>
+            <listEntry value="6">@Strings.MetricDistance</listEntry>
+            <listEntry value="7">@Strings.MetricFloors</listEntry>
+            <listEntry value="8">@Strings.MetricActiveMinutes</listEntry>
+            <listEntry value="9">@Strings.MetricStress</listEntry>
+            <listEntry value="10">@Strings.MetricDigitalTime</listEntry>
+            <listEntry value="11">@Strings.MetricNotifications</listEntry>
+            <listEntry value="12">@Strings.MetricAltitude</listEntry>
+            <listEntry value="13">@Strings.MetricBarometer</listEntry>
+            <listEntry value="14">@Strings.MetricWeatherTemp</listEntry>
+            <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
+            <listEntry value="16">@Strings.MetricSunTimes</listEntry>
+            <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
         </settingConfig>
     </setting>
 </settings>

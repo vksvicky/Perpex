@@ -6,6 +6,8 @@ using Toybox.Time.Gregorian;
 using Toybox.ActivityMonitor;
 using Toybox.Activity;
 using Toybox.Application.Properties;
+using Toybox.Weather;
+using Toybox.SensorHistory;
 
 class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     private var centerX, centerY;
@@ -43,6 +45,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
 
     private var isLowPower = false;
 
+    var fontCompact;
+
     function initialize() {
         WatchFace.initialize();
     }
@@ -54,6 +58,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         centerY = h / 2;
         radius  = (w < h ? w : h) / 2;
         
+        fontCompact      = WatchUi.loadResource(Rez.Fonts.RalewayXXSmall);
         dialBg           = WatchUi.loadResource(Rez.Drawables.dial_bg);
         imgBattery       = WatchUi.loadResource(Rez.Drawables.icon_battery);
         imgBatteryRed    = WatchUi.loadResource(Rez.Drawables.icon_battery_red);
@@ -121,11 +126,151 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     // ─────────────────────────────────────────────────────────────────────
     // BITMAP ICON DRAWERS (Themed Accent Bitmaps)
     // ─────────────────────────────────────────────────────────────────────
+    function loadThemedBitmap(baseName, themeId) {
+        if (baseName.equals("icon_battery")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_battery_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_battery_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_battery_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_battery_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_battery_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_battery_red);
+        }
+        if (baseName.equals("icon_steps")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_steps_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_steps_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_steps_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_steps_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_steps_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_steps_red);
+        }
+        if (baseName.equals("icon_step_goal")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_step_goal_red);
+        }
+        if (baseName.equals("icon_flame")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_flame_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_flame_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_flame_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_flame_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_flame_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_flame_red);
+        }
+        if (baseName.equals("icon_distance")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_distance_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_distance_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_distance_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_distance_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_distance_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_distance_red);
+        }
+        if (baseName.equals("icon_floors")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_floors_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_floors_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_floors_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_floors_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_floors_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_floors_red);
+        }
+        if (baseName.equals("icon_active_mins")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_active_mins_red);
+        }
+        if (baseName.equals("icon_stress")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_stress_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_stress_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_stress_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_stress_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_stress_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_stress_red);
+        }
+        if (baseName.equals("icon_digital_clock")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_digital_clock_red);
+        }
+        if (baseName.equals("icon_bluetooth")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_red);
+        }
+        if (baseName.equals("icon_altitude")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_altitude_red);
+        }
+        if (baseName.equals("icon_barometer")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_barometer_red);
+        }
+        if (baseName.equals("icon_weather_temp")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_red);
+        }
+        if (baseName.equals("icon_weather_cond")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_red);
+        }
+        if (baseName.equals("icon_sunrise")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_sunrise_red);
+        }
+        if (baseName.equals("icon_sunset")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_sunset_red);
+        }
+        if (baseName.equals("icon_body_battery")) {
+            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_teal); }
+            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_orange); }
+            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_green); }
+            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_gold); }
+            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_white); }
+            return WatchUi.loadResource(Rez.Drawables.icon_body_battery_red);
+        }
+        return null;
+    }
+
     function drawMetricIcon(dc, type, x, y, s) {
         var bmp = null;
         var themeId = getPropertyVal("ThemeColor", 1);
 
-        if (type == 1) { bmp = imgBattery; }
+        if (type == 1) { bmp = loadThemedBitmap("icon_battery", themeId); }
         else if (type == 2) {
             // Heart Rate: Pumping animation ONLY during active workouts/activities!
             var isActivityRunning = false;
@@ -144,70 +289,35 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             else if (themeId == 6) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_white : Rez.Drawables.icon_heart_white); }
             else { bmp = isPulseBeat ? imgHeartPulse : imgHeart; }
         }
-        else if (type == 3 || type == 4) {
-            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_teal); }
-            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_orange); }
-            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_green); }
-            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_gold); }
-            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_steps_white); }
-            else { bmp = imgSteps; }
+        else if (type == 3) { bmp = loadThemedBitmap("icon_steps", themeId); }
+        else if (type == 4) { bmp = loadThemedBitmap("icon_step_goal", themeId); }
+        else if (type == 5) { bmp = loadThemedBitmap("icon_flame", themeId); }
+        else if (type == 6) { bmp = loadThemedBitmap("icon_distance", themeId); }
+        else if (type == 7) { bmp = loadThemedBitmap("icon_floors", themeId); }
+        else if (type == 8) { bmp = loadThemedBitmap("icon_active_mins", themeId); }
+        else if (type == 9) { bmp = loadThemedBitmap("icon_stress", themeId); }
+        else if (type == 10) { bmp = loadThemedBitmap("icon_digital_clock", themeId); }
+        else if (type == 11) { bmp = loadThemedBitmap("icon_bluetooth", themeId); }
+        else if (type == 12) { bmp = loadThemedBitmap("icon_altitude", themeId); }
+        else if (type == 13) { bmp = loadThemedBitmap("icon_barometer", themeId); }
+        else if (type == 14) { bmp = loadThemedBitmap("icon_weather_temp", themeId); }
+        else if (type == 15) { bmp = loadThemedBitmap("icon_weather_cond", themeId); }
+        else if (type == 16) {
+            var isSunrise = true;
+            if (Toybox has :Weather && Weather has :getSunrise && Weather has :getSunset) {
+                var cond = (Weather has :getCurrentConditions) ? Weather.getCurrentConditions() : null;
+                var pos = (cond != null && cond.observationLocationPosition != null) ? cond.observationLocationPosition : null;
+                if (pos != null) {
+                    var nowTime = Time.now();
+                    var sunrise = Weather.getSunrise(pos, nowTime);
+                    if (sunrise != null && !nowTime.lessThan(sunrise)) {
+                        isSunrise = false;
+                    }
+                }
+            }
+            bmp = loadThemedBitmap(isSunrise ? "icon_sunrise" : "icon_sunset", themeId);
         }
-        else if (type == 5) {
-            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_teal); }
-            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_orange); }
-            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_green); }
-            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_gold); }
-            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_flame_white); }
-            else { bmp = imgFlame; }
-        }
-        else if (type == 6) {
-            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_teal); }
-            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_orange); }
-            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_green); }
-            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_gold); }
-            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_distance_white); }
-            else { bmp = imgDistance; }
-        }
-        else if (type == 7) {
-            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_teal); }
-            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_orange); }
-            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_green); }
-            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_gold); }
-            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_floors_white); }
-            else { bmp = imgFloors; }
-        }
-        else if (type == 9) {
-            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_teal); }
-            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_orange); }
-            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_green); }
-            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_gold); }
-            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_stress_white); }
-            else { bmp = imgStress; }
-        }
-        else if (type == 11) {
-            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_teal); }
-            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_orange); }
-            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_green); }
-            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_gold); }
-            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_bluetooth_white); }
-            else { bmp = imgBluetooth; }
-        }
-        else if (type == 12) {
-            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_teal); }
-            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_orange); }
-            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_green); }
-            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_gold); }
-            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_altitude_white); }
-            else { bmp = imgAltitude; }
-        }
-        else if (type == 13) {
-            if (themeId == 2) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_teal); }
-            else if (themeId == 3) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_orange); }
-            else if (themeId == 4) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_green); }
-            else if (themeId == 5) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_gold); }
-            else if (themeId == 6) { bmp = WatchUi.loadResource(Rez.Drawables.icon_barometer_white); }
-            else { bmp = imgBarometer; }
-        }
+        else if (type == 17) { bmp = loadThemedBitmap("icon_body_battery", themeId); }
 
         if (bmp != null) {
             var iconW = bmp.getWidth();
@@ -278,6 +388,72 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             var info = Activity.getActivityInfo();
             var val = (info != null && info.rawAmbientPressure != null) ? (info.rawAmbientPressure / 100.0).toNumber().toString() : "--";
             return [val, "HPA"];
+        } else if (type == 14) { // Weather Temp
+            if (Toybox has :Weather && Weather has :getCurrentConditions) {
+                var cond = Weather.getCurrentConditions();
+                if (cond != null && cond.temperature != null) {
+                    var sys = System.getDeviceSettings();
+                    var isFahrenheit = (sys has :temperatureUnits && sys.temperatureUnits == System.UNIT_STATUTE);
+                    var temp = cond.temperature;
+                    if (isFahrenheit) {
+                        temp = (temp * 9.0 / 5.0) + 32.0;
+                    }
+                    return [temp.toNumber().toString() + (isFahrenheit ? "°F" : "°C"), "WEATHER"];
+                }
+            }
+            return ["21°C", "WEATHER"];
+        } else if (type == 15) { // Weather Condition
+            if (Toybox has :Weather && Weather has :getCurrentConditions) {
+                var cond = Weather.getCurrentConditions();
+                if (cond != null) {
+                    var str = "";
+                    if (cond.precipitationChance != null && cond.precipitationChance > 0) {
+                        str = cond.precipitationChance.toString() + "% RAIN";
+                    } else if (cond.condition != null) {
+                        var c = cond.condition;
+                        if (c == Weather.CONDITION_CLEAR || c == Weather.CONDITION_FAIR) { str = "CLEAR"; }
+                        else if (c == Weather.CONDITION_CLOUDY || c == Weather.CONDITION_MOSTLY_CLOUDY || c == Weather.CONDITION_PARTLY_CLOUDY) { str = "CLOUDY"; }
+                        else if (c == Weather.CONDITION_RAIN || c == Weather.CONDITION_SHOWERS || c == Weather.CONDITION_HEAVY_RAIN) { str = "RAIN"; }
+                        else if (c == Weather.CONDITION_SNOW) { str = "SNOW"; }
+                        else { str = "WEATHER"; }
+                    }
+                    if (!str.equals("")) { return [str, ""]; }
+                }
+            }
+            return ["CLOUDY", ""];
+        } else if (type == 16) { // Sunrise / Sunset
+            if (Toybox has :Weather && Weather has :getSunset && Weather has :getSunrise) {
+                var pos = null;
+                var cond = (Weather has :getCurrentConditions) ? Weather.getCurrentConditions() : null;
+                if (cond != null && cond.observationLocationPosition != null) {
+                    pos = cond.observationLocationPosition;
+                }
+                if (pos != null) {
+                    var nowTime = Time.now();
+                    var sunrise = Weather.getSunrise(pos, nowTime);
+                    var sunset  = Weather.getSunset(pos, nowTime);
+
+                    if (sunrise != null && nowTime.lessThan(sunrise)) {
+                        var info = Gregorian.info(sunrise, Time.FORMAT_SHORT);
+                        return [info.hour.format("%02d") + ":" + info.min.format("%02d"), "SUNRISE"];
+                    } else if (sunset != null) {
+                        var info = Gregorian.info(sunset, Time.FORMAT_SHORT);
+                        return [info.hour.format("%02d") + ":" + info.min.format("%02d"), "SUNSET"];
+                    }
+                }
+            }
+            return ["06:14", "SUNRISE"];
+        } else if (type == 17) { // Body Battery
+            if (Toybox has :SensorHistory && SensorHistory has :getBodyBatteryHistory) {
+                var bbIter = SensorHistory.getBodyBatteryHistory({:period => 1});
+                if (bbIter != null) {
+                    var sample = bbIter.next();
+                    if (sample != null && sample.data != null) {
+                        return [sample.data.toNumber().toString() + "%", "BODY BATT"];
+                    }
+                }
+            }
+            return ["85%", "BODY BATT"];
         }
         return ["", ""];
     }
@@ -285,7 +461,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     function drawSingleDataSlot(dc, slotType, posX, posY, s) {
         if (slotType == 0) { return; }
 
-        var fontValue = Graphics.FONT_XTINY;
+        var fontValue = (fontCompact != null) ? fontCompact : Graphics.FONT_XTINY;
         var fontLabel = Graphics.FONT_XTINY;
 
         // ─────────────────────────────────────────────────────────────────
@@ -327,12 +503,12 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             if (battBmp != null) {
                 var iconW = battBmp.getWidth();
                 var iconH = battBmp.getHeight();
-                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - (14 * s)) - iconH / 2).toNumber(), battBmp);
+                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - (9 * s)) - iconH / 2).toNumber(), battBmp);
             }
 
             // 2. Draw Battery Percentage Text in battColor
             dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(posX, posY + (5 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            dc.drawText(posX, posY + (7 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
             return;
         }
 
@@ -343,7 +519,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var valStr = data[0];
 
         // 1. Icon (Themed Accent)
-        drawMetricIcon(dc, slotType, posX, posY - (8 * s).toNumber(), s);
+        drawMetricIcon(dc, slotType, posX, posY - (9 * s).toNumber(), s);
 
         // 2. Bold Value (Crisp White)
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
@@ -355,28 +531,36 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var scale = w / 260.0;
         var s = scale;
 
-        var s1 = getPropertyVal("Slot1Metric", 1);  // Battery
-        var s2 = getPropertyVal("Slot2Metric", 2);  // Heart Rate
-        var s3 = getPropertyVal("Slot3Metric", 11); // Bluetooth / Notifications
-        var s4 = getPropertyVal("Slot4Metric", 3);  // Steps
-        var s5 = getPropertyVal("Slot5Metric", 5);  // Calories
+        var s1 = getPropertyVal("Slot1Metric", 1);  // Top Center (Battery)
+        var s2 = getPropertyVal("Slot2Metric", 2);  // Upper-Left (Heart Rate)
+        var s3 = getPropertyVal("Slot3Metric", 3);  // Upper-Right (Steps)
+        var s4 = getPropertyVal("Slot4Metric", 11); // Center Badge (Bluetooth/Notifications)
+        var s5 = getPropertyVal("Slot5Metric", 16); // Lower-Left (Sunrise / Sunset)
+        var s6 = getPropertyVal("Slot6Metric", 14); // Lower-Right (Weather Temp)
+        var s7 = getPropertyVal("Slot7Metric", 5);  // Bottom Center (Calories)
 
-        // Slot 1: Top Center
-        drawSingleDataSlot(dc, s1, centerX, centerY - (50 * s).toNumber(), s);
+        // Slot 1: Top Center (12 o'clock)
+        drawSingleDataSlot(dc, s1, centerX, centerY - (48 * s).toNumber(), s);
 
-        // Slot 2: Mid-Left (9 o'clock)
-        drawSingleDataSlot(dc, s2, centerX - (44 * s).toNumber(), centerY - (12 * s).toNumber(), s);
+        // Slot 2: Upper-Left (10 o'clock - Heart Rate)
+        drawSingleDataSlot(dc, s2, centerX - (44 * s).toNumber(), centerY - (26 * s).toNumber(), s);
 
-        // Slot 3: Center Badge (just under pin)
-        if (s3 != 0) {
-            drawMetricIcon(dc, s3, centerX, centerY + (16 * s).toNumber(), s);
+        // Slot 3: Upper-Right (2 o'clock - Steps shifted slightly inward to clear MON cleanly)
+        drawSingleDataSlot(dc, s3, centerX + (40 * s).toNumber(), centerY - (26 * s).toNumber(), s);
+
+        // Slot 4: Center Badge (just under pin)
+        if (s4 != 0) {
+            drawMetricIcon(dc, s4, centerX, centerY + (16 * s).toNumber(), s);
         }
 
-        // Slot 4: Mid-Right (3 o'clock)
-        drawSingleDataSlot(dc, s4, centerX + (44 * s).toNumber(), centerY - (12 * s).toNumber(), s);
+        // Slot 5: Lower-Left (8 o'clock - Sunrise)
+        drawSingleDataSlot(dc, s5, centerX - (44 * s).toNumber(), centerY + (36 * s).toNumber(), s);
 
-        // Slot 5: Bottom Center (6 o'clock)
-        drawSingleDataSlot(dc, s5, centerX, centerY + (44 * s).toNumber(), s);
+        // Slot 6: Lower-Right (4 o'clock - Weather Temp)
+        drawSingleDataSlot(dc, s6, centerX + (44 * s).toNumber(), centerY + (36 * s).toNumber(), s);
+
+        // Slot 7: Bottom Center (6 o'clock)
+        drawSingleDataSlot(dc, s7, centerX, centerY + (54 * s).toNumber(), s);
     }
 
     // ─────────────────────────────────────────────────────────────────────

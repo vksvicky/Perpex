@@ -11,10 +11,12 @@
     <string id="ThemeWhite">Pure White</string>
 
     <string id="Slot1Title">Top Slot Metric</string>
-    <string id="Slot2Title">Left Slot Metric</string>
-    <string id="Slot3Title">Center Badge Metric</string>
-    <string id="Slot4Title">Right Slot Metric</string>
-    <string id="Slot5Title">Bottom Slot Metric</string>
+    <string id="Slot2Title">Upper-Left Slot Metric</string>
+    <string id="Slot3Title">Upper-Right Slot Metric</string>
+    <string id="Slot4Title">Center Badge Metric</string>
+    <string id="Slot5Title">Lower-Left Slot Metric</string>
+    <string id="Slot6Title">Lower-Right Slot Metric</string>
+    <string id="Slot7Title">Bottom Slot Metric</string>
 
     <string id="MetricNone">None (Hidden)</string>
     <string id="MetricBattery">Battery Level (%)</string>
@@ -30,4 +32,8 @@
     <string id="MetricNotifications">Unread Notifications</string>
     <string id="MetricAltitude">Altitude / Elevation</string>
     <string id="MetricBarometer">Barometer</string>
+    <string id="MetricWeatherTemp">Weather Temp</string>
+    <string id="MetricWeatherCondition">Weather Condition</string>
+    <string id="MetricSunTimes">Sunrise / Sunset</string>
+    <string id="MetricBodyBattery">Body Battery</string>
 </strings>
