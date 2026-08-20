@@ -315,6 +315,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             bmp = loadThemedBitmap(isSunrise ? "icon_sunrise" : "icon_sunset", themeId);
         }
         else if (type == 17) { bmp = loadThemedBitmap("icon_body_battery", themeId); }
+        else if (type == 18) { bmp = loadThemedBitmap("icon_sunrise", themeId); }
+        else if (type == 19) { bmp = loadThemedBitmap("icon_sunset", themeId); }
 
         if (bmp != null) {
             var iconW = bmp.getWidth();
@@ -386,11 +388,11 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             var val = (info != null && info.rawAmbientPressure != null) ? (info.rawAmbientPressure / 100.0).toNumber().toString() : "--";
             return [val, "HPA"];
         } else if (type == 14) { // Weather Temp
+            var unitVal = getPropertyVal("TemperatureUnit", 0);
+            var isFahrenheit = (unitVal == 1);
             if (Toybox has :Weather && Weather has :getCurrentConditions) {
                 var cond = Weather.getCurrentConditions();
                 if (cond != null && cond.temperature != null) {
-                    var sys = System.getDeviceSettings();
-                    var isFahrenheit = (sys has :temperatureUnits && sys.temperatureUnits == System.UNIT_STATUTE);
                     var temp = cond.temperature;
                     if (isFahrenheit) {
                         temp = (temp * 9.0 / 5.0) + 32.0;
@@ -398,7 +400,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
                     return [temp.toNumber().toString() + (isFahrenheit ? "°F" : "°C"), "WEATHER"];
                 }
             }
-            return ["21°C", "WEATHER"];
+            return [isFahrenheit ? "70°F" : "21°C", "WEATHER"];
         } else if (type == 15) { // Weather Condition
             if (Toybox has :Weather && Weather has :getCurrentConditions) {
                 var cond = Weather.getCurrentConditions();
@@ -418,7 +420,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
                 }
             }
             return ["CLOUDY", ""];
-        } else if (type == 16) { // Sunrise / Sunset
+        } else if (type == 16) { // Sunrise / Sunset (Dynamic)
             if (Toybox has :Weather && Weather has :getSunset && Weather has :getSunrise) {
                 var pos = null;
                 var cond = (Weather has :getCurrentConditions) ? Weather.getCurrentConditions() : null;
@@ -451,6 +453,32 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
                 }
             }
             return ["85%", "BODY BATT"];
+        } else if (type == 18) { // Sunrise Only
+            if (Toybox has :Weather && Weather has :getSunrise) {
+                var cond = (Weather has :getCurrentConditions) ? Weather.getCurrentConditions() : null;
+                var pos = (cond != null && cond.observationLocationPosition != null) ? cond.observationLocationPosition : null;
+                if (pos != null) {
+                    var sunrise = Weather.getSunrise(pos, Time.now());
+                    if (sunrise != null) {
+                        var info = Gregorian.info(sunrise, Time.FORMAT_SHORT);
+                        return [info.hour.format("%02d") + ":" + info.min.format("%02d"), "SUNRISE"];
+                    }
+                }
+            }
+            return ["06:14", "SUNRISE"];
+        } else if (type == 19) { // Sunset Only
+            if (Toybox has :Weather && Weather has :getSunset) {
+                var cond = (Weather has :getCurrentConditions) ? Weather.getCurrentConditions() : null;
+                var pos = (cond != null && cond.observationLocationPosition != null) ? cond.observationLocationPosition : null;
+                if (pos != null) {
+                    var sunset = Weather.getSunset(pos, Time.now());
+                    if (sunset != null) {
+                        var info = Gregorian.info(sunset, Time.FORMAT_SHORT);
+                        return [info.hour.format("%02d") + ":" + info.min.format("%02d"), "SUNSET"];
+                    }
+                }
+            }
+            return ["18:45", "SUNSET"];
         }
         return ["", ""];
     }

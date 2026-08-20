@@ -10,6 +10,10 @@
     <string id="ThemeGold">Gold / Yellow</string>
     <string id="ThemeWhite">Pure White</string>
 
+    <string id="TemperatureUnitTitle">Temperature Unit</string>
+    <string id="TempUnitCelsius">Celsius (°C)</string>
+    <string id="TempUnitFahrenheit">Fahrenheit (°F)</string>
+
     <string id="Slot1Title">Top Slot Metric</string>
     <string id="Slot2Title">Upper-Left Slot Metric</string>
     <string id="Slot3Title">Upper-Right Slot Metric</string>
@@ -34,6 +38,8 @@
     <string id="MetricBarometer">Barometer</string>
     <string id="MetricWeatherTemp">Weather Temp</string>
     <string id="MetricWeatherCondition">Weather Condition</string>
-    <string id="MetricSunTimes">Sunrise / Sunset</string>
+    <string id="MetricSunTimes">Sunrise / Sunset (Dynamic)</string>
     <string id="MetricBodyBattery">Body Battery</string>
+    <string id="MetricSunrise">Sunrise Only</string>
+    <string id="MetricSunset">Sunset Only</string>
 </strings>

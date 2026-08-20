@@ -1,5 +1,6 @@
 <properties>
     <property id="ThemeColor" type="number">1</property>
+    <property id="TemperatureUnit" type="number">0</property>
     <property id="Slot1Metric" type="number">1</property>
     <property id="Slot2Metric" type="number">2</property>
     <property id="Slot3Metric" type="number">3</property>

@@ -9,6 +9,12 @@
             <listEntry value="6">@Strings.ThemeWhite</listEntry>
         </settingConfig>
     </setting>
+    <setting propertyKey="@Properties.TemperatureUnit" title="@Strings.TemperatureUnitTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.TempUnitCelsius</listEntry>
+            <listEntry value="1">@Strings.TempUnitFahrenheit</listEntry>
+        </settingConfig>
+    </setting>
     <setting propertyKey="@Properties.Slot1Metric" title="@Strings.Slot1Title">
         <settingConfig type="list">
             <listEntry value="0">@Strings.MetricNone</listEntry>
@@ -29,6 +35,8 @@
             <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
             <listEntry value="16">@Strings.MetricSunTimes</listEntry>
             <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="18">@Strings.MetricSunrise</listEntry>
+            <listEntry value="19">@Strings.MetricSunset</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot2Metric" title="@Strings.Slot2Title">
@@ -51,6 +59,8 @@
             <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
             <listEntry value="16">@Strings.MetricSunTimes</listEntry>
             <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="18">@Strings.MetricSunrise</listEntry>
+            <listEntry value="19">@Strings.MetricSunset</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot3Metric" title="@Strings.Slot3Title">
@@ -73,6 +83,8 @@
             <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
             <listEntry value="16">@Strings.MetricSunTimes</listEntry>
             <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="18">@Strings.MetricSunrise</listEntry>
+            <listEntry value="19">@Strings.MetricSunset</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot4Metric" title="@Strings.Slot4Title">
@@ -95,6 +107,8 @@
             <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
             <listEntry value="16">@Strings.MetricSunTimes</listEntry>
             <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="18">@Strings.MetricSunrise</listEntry>
+            <listEntry value="19">@Strings.MetricSunset</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot5Metric" title="@Strings.Slot5Title">
@@ -117,6 +131,8 @@
             <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
             <listEntry value="16">@Strings.MetricSunTimes</listEntry>
             <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="18">@Strings.MetricSunrise</listEntry>
+            <listEntry value="19">@Strings.MetricSunset</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot6Metric" title="@Strings.Slot6Title">
@@ -139,6 +155,8 @@
             <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
             <listEntry value="16">@Strings.MetricSunTimes</listEntry>
             <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="18">@Strings.MetricSunrise</listEntry>
+            <listEntry value="19">@Strings.MetricSunset</listEntry>
         </settingConfig>
     </setting>
     <setting propertyKey="@Properties.Slot7Metric" title="@Strings.Slot7Title">
@@ -161,6 +179,8 @@
             <listEntry value="15">@Strings.MetricWeatherCondition</listEntry>
             <listEntry value="16">@Strings.MetricSunTimes</listEntry>
             <listEntry value="17">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="18">@Strings.MetricSunrise</listEntry>
+            <listEntry value="19">@Strings.MetricSunset</listEntry>
         </settingConfig>
     </setting>
 </settings>

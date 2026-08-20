@@ -32,6 +32,7 @@ class GarminSettingsCustomView extends WatchUi.View {
     private var currentIndex = 0;
     private var menuItems = [
         ["Theme Color", "ThemeColor"],
+        ["Temp Unit", "TemperatureUnit"],
         ["Top Field", "Slot1Metric"],
         ["Upper-Left Field", "Slot2Metric"],
         ["Upper-Right Field", "Slot3Metric"],
@@ -74,6 +75,10 @@ class GarminSettingsCustomView extends WatchUi.View {
             var themeNames = ["Vibrant Red", "Teal / Cyan", "Warm Orange", "Electric Green", "Gold / Yellow", "Pure White"];
             subText = (themeVal >= 1 && themeVal <= 6) ? themeNames[themeVal - 1] : themeNames[0];
             subColor = getThemeAccentHex(themeVal);
+        } else if (itemKey.equals("TemperatureUnit")) {
+            var unitVal = getPropVal("TemperatureUnit", 0);
+            subText = (unitVal == 1) ? "Fahrenheit (°F)" : "Celsius (°C)";
+            subColor = Graphics.COLOR_WHITE;
         } else if (itemKey.equals("ResetDefaults")) {
             subText = "Tap to Reset All";
             subColor = 0xFF4444;
@@ -180,7 +185,8 @@ class GarminSettingsCustomView extends WatchUi.View {
             "Hidden", "Battery", "Heart Rate", "Steps", "Step Goal",
             "Calories", "Distance", "Floors", "Active Mins", "Stress",
             "Digital Clock", "Notifications", "Altitude", "Barometer",
-            "Weather Temp", "Weather Condition", "Sunrise / Sunset", "Body Battery"
+            "Weather Temp", "Weather Condition", "Sunrise / Sunset", "Body Battery",
+            "Sunrise Only", "Sunset Only"
         ];
         if (id >= 0 && id < names.size()) { return names[id]; }
         return "Hidden";
@@ -260,8 +266,13 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
             var current = getPropVal("ThemeColor", 1);
             current = (current % 6) + 1;
             setPropVal("ThemeColor", current);
+        } else if (itemKey.equals("TemperatureUnit")) {
+            var current = getPropVal("TemperatureUnit", 0);
+            current = (current + 1) % 2;
+            setPropVal("TemperatureUnit", current);
         } else if (itemKey.equals("ResetDefaults")) {
             setPropVal("ThemeColor", 1);
+            setPropVal("TemperatureUnit", 0);
             setPropVal("Slot1Metric", 1);  // Battery
             setPropVal("Slot2Metric", 2);  // Heart Rate
             setPropVal("Slot3Metric", 3);  // Steps
@@ -271,7 +282,7 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
             setPropVal("Slot7Metric", 5);  // Calories
         } else {
             var current = getPropVal(itemKey, 0);
-            current = (current + 1) % 18;
+            current = (current + 1) % 20;
             setPropVal(itemKey, current);
         }
 
