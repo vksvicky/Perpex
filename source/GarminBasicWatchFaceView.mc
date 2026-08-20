@@ -28,20 +28,6 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     private const COLOR_PIN        = 0x888888;
 
     var dialBg;
-    var imgBattery;
-    var imgBatteryRed;
-    var imgBatteryOrange;
-    var imgBatteryGreen;
-    var imgHeart;
-    var imgHeartPulse;
-    var imgSteps;
-    var imgFlame;
-    var imgBluetooth;
-    var imgDistance;
-    var imgFloors;
-    var imgStress;
-    var imgAltitude;
-    var imgBarometer;
 
     private var isLowPower = false;
 
@@ -201,7 +187,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             else if (themeId == 4) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_green : Rez.Drawables.icon_heart_green); }
             else if (themeId == 5) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_gold : Rez.Drawables.icon_heart_gold); }
             else if (themeId == 6) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_white : Rez.Drawables.icon_heart_white); }
-            else { bmp = isPulseBeat ? imgHeartPulse : imgHeart; }
+            else { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_red : Rez.Drawables.icon_heart_red); }
         }
         else if (type == 3) { bmp = loadThemedBitmap("icon_steps", themeId); }
         else if (type == 4) { bmp = loadThemedBitmap("icon_step_goal", themeId); }
@@ -210,7 +196,6 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         else if (type == 7) { bmp = loadThemedBitmap("icon_floors", themeId); }
         else if (type == 8) { bmp = loadThemedBitmap("icon_active_mins", themeId); }
         else if (type == 9) { bmp = loadThemedBitmap("icon_stress", themeId); }
-        else if (type == 10) { bmp = loadThemedBitmap("icon_digital_clock", themeId); }
         else if (type == 11) { bmp = loadThemedBitmap("icon_bluetooth", themeId); }
         else if (type == 12) { bmp = loadThemedBitmap("icon_altitude", themeId); }
         else if (type == 13) { bmp = loadThemedBitmap("icon_barometer", themeId); }
@@ -403,8 +388,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     function drawSingleDataSlot(dc, slotType, posX, posY, s) {
         if (slotType == 0) { return; }
 
-        var fontValue = Graphics.FONT_XTINY;
-        var fontLabel = Graphics.FONT_XTINY;
+        var fontValue = Graphics.FONT_GLANCE;
 
         // ─────────────────────────────────────────────────────────────────
         // BATTERY SLOT: CHARGING ANIMATION & RED-ORANGE-GREEN GRADIENT
@@ -446,12 +430,12 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             if (battBmp != null) {
                 var iconW = battBmp.getWidth();
                 var iconH = battBmp.getHeight();
-                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - (9 * s)) - iconH / 2).toNumber(), battBmp);
+                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - (10 * s)) - iconH / 2).toNumber(), battBmp);
             }
 
             // 2. Draw Battery Percentage Text in battColor
             dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(posX, posY + (5.5 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            dc.drawText(posX, posY + (7 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
             return;
         }
 
@@ -462,12 +446,12 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var valStr = data[0];
 
         // 1. Icon (Themed Accent)
-        drawMetricIcon(dc, slotType, posX, posY - (9 * s).toNumber(), s);
+        drawMetricIcon(dc, slotType, posX, posY - (10 * s).toNumber(), s);
 
         // 2. Bold Value (Crisp White or Dimmed AOD Gray)
         var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
         dc.setColor(valColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(posX, posY + (5.5 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(posX, posY + (7 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 
     function drawDataSlots(dc) {
