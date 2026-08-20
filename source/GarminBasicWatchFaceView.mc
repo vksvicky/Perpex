@@ -45,8 +45,6 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
 
     private var isLowPower = false;
 
-    var fontCompact;
-
     function initialize() {
         WatchFace.initialize();
     }
@@ -58,7 +56,6 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         centerY = h / 2;
         radius  = (w < h ? w : h) / 2;
         
-        fontCompact      = WatchUi.loadResource(Rez.Fonts.CompactFont);
         dialBg           = WatchUi.loadResource(Rez.Drawables.dial_bg);
         imgBattery       = WatchUi.loadResource(Rez.Drawables.icon_battery);
         imgBatteryRed    = WatchUi.loadResource(Rez.Drawables.icon_battery_red);
@@ -461,7 +458,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     function drawSingleDataSlot(dc, slotType, posX, posY, s) {
         if (slotType == 0) { return; }
 
-        var fontValue = (fontCompact != null) ? fontCompact : Graphics.FONT_XTINY;
+        var fontValue = Graphics.FONT_XTINY;
         var fontLabel = Graphics.FONT_XTINY;
 
         // ─────────────────────────────────────────────────────────────────
