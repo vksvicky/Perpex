@@ -2,6 +2,7 @@ using Toybox.Application;
 using Toybox.WatchUi;
 using Toybox.Graphics;
 
+(:background)
 class GarminBasicWatchFaceApp extends Application.AppBase {
 
     function initialize() {
@@ -23,11 +24,15 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
     // ON-WATCH CUSTOM SETTINGS VIEW (DYNAMIC FONT HEIGHT EVEN FORMULA)
     // ─────────────────────────────────────────────────────────────────────
     function getSettingsView() {
-        var view = new GarminSettingsCustomView();
-        return [ view, new GarminSettingsCustomDelegate(view) ];
+        if (WatchUi has :WatchFaceDelegate) {
+            var view = new GarminSettingsCustomView();
+            return [ view, new GarminSettingsCustomDelegate(view) ];
+        }
+        return null;
     }
 }
 
+(:typecheck(false))
 class GarminSettingsCustomView extends WatchUi.View {
     private var currentIndex = 0;
     private var menuItems = [
@@ -206,6 +211,7 @@ class GarminSettingsCustomView extends WatchUi.View {
     }
 }
 
+(:typecheck(false))
 class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
     private var customView;
 

@@ -3,68 +3,84 @@
 > **App Name**: Perpex Tactical Perpetual Calendar Watch Face  
 > **Category**: Watch Face  
 > **Target SDK**: Connect IQ SDK v9.2.0+  
-> **Supported Devices**: 25+ Models (Fenix 7/7x/8, Enduro 3, Epix Gen 2/Pro, Venu 2/3, Forerunner 255/265/965)  
+> **Supported Devices**: Fenix 7/7x/8, Enduro 3, Epix Gen 2/Pro, Venu 2/3, Forerunner 255/265/965 (260x260 to 454x454 resolution)  
 
 ---
 
 ## 🌟 Store Listing Description
 
 ### Short Description (Tagline):
-> High-performance tactical analog watch face featuring a mechanical perpetual calendar dial, 7 customizable data slots, low-power AMOLED AOD protection, and tactical Night Mode.
+> High-performance tactical analog watch face featuring a mechanical perpetual calendar dial, 7 customizable data slots, low-power AMOLED AOD protection, and native on-watch settings.
 
 ### Full Description:
 **Perpex Tactical** combines old-world mechanical watchmaking elegance with modern Garmin data technology. Designed for outdoorsmen, tactical operators, and daily fitness enthusiasts, Perpex delivers instant situational awareness on MIP and AMOLED Garmin displays.
+
+#### Key Features:
+- 🗓️ **Mechanical Perpetual Calendar Rings**: Inner concentric rings tracking Month, Day of the Month, and Day of the Week.
+- 🎨 **6 High-Contrast Tactical Color Themes**: Vibrant Red, Teal & Cyan, Warm Orange, Electric Green, Gold & Yellow, Pure White.
+- ⚙️ **Native On-Watch Customizer**: Press `UP/MENU` to configure Theme Colors, Temperature Units (°C / °F), Night Mode, and Data Slot Metrics directly on your watch.
+- 🌙 **Tactical Night Mode & Low-Power AOD**: Burn-in protected low-power mode for AMOLED displays (Epix Gen 2, Fenix 8) with pitch-black background and skeletonized hands.
+- 📊 **7 Dynamic Data Slots**: Customize metrics including Battery %, Heart Rate (with active workout pulse animation), Step Counter, Step Goal, Active Minutes, Calories, Distance, Floors, Stress, Altitude, Barometer, Weather Temp, Weather Condition, Sunrise/Sunset, and Body Battery.
 
 ---
 
 ## 📸 Real App Store Screenshots (Multi-Device & Multi-Theme)
 
-Here are official real-device simulator screenshots taken across supported watch resolution classes, color themes, night mode, and low-power AOD mode:
+Here are the official real-device simulator screenshots taken across supported watch resolution classes, color themes, night mode, and low-power AOD mode:
 
-### 1. Vibrant Red Theme — Epix Gen 2 (416x416 AMOLED)
-![Epix Gen 2 Vibrant Red](images/store/epix2_vibrant_red.png)
-
-### 2. Teal & Cyan Theme — Fenix 7 (260x260 MIP)
-![Fenix 7 Teal Cyan](images/store/fenix7_teal_cyan.png)
-
-### 3. Warm Orange Theme — Enduro 3 (280x280 MIP)
-![Enduro 3 Warm Orange](images/store/enduro3_warm_orange.png)
-
-### 4. Electric Green Theme — Venu 3 (390x390 AMOLED)
-![Venu 3 Electric Green](images/store/venu3_electric_green.png)
-
-### 5. Gold & Yellow Theme — Fenix 8 47mm (454x454 AMOLED)
-![Fenix 8 Gold Yellow](images/store/fenix8_gold_yellow.png)
-
-### 6. Tactical Red Night Mode — Epix Gen 2
-![Epix Gen 2 Tactical Red Night Mode](images/store/epix2_tactical_night_red.png)
-
-### 7. Stealth Green Night Mode — Epix Gen 2
-![Epix Gen 2 Stealth Green Night Mode](images/store/epix2_stealth_night_green.png)
-
-### 8. Low-Power Always-On-Display (AOD) Mode — Epix Gen 2
-![Epix Gen 2 Low Power AOD Mode](images/store/epix2_low_power_aod.png)
+### 1. Active High-Power Mode (Vibrant Red) — Epix Gen 2 (416x416 AMOLED)
+![Epix Gen 2 Vibrant Red](images/store/02_epix2_high_vibrant_red.png)
+*Full tactical analog dial with red accent pointer, mechanical perpetual calendar concentric rings (Month, Date, Day), and tactical data slots on Epix 2 AMOLED.*
 
 ---
 
-## ⚙️ Key Features Highlighted in Screenshots:
-* **Mechanical Perpetual Calendar Dial**: Dedicated concentric rings highlighting Day of Week, Month, and Day of Month in real time.
-* **3D Heavy-Duty Industrial Hands**: Custom metallic hands with lume bevels, polished pivot hub, and high-contrast red second hand.
-* **7 Customizable Data Fields**: Choose from 19 real-time metrics including Heart Rate (with live pulse animation), Weather Temperature (°C / °F), Body Battery, Solar Intensity, Dedicated Sunrise/Sunset times, Steps, Active Calories, Elevation, and Stress.
-* **Tactical Night Mode**: Choose between Tactical Red (`0xFF0000`), Night Amber (`0xFF8800`), or Stealth Green (`0x00FF00`). Auto-triggers at sunset/sunrise, custom scheduled hours, or manually toggled.
-* **AMOLED Burn-In Compliant Low-Power AOD**: Saves over 80% battery power with active pixel coverage under 5%. Hides second hand and heavy backgrounds while keeping stealth 3D hands and 7 data slots visible.
-* **100% Settings Parity**: Customize every aspect directly from the **On-Watch Menu** or the **Garmin Connect IQ Mobile App**.
+### 2. Low-Power Always-On Display (AOD) Mode — Epix Gen 2 (416x416 AMOLED)
+![Epix Gen 2 Low Power AOD](images/store/01_epix2_high_always_on.png)
+*Low-power AOD protection mode with skeletonized hands, pitch-black background for 80%+ OLED battery savings, and essential metrics.*
 
 ---
 
-## 🛠️ Production Build & `.iq` Package Export Instructions
+### 3. Active Mode (Teal & Cyan Theme) — Fenix 7 (260x260 MIP)
+![Fenix 7 Teal Cyan](images/store/04_fenix_high_teal_cyan.png)
+*Vivid 64-color MIP display optimization featuring high-visibility cyan icons, white hands, red ring arcs, and perpetual calendar tracking.*
 
-To build the production `.iq` file package for submission to the **Garmin Connect IQ Developer Store Portal**:
+---
 
-```bash
-# Export production App Package (.iq file)
-./export_iq.sh
-```
+### 4. Native On-Watch Customizer (Theme Selection) — Fenix 7 (260x260 MIP)
+![Fenix 7 Settings Menu](images/store/03_fenix7_settings.png)
+*Demonstrates native on-watch settings (`SETTING 1 OF 12: Theme Color ➔ Vibrant Red`) directly accessible on the watch via long-press UP/MENU.*
 
-- **Output Store Package**: `bin/PerpexTacticalWatchFace.iq` (Size: 3.0 MB)
-- **Device Support**: Multi-device `.iq` bundle targeting 44 Garmin watch models.
+---
+
+### 5. Active Mode (Electric Green & Imperial Units) — Fenix 8 47mm (454x454 AMOLED)
+![Fenix 8 Electric Green](images/store/07_fenix8_green_fahrenheit.png)
+*Crisp 454x454 high-resolution rendering with electric green metrics, orange pointer tip, Fahrenheit temperature (`55°F`), and full perpetual calendar dial.*
+
+---
+
+### 6. Low-Power Always-On Display (AOD) Mode — Fenix 8 47mm (454x454 AMOLED)
+![Fenix 8 Low Power AOD](images/store/08_fenxi8_always_on.png)
+*Minimalist AOD burn-in protection mode on Fenix 8 AMOLED display with electric green metric accents and low-power skeleton hands.*
+
+---
+
+### 7. Native On-Watch Customizer (Temperature Units) — Enduro 3 (280x280 MIP)
+![Enduro 3 Temp Setting](images/store/05_enduro3_temperature_setting.png)
+*Selecting temperature unit preferences (`SETTING 2 OF 12: Temp Unit ➔ Celsius (°C) / Fahrenheit (°F)`) on Enduro 3 ultra-endurance display.*
+
+---
+
+### 8. Native On-Watch Customizer (Warm Orange Theme) — Enduro 3 (280x280 MIP)
+![Enduro 3 Warm Orange Setting](images/store/06_enduro3_warm_orange.png)
+*Selecting `Theme Color ➔ Warm Orange` on Enduro 3 MIP display.*
+
+---
+
+## ⚙️ Submission Checklist for Garmin Developer Dashboard:
+- [x] **App Name**: `Perpex Tactical`
+- [x] **App Icon**: `resources/drawables/launcher_icon.png` (40x40 PNG)
+- [x] **App Version**: `1.0.0`
+- [x] **Screenshots Uploaded**: 8 Real-Device Screenshots (Epix 2, Fenix 7, Enduro 3, Fenix 8)
+- [x] **Category**: Watch Face
+- [x] **Min SDK Version**: `4.0.0`
+- [x] **Exported PRG/IQ File**: `bin/PerpexTacticalWatchFace.iq` *(Pending user final approval)*

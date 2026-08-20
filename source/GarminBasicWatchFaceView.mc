@@ -56,21 +56,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         centerY = h / 2;
         radius  = (w < h ? w : h) / 2;
         
-        dialBg           = WatchUi.loadResource(Rez.Drawables.dial_bg);
-        imgBattery       = WatchUi.loadResource(Rez.Drawables.icon_battery);
-        imgBatteryRed    = WatchUi.loadResource(Rez.Drawables.icon_battery_red);
-        imgBatteryOrange = WatchUi.loadResource(Rez.Drawables.icon_battery_orange);
-        imgBatteryGreen  = WatchUi.loadResource(Rez.Drawables.icon_battery_green);
-        imgHeart         = WatchUi.loadResource(Rez.Drawables.icon_heart);
-        imgHeartPulse    = WatchUi.loadResource(Rez.Drawables.icon_heart_pulse);
-        imgSteps         = WatchUi.loadResource(Rez.Drawables.icon_steps);
-        imgFlame         = WatchUi.loadResource(Rez.Drawables.icon_flame);
-        imgBluetooth     = WatchUi.loadResource(Rez.Drawables.icon_bluetooth);
-        imgDistance      = WatchUi.loadResource(Rez.Drawables.icon_distance);
-        imgFloors        = WatchUi.loadResource(Rez.Drawables.icon_floors);
-        imgStress        = WatchUi.loadResource(Rez.Drawables.icon_stress);
-        imgAltitude      = WatchUi.loadResource(Rez.Drawables.icon_altitude);
-        imgBarometer     = WatchUi.loadResource(Rez.Drawables.icon_barometer);
+        dialBg = WatchUi.loadResource(Rez.Drawables.dial_bg);
     }
 
     function onShow() {}
@@ -155,9 +141,9 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         }
         var themeId = getPropertyVal("ThemeColor", 1);
         if (themeId == 2) { return 0x00CCCC; }      // Teal / Cyan
-        else if (themeId == 3) { return 0xFF8800; } // Warm Orange
+        else if (themeId == 3) { return 0xFF8800; } // Warm Orange (Pure Orange)
         else if (themeId == 4) { return 0x00FF66; } // Electric Green
-        else if (themeId == 5) { return 0xFFCC00; } // Gold / Yellow
+        else if (themeId == 5) { return 0xFFFF00; } // Gold / Yellow (Pure Bright Yellow)
         else if (themeId == 6) { return 0xFFFFFF; } // Pure White
         return 0xFF3333;                            // Vibrant Red (Default)
     }
@@ -166,135 +152,32 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     // BITMAP ICON DRAWERS (Themed Accent Bitmaps)
     // ─────────────────────────────────────────────────────────────────────
     function loadThemedBitmap(baseName, themeId) {
-        if (baseName.equals("icon_battery")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_battery_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_battery_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_battery_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_battery_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_battery_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_battery_red);
-        }
-        if (baseName.equals("icon_steps")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_steps_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_steps_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_steps_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_steps_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_steps_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_steps_red);
-        }
-        if (baseName.equals("icon_step_goal")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_step_goal_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_step_goal_red);
-        }
-        if (baseName.equals("icon_flame")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_flame_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_flame_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_flame_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_flame_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_flame_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_flame_red);
-        }
-        if (baseName.equals("icon_distance")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_distance_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_distance_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_distance_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_distance_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_distance_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_distance_red);
-        }
-        if (baseName.equals("icon_floors")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_floors_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_floors_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_floors_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_floors_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_floors_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_floors_red);
-        }
-        if (baseName.equals("icon_active_mins")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_active_mins_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_active_mins_red);
-        }
-        if (baseName.equals("icon_stress")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_stress_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_stress_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_stress_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_stress_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_stress_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_stress_red);
-        }
-        if (baseName.equals("icon_bluetooth")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_bluetooth_red);
-        }
-        if (baseName.equals("icon_altitude")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_altitude_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_altitude_red);
-        }
-        if (baseName.equals("icon_barometer")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_barometer_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_barometer_red);
-        }
-        if (baseName.equals("icon_weather_temp")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_weather_temp_red);
-        }
-        if (baseName.equals("icon_weather_cond")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_weather_cond_red);
-        }
-        if (baseName.equals("icon_sunrise")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_sunrise_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_sunrise_red);
-        }
-        if (baseName.equals("icon_sunset")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_sunset_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_sunset_red);
-        }
-        if (baseName.equals("icon_body_battery")) {
-            if (themeId == 2) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_teal); }
-            if (themeId == 3) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_orange); }
-            if (themeId == 4) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_green); }
-            if (themeId == 5) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_gold); }
-            if (themeId == 6) { return WatchUi.loadResource(Rez.Drawables.icon_body_battery_white); }
-            return WatchUi.loadResource(Rez.Drawables.icon_body_battery_red);
-        }
+        if (baseName.equals("icon_battery")) { return getThemeDrawable(Rez.Drawables.icon_battery_red, Rez.Drawables.icon_battery_teal, Rez.Drawables.icon_battery_orange, Rez.Drawables.icon_battery_green, Rez.Drawables.icon_battery_gold, Rez.Drawables.icon_battery_white, themeId); }
+        if (baseName.equals("icon_steps")) { return getThemeDrawable(Rez.Drawables.icon_steps_red, Rez.Drawables.icon_steps_teal, Rez.Drawables.icon_steps_orange, Rez.Drawables.icon_steps_green, Rez.Drawables.icon_steps_gold, Rez.Drawables.icon_steps_white, themeId); }
+        if (baseName.equals("icon_step_goal")) { return getThemeDrawable(Rez.Drawables.icon_step_goal_red, Rez.Drawables.icon_step_goal_teal, Rez.Drawables.icon_step_goal_orange, Rez.Drawables.icon_step_goal_green, Rez.Drawables.icon_step_goal_gold, Rez.Drawables.icon_step_goal_white, themeId); }
+        if (baseName.equals("icon_flame")) { return getThemeDrawable(Rez.Drawables.icon_flame_red, Rez.Drawables.icon_flame_teal, Rez.Drawables.icon_flame_orange, Rez.Drawables.icon_flame_green, Rez.Drawables.icon_flame_gold, Rez.Drawables.icon_flame_white, themeId); }
+        if (baseName.equals("icon_distance")) { return getThemeDrawable(Rez.Drawables.icon_distance_red, Rez.Drawables.icon_distance_teal, Rez.Drawables.icon_distance_orange, Rez.Drawables.icon_distance_green, Rez.Drawables.icon_distance_gold, Rez.Drawables.icon_distance_white, themeId); }
+        if (baseName.equals("icon_floors")) { return getThemeDrawable(Rez.Drawables.icon_floors_red, Rez.Drawables.icon_floors_teal, Rez.Drawables.icon_floors_orange, Rez.Drawables.icon_floors_green, Rez.Drawables.icon_floors_gold, Rez.Drawables.icon_floors_white, themeId); }
+        if (baseName.equals("icon_active_mins")) { return getThemeDrawable(Rez.Drawables.icon_active_mins_red, Rez.Drawables.icon_active_mins_teal, Rez.Drawables.icon_active_mins_orange, Rez.Drawables.icon_active_mins_green, Rez.Drawables.icon_active_mins_gold, Rez.Drawables.icon_active_mins_white, themeId); }
+        if (baseName.equals("icon_stress")) { return getThemeDrawable(Rez.Drawables.icon_stress_red, Rez.Drawables.icon_stress_teal, Rez.Drawables.icon_stress_orange, Rez.Drawables.icon_stress_green, Rez.Drawables.icon_stress_gold, Rez.Drawables.icon_stress_white, themeId); }
+        if (baseName.equals("icon_bluetooth")) { return getThemeDrawable(Rez.Drawables.icon_bluetooth_red, Rez.Drawables.icon_bluetooth_teal, Rez.Drawables.icon_bluetooth_orange, Rez.Drawables.icon_bluetooth_green, Rez.Drawables.icon_bluetooth_gold, Rez.Drawables.icon_bluetooth_white, themeId); }
+        if (baseName.equals("icon_altitude")) { return getThemeDrawable(Rez.Drawables.icon_altitude_red, Rez.Drawables.icon_altitude_teal, Rez.Drawables.icon_altitude_orange, Rez.Drawables.icon_altitude_green, Rez.Drawables.icon_altitude_gold, Rez.Drawables.icon_altitude_white, themeId); }
+        if (baseName.equals("icon_barometer")) { return getThemeDrawable(Rez.Drawables.icon_barometer_red, Rez.Drawables.icon_barometer_teal, Rez.Drawables.icon_barometer_orange, Rez.Drawables.icon_barometer_green, Rez.Drawables.icon_barometer_gold, Rez.Drawables.icon_barometer_white, themeId); }
+        if (baseName.equals("icon_weather_temp")) { return getThemeDrawable(Rez.Drawables.icon_weather_temp_red, Rez.Drawables.icon_weather_temp_teal, Rez.Drawables.icon_weather_temp_orange, Rez.Drawables.icon_weather_temp_green, Rez.Drawables.icon_weather_temp_gold, Rez.Drawables.icon_weather_temp_white, themeId); }
+        if (baseName.equals("icon_weather_cond")) { return getThemeDrawable(Rez.Drawables.icon_weather_cond_red, Rez.Drawables.icon_weather_cond_teal, Rez.Drawables.icon_weather_cond_orange, Rez.Drawables.icon_weather_cond_green, Rez.Drawables.icon_weather_cond_gold, Rez.Drawables.icon_weather_cond_white, themeId); }
+        if (baseName.equals("icon_sunrise")) { return getThemeDrawable(Rez.Drawables.icon_sunrise_red, Rez.Drawables.icon_sunrise_teal, Rez.Drawables.icon_sunrise_orange, Rez.Drawables.icon_sunrise_green, Rez.Drawables.icon_sunrise_gold, Rez.Drawables.icon_sunrise_white, themeId); }
+        if (baseName.equals("icon_sunset")) { return getThemeDrawable(Rez.Drawables.icon_sunset_red, Rez.Drawables.icon_sunset_teal, Rez.Drawables.icon_sunset_orange, Rez.Drawables.icon_sunset_green, Rez.Drawables.icon_sunset_gold, Rez.Drawables.icon_sunset_white, themeId); }
+        if (baseName.equals("icon_body_battery")) { return getThemeDrawable(Rez.Drawables.icon_body_battery_red, Rez.Drawables.icon_body_battery_teal, Rez.Drawables.icon_body_battery_orange, Rez.Drawables.icon_body_battery_green, Rez.Drawables.icon_body_battery_gold, Rez.Drawables.icon_body_battery_white, themeId); }
         return null;
+    }
+
+    function getThemeDrawable(redRes, tealRes, orangeRes, greenRes, goldRes, whiteRes, themeId) {
+        if (themeId == 2) { return WatchUi.loadResource(tealRes); }
+        if (themeId == 3) { return WatchUi.loadResource(orangeRes); }
+        if (themeId == 4) { return WatchUi.loadResource(greenRes); }
+        if (themeId == 5) { return WatchUi.loadResource(goldRes); }
+        if (themeId == 6) { return WatchUi.loadResource(whiteRes); }
+        return WatchUi.loadResource(redRes);
     }
 
     function drawMetricIcon(dc, type, x, y, s) {
@@ -552,12 +435,13 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             }
 
             // 1. Draw Custom Battery Icon in matching color (Red, Orange, or Green)
-            var battBmp = imgBatteryRed;
+            var battRes = Rez.Drawables.icon_battery_red;
             if (battColor == 0xFF8800) {
-                battBmp = imgBatteryOrange;
+                battRes = Rez.Drawables.icon_battery_orange;
             } else if (battColor == 0x00FF66) {
-                battBmp = imgBatteryGreen;
+                battRes = Rez.Drawables.icon_battery_green;
             }
+            var battBmp = WatchUi.loadResource(battRes);
 
             if (battBmp != null) {
                 var iconW = battBmp.getWidth();
@@ -567,7 +451,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
 
             // 2. Draw Battery Percentage Text in battColor
             dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(posX, posY + (7 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            dc.drawText(posX, posY + (5.5 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
             return;
         }
 
@@ -583,7 +467,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         // 2. Bold Value (Crisp White or Dimmed AOD Gray)
         var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
         dc.setColor(valColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(posX, posY + (7 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(posX, posY + (5.5 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 
     function drawDataSlots(dc) {
