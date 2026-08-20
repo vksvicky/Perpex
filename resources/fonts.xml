@@ -1,4 +1,5 @@
 <resources>
+    <font id="CompactFont"     filename="fonts/CompactFont.fnt"    antialias="true" />
     <font id="RalewayXXSmall" filename="fonts/RalewayXXSmall.fnt" antialias="true" />
     <font id="RalewayXSmall"  filename="fonts/RalewayXSmall.fnt"  antialias="true" />
     <font id="RalewayTiny"    filename="fonts/RalewayTiny.fnt"    antialias="true" />
