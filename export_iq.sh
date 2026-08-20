@@ -5,6 +5,7 @@ SDK_PATH="$HOME/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-
 KEY_PATH="developer_key.der"
 OUTPUT_IQ="bin/PerpexTacticalWatchFace.iq"
 MANIFEST_PATH="manifest.xml"
+RELEASE_NOTES_PATH="bin/RELEASE_NOTES.txt"
 
 BUMP_TYPE="$1"
 CUSTOM_VERSION=""
@@ -39,8 +40,10 @@ if [ -z "$BUMP_TYPE" ]; then
     fi
 fi
 
+CURRENT_VERSION="1.0.0"
+
 if [ "$BUMP_TYPE" != "skip" ]; then
-    python3 -c "
+    CURRENT_VERSION=$(python3 -c "
 import re
 
 manifest_path = '$MANIFEST_PATH'
@@ -69,14 +72,21 @@ if match:
     with open(manifest_path, 'w') as f:
         f.write(new_content)
         
-    print(f'🏷️  Version updated in manifest.xml: {old_version} -> {new_version}')
+    print(new_version)
 else:
-    print('⚠️ Could not parse version in manifest.xml')
-"
+    print('1.0.0')
+")
+else
+    CURRENT_VERSION=$(python3 -c "
+import re
+with open('$MANIFEST_PATH', 'r') as f:
+    match = re.search(r'version=\"(\d+\.\d+\.\d+)\"', f.read())
+    print(match.group(1) if match else '1.0.0')
+")
 fi
 
 echo "========================================================"
-echo "📦 EXPORTING GARMIN CONNECT IQ STORE PACKAGE (.iq)"
+echo "📦 EXPORTING GARMIN CONNECT IQ STORE PACKAGE (v$CURRENT_VERSION)"
 echo "========================================================"
 
 if [ ! -f "$KEY_PATH" ]; then
@@ -90,9 +100,40 @@ mkdir -p bin
 echo "🚀 Compiling multi-device store package with monkeyc..."
 "$SDK_PATH/bin/monkeyc" -e -y "$KEY_PATH" -o "$OUTPUT_IQ" -f monkey.jungle -r
 
+# ─────────────────────────────────────────────────────────────────────────────
+# GENERATE COPY-PASTE GARMIN STORE RELEASE NOTES
+# ─────────────────────────────────────────────────────────────────────────────
+python3 -c "
+import subprocess
+
+version = '$CURRENT_VERSION'
+out_path = '$RELEASE_NOTES_PATH'
+
+try:
+    git_logs = subprocess.check_output(['git', 'log', '-n', '5', '--pretty=format:- %s'], text=True).strip()
+except Exception:
+    git_logs = '- Performance and stability improvements.'
+
+notes = f'''Perpex v{version} Release Notes:
+{git_logs}
+
+- Optimized high-resolution display rendering.
+- Enhanced color theme contrasts & metric slot legibility.
+'''
+
+with open(out_path, 'w') as f:
+    f.write(notes)
+"
+
 echo ""
 echo "========================================================"
 echo "SUCCESS! Production Store Package Created:"
 echo "Location: $OUTPUT_IQ"
 echo "Size: $(du -h "$OUTPUT_IQ" | cut -f1)"
 echo "========================================================"
+echo ""
+echo "📋 GARMIN CONNECT IQ STORE RELEASE NOTES (COPY & PASTE):"
+echo "--------------------------------------------------------"
+cat "$RELEASE_NOTES_PATH"
+echo "--------------------------------------------------------"
+echo "Saved to: $RELEASE_NOTES_PATH"

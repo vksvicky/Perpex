@@ -430,12 +430,12 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             if (battBmp != null) {
                 var iconW = battBmp.getWidth();
                 var iconH = battBmp.getHeight();
-                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - (10 * s)) - iconH / 2).toNumber(), battBmp);
+                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - (13 * s)) - iconH / 2).toNumber(), battBmp);
             }
 
             // 2. Draw Battery Percentage Text in battColor
             dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(posX, posY + (7 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
             return;
         }
 
@@ -446,12 +446,12 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var valStr = data[0];
 
         // 1. Icon (Themed Accent)
-        drawMetricIcon(dc, slotType, posX, posY - (10 * s).toNumber(), s);
+        drawMetricIcon(dc, slotType, posX, posY - (13 * s).toNumber(), s);
 
         // 2. Bold Value (Crisp White or Dimmed AOD Gray)
         var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
         dc.setColor(valColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(posX, posY + (7 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 
     function drawDataSlots(dc) {
