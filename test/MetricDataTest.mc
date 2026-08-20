@@ -106,4 +106,25 @@ class MetricDataTest {
         
         return true;
     }
+
+    (:test)
+    static function testSolarIconUILogic(logger as Test.Logger) as Lang.Boolean {
+        logger.debug("Testing Solar Icon UI Logic for all 24 hours...");
+
+        // 00:00 to 11:59 AM should be Sunrise
+        for (var i = 0; i <= 11; i++) {
+            var icon = GarminBasicWatchFaceView.getSolarIcon(i);
+            Test.assertMessage(icon.equals("icon_sunrise"), "Hour " + i + " should return icon_sunrise");
+        }
+        logger.debug("Morning hours (0-11) correctly mapped to icon_sunrise.");
+
+        // 12:00 PM to 23:59 PM should be Sunset
+        for (var i = 12; i <= 23; i++) {
+            var icon = GarminBasicWatchFaceView.getSolarIcon(i);
+            Test.assertMessage(icon.equals("icon_sunset"), "Hour " + i + " should return icon_sunset");
+        }
+        logger.debug("Afternoon/Evening hours (12-23) correctly mapped to icon_sunset.");
+
+        return true;
+    }
 }

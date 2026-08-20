@@ -1,5 +1,6 @@
 using Toybox.WatchUi;
 using Toybox.Graphics;
+using Toybox.Lang;
 using Toybox.System;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
@@ -202,12 +203,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         else if (type == 14) { bmp = loadThemedBitmap("icon_weather_temp", themeId); }
         else if (type == 15) { bmp = loadThemedBitmap("icon_weather_cond", themeId); }
         else if (type == 16) {
-            var isSunrise = true;
             var nowInfo = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-            if (nowInfo.hour >= 12) {
-                isSunrise = false;
-            }
-            bmp = loadThemedBitmap(isSunrise ? "icon_sunrise" : "icon_sunset", themeId);
+            bmp = loadThemedBitmap(getSolarIcon(nowInfo.hour), themeId);
         }
         else if (type == 17) { bmp = loadThemedBitmap("icon_body_battery", themeId); }
         else if (type == 18) { bmp = loadThemedBitmap("icon_sunrise", themeId); }
@@ -728,5 +725,13 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         dc.fillCircle(centerX, centerY, (4.5 * s).toNumber());
         dc.setColor(COLOR_BG, Graphics.COLOR_TRANSPARENT);
         dc.fillCircle(centerX, centerY, (2.0 * s).toNumber());
+    }
+
+    // Extracted for UI Logic Testing: 0000-1159am is sunrise and 1200-2359 is sunset
+    static function getSolarIcon(hour as Lang.Number) as Lang.String {
+        if (hour >= 12) {
+            return "icon_sunset";
+        }
+        return "icon_sunrise";
     }
 }
