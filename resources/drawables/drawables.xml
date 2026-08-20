@@ -1,5 +1,6 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="images/launcher_icon.png" />
+    <bitmap id="dial_bg" filename="../../resources-round-260x260/drawables/dial_bg.png" />
     <bitmap id="icon_battery" filename="../../resources-round-416x416/drawables/icon_battery.png" />
     <bitmap id="icon_battery_red" filename="../../resources-round-416x416/drawables/icon_battery_red.png" />
     <bitmap id="icon_battery_teal" filename="../../resources-round-416x416/drawables/icon_battery_teal.png" />
