@@ -78,9 +78,11 @@ Here are the official real-device simulator screenshots taken across supported w
 
 ## ⚙️ Submission Checklist for Garmin Developer Dashboard:
 - [x] **App Name**: `Perpex`
+- [x] **App ID**: `bd57c3bccf764485b28dd4fcc24a9f02` *(Verified & Signed by Garmin)*
+- [x] **App Version**: `1.0.0` *(Verified)*
+- [x] **App File (.iq)**: `bin/PerpexTacticalWatchFace.iq` *(Status: Verified, Signature: Verified)*
 - [x] **App Icon**: `resources/drawables/launcher_icon.png` (40x40 PNG)
-- [x] **App Version**: `1.0.0`
 - [x] **Screenshots Uploaded**: 8 Real-Device Screenshots (Epix 2, Fenix 7, Enduro 3, Fenix 8)
 - [x] **Category**: Watch Face
 - [x] **Min SDK Version**: `4.0.0`
-- [x] **Exported PRG/IQ File**: `bin/PerpexTacticalWatchFace.iq` *(Built & Ready for Store Upload)*
+- [x] **Verified Compatible Devices**: D2 Mach 1 Pro, Enduro 2/3, Forerunner 255/255 Music/965, Venu 2/2 Plus/2S/3/3S/Sq 2, Epix Gen 2/Pro (42/47/51mm), Fenix 7/7 Pro/7S/7S Pro/7X/7X Pro, Fenix 8 AMOLED (43/47/51mm), Fenix 8 Solar (47/51mm), Fenix E, Tactix 7/8.
