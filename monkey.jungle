@@ -1,3 +1,3 @@
 project.manifest = manifest.xml
-base.resourcePath = resources
+base.resourcePath = resources;resources/resources-round-260x260;resources/resources-round-280x280;resources/resources-round-390x390;resources/resources-round-416x416;resources/resources-round-454x454
 base.sourcePath = source
