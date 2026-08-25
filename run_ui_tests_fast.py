@@ -10,11 +10,11 @@ OUTPUT_DIR = "test_output/screenshots"
 REPORT_PATH = "test_output/visual_report.html"
 
 DEVICES = [
-    ("fenix7", "260x260 MIP Solar", "Fenix 7 / Fenix 9 Pro Solar 47mm"),
-    ("enduro3", "280x280 MIP Solar", "Enduro 3 / Fenix 9 Pro Solar 51mm"),
+    ("fenix7", "260x260 MIP", "Fenix 7 / FR255"),
+    ("enduro3", "280x280 MIP", "Enduro 3 / Fenix 7X"),
     ("epix2pro42mm", "390x390 AMOLED", "Epix 2 Pro 42mm"),
     ("epix2", "416x416 AMOLED", "Epix Gen 2 47mm"),
-    ("fenix847mm", "454x454 AMOLED", "Fenix 8 / Fenix 9 Pro 47mm"),
+    ("fenix847mm", "454x454 AMOLED", "Fenix 8 47mm"),
     ("venusq2", "320x360 AMOLED", "Venu Sq 2")
 ]
 
@@ -100,7 +100,9 @@ def get_simulator_window_bounds():
 
 report_rows = []
 
-print("Connect IQ Simulator should already be running (managed by run_tests.sh).")
+print("Starting Connect IQ Simulator...")
+subprocess.run(["open", os.path.join(SDK_PATH, "bin", "ConnectIQ.app")])
+time.sleep(10) # Give simulator time to boot up initially
 
 for dev_id, res_info, dev_name in DEVICES:
     print(f"\n📱 Generating Visual UI Snapshot for: {dev_name} ({dev_id})...")
