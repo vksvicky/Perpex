@@ -45,8 +45,21 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         radius  = (w < h ? w : h) / 2;
         
         dialBg = WatchUi.loadResource(Rez.Drawables.dial_bg);
-        if (w == 320) {
-            customVenuFont = WatchUi.loadResource(Rez.Fonts.Raleway_Native);
+
+        // Resolution to Font mapping
+        var fontMap = {
+            260 => Rez.Fonts.Raleway_XXSmall_10, // Fenix 7
+            280 => Rez.Fonts.Raleway_XSmall_8,  // Enduro 3, Fenix 7X
+            320 => Rez.Fonts.Raleway_Medium_14, // Venu 3
+            390 => Rez.Fonts.Raleway_Large_16,
+            416 => Rez.Fonts.Raleway_XLarge_18,
+            454 => Rez.Fonts.Raleway_Native_20
+        };
+
+        if (fontMap.hasKey(w)) {
+            customVenuFont = WatchUi.loadResource(fontMap[w]);
+        } else {
+            customVenuFont = null;
         }
     }
 
