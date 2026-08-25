@@ -17,7 +17,7 @@ class SlotPositioningTest {
         ];
         for (var i = 1; i <= 7; i++) {
             var x = GarminBasicWatchFaceView.getSlotX(i, 260, 0);
-            var y = GarminBasicWatchFaceView.getSlotY(i, 260, 0);
+            var y = GarminBasicWatchFaceView.getSlotY(i, 260, 260, 0);
             Test.assertEqualMessage(x, exp260[i-1][0], "260x260 Slot " + i + " X changed!");
             Test.assertEqualMessage(y, exp260[i-1][1], "260x260 Slot " + i + " Y changed!");
         }
@@ -28,7 +28,7 @@ class SlotPositioningTest {
         ];
         for (var i = 1; i <= 7; i++) {
             var x = GarminBasicWatchFaceView.getSlotX(i, 280, 0);
-            var y = GarminBasicWatchFaceView.getSlotY(i, 280, 0);
+            var y = GarminBasicWatchFaceView.getSlotY(i, 280, 280, 0);
             Test.assertEqualMessage(x, exp280[i-1][0], "280x280 Slot " + i + " X changed!");
             Test.assertEqualMessage(y, exp280[i-1][1], "280x280 Slot " + i + " Y changed!");
         }
@@ -39,17 +39,30 @@ class SlotPositioningTest {
             var w = resolutions[i];
             var centerX = w / 2;
             var centerY = w / 2;
-            var s = w / 260.0;
             var radius = w / 2;
             
             for (var slotId = 1; slotId <= 7; slotId++) {
                 var sx = GarminBasicWatchFaceView.getSlotX(slotId, w, 0);
-                var sy = GarminBasicWatchFaceView.getSlotY(slotId, w, 0);
+                var sy = GarminBasicWatchFaceView.getSlotY(slotId, w, w, 0);
                 
                 // Ensure slot is strictly within screen boundaries
                 var dist = Math.sqrt(Math.pow(sx - centerX, 2) + Math.pow(sy - centerY, 2));
                 Test.assertMessage(dist < radius, "Slot " + slotId + " exceeds bounds on " + w + "x" + w);
             }
+        }
+        
+        // 4. Verification for rectangular Venu Sq 2 (320x360)
+        var sq2_w = 320;
+        var sq2_h = 360;
+        var sq2_cx = sq2_w / 2;
+        var sq2_cy = sq2_h / 2;
+        var sq2_radius = 160; // Concentric rings are constrained by width
+        for (var slotId = 1; slotId <= 7; slotId++) {
+            var sx = GarminBasicWatchFaceView.getSlotX(slotId, sq2_w, 0);
+            var sy = GarminBasicWatchFaceView.getSlotY(slotId, sq2_w, sq2_h, 0);
+            
+            var dist = Math.sqrt(Math.pow(sx - sq2_cx, 2) + Math.pow(sy - sq2_cy, 2));
+            Test.assertMessage(dist < sq2_radius, "Slot " + slotId + " exceeds bounds on 320x360!");
         }
 
         return true;

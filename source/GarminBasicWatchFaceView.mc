@@ -469,6 +469,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
 
     function drawDataSlots(dc, aodOffsetX, aodOffsetY) {
         var w = dc.getWidth();
+        var h = dc.getHeight();
         var scale = w / 260.0;
         var s = scale;
 
@@ -482,17 +483,17 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
 
         var sc = getSlotScale(w);
         
-        drawSingleDataSlot(dc, s1, getSlotX(1, w, aodOffsetX), getSlotY(1, w, aodOffsetY), sc);
-        drawSingleDataSlot(dc, s2, getSlotX(2, w, aodOffsetX), getSlotY(2, w, aodOffsetY), sc);
-        drawSingleDataSlot(dc, s3, getSlotX(3, w, aodOffsetX), getSlotY(3, w, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s1, getSlotX(1, w, aodOffsetX), getSlotY(1, w, h, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s2, getSlotX(2, w, aodOffsetX), getSlotY(2, w, h, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s3, getSlotX(3, w, aodOffsetX), getSlotY(3, w, h, aodOffsetY), sc);
         
         if (s4 != 0) { 
-            drawMetricIcon(dc, s4, getSlotX(4, w, aodOffsetX), getSlotY(4, w, aodOffsetY), sc); 
+            drawMetricIcon(dc, s4, getSlotX(4, w, aodOffsetX), getSlotY(4, w, h, aodOffsetY), sc); 
         }
         
-        drawSingleDataSlot(dc, s5, getSlotX(5, w, aodOffsetX), getSlotY(5, w, aodOffsetY), sc);
-        drawSingleDataSlot(dc, s6, getSlotX(6, w, aodOffsetX), getSlotY(6, w, aodOffsetY), sc);
-        drawSingleDataSlot(dc, s7, getSlotX(7, w, aodOffsetX), getSlotY(7, w, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s5, getSlotX(5, w, aodOffsetX), getSlotY(5, w, h, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s6, getSlotX(6, w, aodOffsetX), getSlotY(6, w, h, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s7, getSlotX(7, w, aodOffsetX), getSlotY(7, w, h, aodOffsetY), sc);
     }
 
     // ─────────────────────────────────────────────────────────────────────
@@ -773,9 +774,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         return centerX;
     }
 
-    static function getSlotY(slotId as Lang.Number, h as Lang.Number, offsetY as Lang.Number) as Lang.Number {
+    static function getSlotY(slotId as Lang.Number, w as Lang.Number, h as Lang.Number, offsetY as Lang.Number) as Lang.Number {
         var centerY = (h / 2) + offsetY;
-        var w = h; // Since displays are round, w == h
         var s = w / 260.0;
         
         switch (w) {
