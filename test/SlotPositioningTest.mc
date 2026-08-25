@@ -12,11 +12,11 @@ class SlotPositioningTest {
         logger.debug("Testing Slot Coordinates & Scaling Math across all 5 Resolution Classes...");
 
         var resolutions = [
-            [260, 260], // Fenix 7 / FR255
-            [280, 280], // Enduro 3 / Fenix 7X
-            [390, 390], // Epix 2 Pro 42mm
+            [260, 260], // Fenix 7 / Fenix 9 Pro Solar 47mm / FR255
+            [280, 280], // Enduro 3 / Fenix 9 Pro Solar 51mm / Fenix 7X
+            [390, 390], // Epix 2 Pro 42mm / Fenix 8 43mm
             [416, 416], // Epix Gen 2 47mm / Venu 3
-            [454, 454]  // Fenix 8 47mm/51mm / Epix Pro 51mm
+            [454, 454]  // Fenix 8 / Fenix 9 Pro 47mm/51mm / Epix Pro 51mm
         ];
 
         for (var i = 0; i < resolutions.size(); i++) {

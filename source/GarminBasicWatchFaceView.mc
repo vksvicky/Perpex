@@ -461,28 +461,43 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var s6 = getPropertyVal("Slot6Metric", 14); // Lower-Right (Weather Temp)
         var s7 = getPropertyVal("Slot7Metric", 5);  // Bottom Center (Calories)
 
-        // Slot 1: Top Center (12 o'clock)
-        drawSingleDataSlot(dc, s1, centerX, centerY - (48 * s).toNumber(), s);
-
-        // Slot 2: Upper-Left (10 o'clock - Heart Rate)
-        drawSingleDataSlot(dc, s2, centerX - (50 * s).toNumber(), centerY - (30 * s).toNumber(), s);
-
-        // Slot 3: Upper-Right (2 o'clock - Steps shifted slightly inward to clear MON cleanly)
-        drawSingleDataSlot(dc, s3, centerX + (46 * s).toNumber(), centerY - (30 * s).toNumber(), s);
-
-        // Slot 4: Center Badge (just under pin)
-        if (s4 != 0) {
-            drawMetricIcon(dc, s4, centerX, centerY + (16 * s).toNumber(), s);
+        // Draw data slots using a switch statement for pixel-perfect resolution tuning
+        switch (w) {
+            case 260:
+                // Specific tuning for 260x260 (Fenix 7 / Fenix 9 Pro Solar 47mm)
+                // Shifted inward to avoid overlapping the inner weekday ring (radius 75px)
+                drawSingleDataSlot(dc, s1, centerX, centerY - 48, 1.0);
+                drawSingleDataSlot(dc, s2, centerX - 44, centerY - 26, 1.0);
+                drawSingleDataSlot(dc, s3, centerX + 40, centerY - 26, 1.0);
+                if (s4 != 0) { drawMetricIcon(dc, s4, centerX, centerY + 16, 1.0); }
+                drawSingleDataSlot(dc, s5, centerX - 44, centerY + 36, 1.0);
+                drawSingleDataSlot(dc, s6, centerX + 44, centerY + 36, 1.0);
+                drawSingleDataSlot(dc, s7, centerX, centerY + 54, 1.0);
+                break;
+                
+            case 280:
+                // Specific tuning for 280x280 (Enduro 3 / Fenix 9 Pro Solar 51mm)
+                var s280 = 280.0 / 260.0;
+                drawSingleDataSlot(dc, s1, centerX, centerY - 52, s280);
+                drawSingleDataSlot(dc, s2, centerX - 47, centerY - 28, s280);
+                drawSingleDataSlot(dc, s3, centerX + 43, centerY - 28, s280);
+                if (s4 != 0) { drawMetricIcon(dc, s4, centerX, centerY + 17, s280); }
+                drawSingleDataSlot(dc, s5, centerX - 47, centerY + 39, s280);
+                drawSingleDataSlot(dc, s6, centerX + 47, centerY + 39, s280);
+                drawSingleDataSlot(dc, s7, centerX, centerY + 58, s280);
+                break;
+                
+            default:
+                // Existing proportional dynamic formula for 390, 416, 454 (AMOLED models)
+                drawSingleDataSlot(dc, s1, centerX, centerY - (48 * s).toNumber(), s);
+                drawSingleDataSlot(dc, s2, centerX - (50 * s).toNumber(), centerY - (30 * s).toNumber(), s);
+                drawSingleDataSlot(dc, s3, centerX + (46 * s).toNumber(), centerY - (30 * s).toNumber(), s);
+                if (s4 != 0) { drawMetricIcon(dc, s4, centerX, centerY + (16 * s).toNumber(), s); }
+                drawSingleDataSlot(dc, s5, centerX - (50 * s).toNumber(), centerY + (40 * s).toNumber(), s);
+                drawSingleDataSlot(dc, s6, centerX + (50 * s).toNumber(), centerY + (40 * s).toNumber(), s);
+                drawSingleDataSlot(dc, s7, centerX, centerY + (54 * s).toNumber(), s);
+                break;
         }
-
-        // Slot 5: Lower-Left (8 o'clock - Sunrise)
-        drawSingleDataSlot(dc, s5, centerX - (50 * s).toNumber(), centerY + (40 * s).toNumber(), s);
-
-        // Slot 6: Lower-Right (4 o'clock - Weather Temp)
-        drawSingleDataSlot(dc, s6, centerX + (50 * s).toNumber(), centerY + (40 * s).toNumber(), s);
-
-        // Slot 7: Bottom Center (6 o'clock)
-        drawSingleDataSlot(dc, s7, centerX, centerY + (54 * s).toNumber(), s);
     }
 
     // ─────────────────────────────────────────────────────────────────────

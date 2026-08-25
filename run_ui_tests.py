@@ -10,11 +10,11 @@ OUTPUT_DIR = "test_output/screenshots"
 REPORT_PATH = "test_output/visual_report.html"
 
 DEVICES = [
-    ("fenix7", "260x260 MIP", "Fenix 7 / FR255"),
-    ("enduro3", "280x280 MIP", "Enduro 3 / Fenix 7X"),
+    ("fenix7", "260x260 MIP Solar", "Fenix 7 / Fenix 9 Pro Solar 47mm"),
+    ("enduro3", "280x280 MIP Solar", "Enduro 3 / Fenix 9 Pro Solar 51mm"),
     ("epix2pro42mm", "390x390 AMOLED", "Epix 2 Pro 42mm"),
     ("epix2", "416x416 AMOLED", "Epix Gen 2 47mm"),
-    ("fenix847mm", "454x454 AMOLED", "Fenix 8 47mm")
+    ("fenix847mm", "454x454 AMOLED", "Fenix 8 / Fenix 9 Pro 47mm")
 ]
 
 SCENARIOS = [

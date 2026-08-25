@@ -20,6 +20,14 @@
             <iq:product id="fenix847mm"/>
             <iq:product id="fenix8solar47mm"/>
             <iq:product id="fenix8solar51mm"/>
+
+            <!-- Fenix 9 Series -->
+            <iq:product id="fenix9"/>
+            <iq:product id="fenix9pro47mm"/>
+            <iq:product id="fenix9pro51mm"/>
+            <iq:product id="fenix9solar47mm"/>
+            <iq:product id="fenix9solar51mm"/>
+
             <iq:product id="fenixe"/>
             <iq:product id="venu2"/>
             <iq:product id="venu2plus"/>

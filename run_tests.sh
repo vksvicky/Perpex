@@ -9,7 +9,19 @@ DEVICES=("fenix7" "enduro3" "epix2pro42mm" "epix2" "fenix847mm")
 
 MODE="${1:-unit}"
 
-if [ "$MODE" = "ui" ]; then
+if [ "$MODE" = "--help" ] || [ "$MODE" = "-h" ] || [ "$MODE" = "help" ]; then
+    echo "Usage: ./run_tests.sh [mode] [options]"
+    echo ""
+    echo "Modes:"
+    echo "  unit         : Runs the headless logic/unit assertions (default)."
+    echo "  ui           : Runs the exhaustive Python visual test harness that generates"
+    echo "                 visual_report.html and captures the properly-sized screenshots."
+    echo "  sim <device> : Compiles the normal watch face (with the UI, no test flags)"
+    echo "                 and launches it directly in the Simulator (e.g. sim fenix7)."
+    echo "                 This will immediately show you the watch face (avoiding the blank screen)."
+    echo "  help         : Show this help message."
+    exit 0
+elif [ "$MODE" = "ui" ]; then
     echo "========================================================"
     echo "📸 STARTING VISUAL UI SNAPSHOT TESTS"
     echo "========================================================"
@@ -34,10 +46,8 @@ elif [ "$MODE" = "sim" ]; then
     "$SDK_PATH/bin/monkeydo" "bin/GarminWatchFace.prg" "$TARGET_DEV"
     exit 0
 elif [ "$MODE" != "unit" ]; then
-    echo "Usage: ./run_tests.sh [unit | ui | sim <device>]"
-    echo "  unit : Run headless logic unit tests (default)"
-    echo "  ui   : Run visual UI snapshot tests"
-    echo "  sim  : Compile and launch normal watchface in simulator"
+    echo "Error: Unknown mode '$MODE'"
+    echo "Run './run_tests.sh --help' for usage."
     exit 1
 fi
 
