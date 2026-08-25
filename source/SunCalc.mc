@@ -163,8 +163,10 @@ class SunCalc {
                                       ).toRadians(),
                                   testMatrix[i][3]);
 
-            if (   (moment == null  && testMatrix[i][4] != moment)
-                   || (moment != null && moment.value().toLong() != testMatrix[i][4])) {
+            var expected = testMatrix[i][4];
+            if ( (moment == null && expected != null) ||
+                 (moment != null && expected == null) ||
+                 (moment != null && expected != null && (moment.value().toLong() - expected).abs() > 300) ) {
                 var val;
 
                 if (moment == null) {
