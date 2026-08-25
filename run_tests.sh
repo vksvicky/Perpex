@@ -7,6 +7,40 @@ OUTPUT_PRG="bin/GarminWatchFaceTest.prg"
 
 DEVICES=("fenix7" "enduro3" "epix2pro42mm" "epix2" "fenix847mm")
 
+MODE="${1:-unit}"
+
+if [ "$MODE" = "ui" ]; then
+    echo "========================================================"
+    echo "📸 STARTING VISUAL UI SNAPSHOT TESTS"
+    echo "========================================================"
+    python3 run_ui_tests.py
+    exit 0
+elif [ "$MODE" = "sim" ]; then
+    TARGET_DEV="${2:-fenix7}"
+    echo "========================================================"
+    echo "⌚ LAUNCHING NORMAL WATCHFACE IN SIMULATOR ($TARGET_DEV)"
+    echo "========================================================"
+    mkdir -p bin
+    echo "Starting Connect IQ Simulator..."
+    killall simulator 2>/dev/null || true
+    sleep 1
+    "$SDK_PATH/bin/connectiq" &
+    sleep 5
+    
+    echo "Compiling for $TARGET_DEV..."
+    "$SDK_PATH/bin/monkeyc" -f monkey.jungle -o "bin/GarminWatchFace.prg" -d "$TARGET_DEV" -y "$KEY_PATH"
+    
+    echo "Launching in Simulator..."
+    "$SDK_PATH/bin/monkeydo" "bin/GarminWatchFace.prg" "$TARGET_DEV"
+    exit 0
+elif [ "$MODE" != "unit" ]; then
+    echo "Usage: ./run_tests.sh [unit | ui | sim <device>]"
+    echo "  unit : Run headless logic unit tests (default)"
+    echo "  ui   : Run visual UI snapshot tests"
+    echo "  sim  : Compile and launch normal watchface in simulator"
+    exit 1
+fi
+
 echo "========================================================"
 echo "🧪 PERPEX COMPREHENSIVE UNIT & LOGIC TEST RUNNER"
 echo "========================================================"
