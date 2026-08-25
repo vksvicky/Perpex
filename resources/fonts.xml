@@ -6,4 +6,6 @@
     <font id="RalewayMedium"  filename="fonts/RalewayMedium.fnt"  antialias="true" />
     <font id="RalewayLarge"   filename="fonts/RalewayLarge.fnt"   antialias="true" />
     <font id="RalewayXLarge"  filename="fonts/RalewayXLarge.fnt"  antialias="true" />
+    <font id="Raleway_22" filename="fonts/Raleway_22.fnt" antialias="true" />
+    <font id="Raleway_Native" filename="fonts/Raleway_Native.fnt" antialias="true" />
 </resources>

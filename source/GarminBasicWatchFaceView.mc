@@ -29,6 +29,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     private const COLOR_PIN        = 0x888888;
 
     var dialBg;
+    var customVenuFont = null;
 
     private var isLowPower = false;
 
@@ -44,6 +45,9 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         radius  = (w < h ? w : h) / 2;
         
         dialBg = WatchUi.loadResource(Rez.Drawables.dial_bg);
+        if (w == 320) {
+            customVenuFont = WatchUi.loadResource(Rez.Fonts.Raleway_Native);
+        }
     }
 
     function onShow() {}
@@ -402,6 +406,9 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         if (slotType == 0) { return; }
 
         var fontValue = Graphics.FONT_XTINY;
+        if (dc.getWidth() == 320 && customVenuFont != null) {
+            fontValue = customVenuFont;
+        }
 
         // ─────────────────────────────────────────────────────────────────
         // BATTERY SLOT: CHARGING ANIMATION & RED-ORANGE-GREEN GRADIENT
