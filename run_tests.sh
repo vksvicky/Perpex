@@ -44,7 +44,7 @@ elif [ "$MODE" = "sim" ]; then
     killall simulator 2>/dev/null || true
     sleep 1
     "$SDK_PATH/bin/connectiq" &
-    sleep 5
+    sleep 10
     
     echo "Compiling for $TARGET_DEV..."
     "$SDK_PATH/bin/monkeyc" -f monkey.jungle -o "bin/GarminWatchFace.prg" -d "$TARGET_DEV" -y "$KEY_PATH"

@@ -16,8 +16,8 @@ class SlotPositioningTest {
             [130, 82], [86, 104], [170, 104], [130, 146], [94, 160], [166, 160], [130, 184]
         ];
         for (var i = 1; i <= 7; i++) {
-            var x = GarminBasicWatchFaceView.getSlotX(i, 260);
-            var y = GarminBasicWatchFaceView.getSlotY(i, 260);
+            var x = GarminBasicWatchFaceView.getSlotX(i, 260, 0);
+            var y = GarminBasicWatchFaceView.getSlotY(i, 260, 0);
             Test.assertEqualMessage(x, exp260[i-1][0], "260x260 Slot " + i + " X changed!");
             Test.assertEqualMessage(y, exp260[i-1][1], "260x260 Slot " + i + " Y changed!");
         }
@@ -27,8 +27,8 @@ class SlotPositioningTest {
             [140, 88], [93, 112], [183, 112], [140, 157], [101, 172], [179, 172], [140, 198]
         ];
         for (var i = 1; i <= 7; i++) {
-            var x = GarminBasicWatchFaceView.getSlotX(i, 280);
-            var y = GarminBasicWatchFaceView.getSlotY(i, 280);
+            var x = GarminBasicWatchFaceView.getSlotX(i, 280, 0);
+            var y = GarminBasicWatchFaceView.getSlotY(i, 280, 0);
             Test.assertEqualMessage(x, exp280[i-1][0], "280x280 Slot " + i + " X changed!");
             Test.assertEqualMessage(y, exp280[i-1][1], "280x280 Slot " + i + " Y changed!");
         }
@@ -43,8 +43,8 @@ class SlotPositioningTest {
             var radius = w / 2;
             
             for (var slotId = 1; slotId <= 7; slotId++) {
-                var sx = GarminBasicWatchFaceView.getSlotX(slotId, w);
-                var sy = GarminBasicWatchFaceView.getSlotY(slotId, w);
+                var sx = GarminBasicWatchFaceView.getSlotX(slotId, w, 0);
+                var sy = GarminBasicWatchFaceView.getSlotY(slotId, w, 0);
                 
                 // Ensure slot is strictly within screen boundaries
                 var dist = Math.sqrt(Math.pow(sx - centerX, 2) + Math.pow(sy - centerY, 2));

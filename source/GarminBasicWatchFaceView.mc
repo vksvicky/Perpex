@@ -62,11 +62,30 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var now       = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var clockTime = System.getClockTime();
 
+        var w = dc.getWidth();
+        var h = dc.getHeight();
+        centerX = w / 2;
+        centerY = h / 2;
+        
+        var aodOffsetX = 0;
+        var aodOffsetY = 0;
+        
+        if (isLowPower) {
+            var shiftState = clockTime.min % 4; // 0, 1, 2, 3
+            if (shiftState == 0) { aodOffsetX = -2; aodOffsetY = -2; }
+            else if (shiftState == 1) { aodOffsetX = 2; aodOffsetY = -2; }
+            else if (shiftState == 2) { aodOffsetX = 2; aodOffsetY = 2; }
+            else if (shiftState == 3) { aodOffsetX = -2; aodOffsetY = 2; }
+            
+            centerX += aodOffsetX;
+            centerY += aodOffsetY;
+        }
+
         dc.setColor(COLOR_BG, COLOR_BG);
         dc.clear();
 
         drawConcentricRings(dc, now);
-        drawDataSlots(dc);
+        drawDataSlots(dc, aodOffsetX, aodOffsetY);
         drawHands(dc, clockTime.hour, clockTime.min, clockTime.sec);
     }
 
@@ -448,7 +467,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 
-    function drawDataSlots(dc) {
+    function drawDataSlots(dc, aodOffsetX, aodOffsetY) {
         var w = dc.getWidth();
         var scale = w / 260.0;
         var s = scale;
@@ -463,17 +482,17 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
 
         var sc = getSlotScale(w);
         
-        drawSingleDataSlot(dc, s1, getSlotX(1, w), getSlotY(1, w), sc);
-        drawSingleDataSlot(dc, s2, getSlotX(2, w), getSlotY(2, w), sc);
-        drawSingleDataSlot(dc, s3, getSlotX(3, w), getSlotY(3, w), sc);
+        drawSingleDataSlot(dc, s1, getSlotX(1, w, aodOffsetX), getSlotY(1, w, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s2, getSlotX(2, w, aodOffsetX), getSlotY(2, w, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s3, getSlotX(3, w, aodOffsetX), getSlotY(3, w, aodOffsetY), sc);
         
         if (s4 != 0) { 
-            drawMetricIcon(dc, s4, getSlotX(4, w), getSlotY(4, w), sc); 
+            drawMetricIcon(dc, s4, getSlotX(4, w, aodOffsetX), getSlotY(4, w, aodOffsetY), sc); 
         }
         
-        drawSingleDataSlot(dc, s5, getSlotX(5, w), getSlotY(5, w), sc);
-        drawSingleDataSlot(dc, s6, getSlotX(6, w), getSlotY(6, w), sc);
-        drawSingleDataSlot(dc, s7, getSlotX(7, w), getSlotY(7, w), sc);
+        drawSingleDataSlot(dc, s5, getSlotX(5, w, aodOffsetX), getSlotY(5, w, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s6, getSlotX(6, w, aodOffsetX), getSlotY(6, w, aodOffsetY), sc);
+        drawSingleDataSlot(dc, s7, getSlotX(7, w, aodOffsetX), getSlotY(7, w, aodOffsetY), sc);
     }
 
     // ─────────────────────────────────────────────────────────────────────
@@ -718,8 +737,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         dc.fillCircle(centerX, centerY, (2.0 * s).toNumber());
     }
 
-    static function getSlotX(slotId as Lang.Number, w as Lang.Number) as Lang.Number {
-        var centerX = w / 2;
+    static function getSlotX(slotId as Lang.Number, w as Lang.Number, offsetX as Lang.Number) as Lang.Number {
+        var centerX = (w / 2) + offsetX;
         var s = w / 260.0;
         
         switch (w) {
@@ -754,8 +773,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         return centerX;
     }
 
-    static function getSlotY(slotId as Lang.Number, h as Lang.Number) as Lang.Number {
-        var centerY = h / 2;
+    static function getSlotY(slotId as Lang.Number, h as Lang.Number, offsetY as Lang.Number) as Lang.Number {
+        var centerY = (h / 2) + offsetY;
         var w = h; // Since displays are round, w == h
         var s = w / 260.0;
         
