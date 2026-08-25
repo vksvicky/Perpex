@@ -25,6 +25,11 @@ elif [ "$MODE" = "ui" ]; then
     echo "========================================================"
     echo "📸 STARTING VISUAL UI SNAPSHOT TESTS"
     echo "========================================================"
+    echo "Starting Connect IQ Simulator..."
+    killall simulator 2>/dev/null || true
+    sleep 1
+    "$SDK_PATH/bin/connectiq" &
+    sleep 8
     python3 run_ui_tests.py
     exit 0
 elif [ "$MODE" = "sim" ]; then

@@ -324,14 +324,14 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
                     var sunrise = sc.calculate(nowTime, posRad, 4); // 4 = SUNRISE
                     if (sunrise != null) {
                         var info = Gregorian.info(sunrise, Time.FORMAT_SHORT);
-                        return [info.hour.format("%d") + ":" + info.min.format("%02d"), "SUNRISE"];
+                        return [info.hour.format("%02d") + ":" + info.min.format("%02d"), "SUNRISE"];
                     }
                     return ["--:--", "SUNRISE"];
                 } else {
                     var sunset = sc.calculate(nowTime, posRad, 10); // 10 = SUNSET
                     if (sunset != null) {
                         var info = Gregorian.info(sunset, Time.FORMAT_SHORT);
-                        return [info.hour.format("%d") + ":" + info.min.format("%02d"), "SUNSET"];
+                        return [info.hour.format("%02d") + ":" + info.min.format("%02d"), "SUNSET"];
                     }
                     return ["--:--", "SUNSET"];
                 }
@@ -470,8 +470,8 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
                 drawSingleDataSlot(dc, s2, centerX - 44, centerY - 26, 1.0);
                 drawSingleDataSlot(dc, s3, centerX + 40, centerY - 26, 1.0);
                 if (s4 != 0) { drawMetricIcon(dc, s4, centerX, centerY + 16, 1.0); }
-                drawSingleDataSlot(dc, s5, centerX - 44, centerY + 36, 1.0);
-                drawSingleDataSlot(dc, s6, centerX + 44, centerY + 36, 1.0);
+                drawSingleDataSlot(dc, s5, centerX - 36, centerY + 30, 1.0);
+                drawSingleDataSlot(dc, s6, centerX + 36, centerY + 30, 1.0);
                 drawSingleDataSlot(dc, s7, centerX, centerY + 54, 1.0);
                 break;
                 
@@ -482,19 +482,19 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
                 drawSingleDataSlot(dc, s2, centerX - 47, centerY - 28, s280);
                 drawSingleDataSlot(dc, s3, centerX + 43, centerY - 28, s280);
                 if (s4 != 0) { drawMetricIcon(dc, s4, centerX, centerY + 17, s280); }
-                drawSingleDataSlot(dc, s5, centerX - 47, centerY + 39, s280);
-                drawSingleDataSlot(dc, s6, centerX + 47, centerY + 39, s280);
+                drawSingleDataSlot(dc, s5, centerX - 39, centerY + 32, s280);
+                drawSingleDataSlot(dc, s6, centerX + 39, centerY + 32, s280);
                 drawSingleDataSlot(dc, s7, centerX, centerY + 58, s280);
                 break;
                 
             default:
                 // Existing proportional dynamic formula for 390, 416, 454 (AMOLED models)
                 drawSingleDataSlot(dc, s1, centerX, centerY - (48 * s).toNumber(), s);
-                drawSingleDataSlot(dc, s2, centerX - (50 * s).toNumber(), centerY - (30 * s).toNumber(), s);
-                drawSingleDataSlot(dc, s3, centerX + (46 * s).toNumber(), centerY - (30 * s).toNumber(), s);
+                drawSingleDataSlot(dc, s2, centerX - (44 * s).toNumber(), centerY - (26 * s).toNumber(), s);
+                drawSingleDataSlot(dc, s3, centerX + (40 * s).toNumber(), centerY - (26 * s).toNumber(), s);
                 if (s4 != 0) { drawMetricIcon(dc, s4, centerX, centerY + (16 * s).toNumber(), s); }
-                drawSingleDataSlot(dc, s5, centerX - (50 * s).toNumber(), centerY + (40 * s).toNumber(), s);
-                drawSingleDataSlot(dc, s6, centerX + (50 * s).toNumber(), centerY + (40 * s).toNumber(), s);
+                drawSingleDataSlot(dc, s5, centerX - (36 * s).toNumber(), centerY + (30 * s).toNumber(), s);
+                drawSingleDataSlot(dc, s6, centerX + (36 * s).toNumber(), centerY + (30 * s).toNumber(), s);
                 drawSingleDataSlot(dc, s7, centerX, centerY + (54 * s).toNumber(), s);
                 break;
         }

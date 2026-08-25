@@ -35,8 +35,8 @@ class SlotPositioningTest {
                 [centerX - (44 * s).toNumber(), centerY - (26 * s).toNumber()], // Slot 2: Upper-Left
                 [centerX + (40 * s).toNumber(), centerY - (26 * s).toNumber()], // Slot 3: Upper-Right
                 [centerX, centerY + (16 * s).toNumber()],                // Slot 4: Center Badge
-                [centerX - (44 * s).toNumber(), centerY + (36 * s).toNumber()], // Slot 5: Lower-Left
-                [centerX + (44 * s).toNumber(), centerY + (36 * s).toNumber()], // Slot 6: Lower-Right
+                [centerX - (36 * s).toNumber(), centerY + (30 * s).toNumber()], // Slot 5: Lower-Left
+                [centerX + (36 * s).toNumber(), centerY + (30 * s).toNumber()], // Slot 6: Lower-Right
                 [centerX, centerY + (54 * s).toNumber()]                 // Slot 7: Bottom Center
             ];
 

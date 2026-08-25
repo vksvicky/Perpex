@@ -99,9 +99,7 @@ def get_simulator_window_bounds():
 
 report_rows = []
 
-print("Starting Connect IQ Simulator...")
-subprocess.run(["open", os.path.join(SDK_PATH, "bin", "ConnectIQ.app")])
-time.sleep(10) # Give simulator time to boot up initially
+print("Connect IQ Simulator should already be running (managed by run_tests.sh).")
 
 for dev_id, res_info, dev_name in DEVICES:
     print(f"\n📱 Generating Visual UI Snapshot for: {dev_name} ({dev_id})...")
