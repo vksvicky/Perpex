@@ -67,4 +67,4 @@ To ensure compliance, the watch face utilizes a global coordinate shift `(-2 to 
 - Peak Luminance Usage: **1.27%** (Well below the 10% limit).
 
 ## 📄 License
-MIT License. See `ATTRIBUTION.md` for icon and font attributions.
+MIT License. See [ATTRIBUTION.md](ATTRIBUTION.md) for icon and font attributions.
