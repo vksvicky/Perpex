@@ -16,6 +16,12 @@ echo "========================================================"
 mkdir -p bin
 
 FAILURES=0
+# Ensure Simulator is running
+echo "Starting Connect IQ Simulator..."
+killall simulator 2>/dev/null || true
+sleep 1
+"$SDK_PATH/bin/connectiq" &
+sleep 5
 
 for dev in "${DEVICES[@]}"; do
     echo ""
@@ -29,7 +35,11 @@ for dev in "${DEVICES[@]}"; do
         echo "🚀 Executing test assertions in Connect IQ runtime environment..."
         
         # 2. Run test assertions via monkeydo -t
-        if "$SDK_PATH/bin/monkeydo" "$OUTPUT_PRG" "$dev" -t; then
+        # monkeydo often returns 1 on macOS even on success, so we parse the output
+        TEST_OUT=$("$SDK_PATH/bin/monkeydo" "$OUTPUT_PRG" "$dev" -t 2>&1) || true
+        echo "$TEST_OUT"
+        
+        if echo "$TEST_OUT" | grep -q "PASSED ("; then
             echo "✅ All assertions PASSED for $dev"
         else
             echo "❌ Test Assertions FAILED for $dev"
