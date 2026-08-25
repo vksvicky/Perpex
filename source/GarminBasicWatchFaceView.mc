@@ -461,43 +461,19 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var s6 = getPropertyVal("Slot6Metric", 14); // Lower-Right (Weather Temp)
         var s7 = getPropertyVal("Slot7Metric", 5);  // Bottom Center (Calories)
 
-        // Draw data slots using a switch statement for pixel-perfect resolution tuning
-        switch (w) {
-            case 260:
-                // Specific tuning for 260x260 (Fenix 7 / Fenix 9 Pro Solar 47mm)
-                // Shifted inward to avoid overlapping the inner weekday ring (radius 75px)
-                drawSingleDataSlot(dc, s1, centerX, centerY - 48, 1.0);
-                drawSingleDataSlot(dc, s2, centerX - 44, centerY - 26, 1.0);
-                drawSingleDataSlot(dc, s3, centerX + 40, centerY - 26, 1.0);
-                if (s4 != 0) { drawMetricIcon(dc, s4, centerX, centerY + 16, 1.0); }
-                drawSingleDataSlot(dc, s5, centerX - 36, centerY + 30, 1.0);
-                drawSingleDataSlot(dc, s6, centerX + 36, centerY + 30, 1.0);
-                drawSingleDataSlot(dc, s7, centerX, centerY + 54, 1.0);
-                break;
-                
-            case 280:
-                // Specific tuning for 280x280 (Enduro 3 / Fenix 9 Pro Solar 51mm)
-                var s280 = 280.0 / 260.0;
-                drawSingleDataSlot(dc, s1, centerX, centerY - 52, s280);
-                drawSingleDataSlot(dc, s2, centerX - 47, centerY - 28, s280);
-                drawSingleDataSlot(dc, s3, centerX + 43, centerY - 28, s280);
-                if (s4 != 0) { drawMetricIcon(dc, s4, centerX, centerY + 17, s280); }
-                drawSingleDataSlot(dc, s5, centerX - 39, centerY + 32, s280);
-                drawSingleDataSlot(dc, s6, centerX + 39, centerY + 32, s280);
-                drawSingleDataSlot(dc, s7, centerX, centerY + 58, s280);
-                break;
-                
-            default:
-                // Existing proportional dynamic formula for 390, 416, 454 (AMOLED models)
-                drawSingleDataSlot(dc, s1, centerX, centerY - (48 * s).toNumber(), s);
-                drawSingleDataSlot(dc, s2, centerX - (44 * s).toNumber(), centerY - (26 * s).toNumber(), s);
-                drawSingleDataSlot(dc, s3, centerX + (40 * s).toNumber(), centerY - (26 * s).toNumber(), s);
-                if (s4 != 0) { drawMetricIcon(dc, s4, centerX, centerY + (16 * s).toNumber(), s); }
-                drawSingleDataSlot(dc, s5, centerX - (36 * s).toNumber(), centerY + (30 * s).toNumber(), s);
-                drawSingleDataSlot(dc, s6, centerX + (36 * s).toNumber(), centerY + (30 * s).toNumber(), s);
-                drawSingleDataSlot(dc, s7, centerX, centerY + (54 * s).toNumber(), s);
-                break;
+        var sc = getSlotScale(w);
+        
+        drawSingleDataSlot(dc, s1, getSlotX(1, w), getSlotY(1, w), sc);
+        drawSingleDataSlot(dc, s2, getSlotX(2, w), getSlotY(2, w), sc);
+        drawSingleDataSlot(dc, s3, getSlotX(3, w), getSlotY(3, w), sc);
+        
+        if (s4 != 0) { 
+            drawMetricIcon(dc, s4, getSlotX(4, w), getSlotY(4, w), sc); 
         }
+        
+        drawSingleDataSlot(dc, s5, getSlotX(5, w), getSlotY(5, w), sc);
+        drawSingleDataSlot(dc, s6, getSlotX(6, w), getSlotY(6, w), sc);
+        drawSingleDataSlot(dc, s7, getSlotX(7, w), getSlotY(7, w), sc);
     }
 
     // ─────────────────────────────────────────────────────────────────────
@@ -740,6 +716,88 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         dc.fillCircle(centerX, centerY, (4.5 * s).toNumber());
         dc.setColor(COLOR_BG, Graphics.COLOR_TRANSPARENT);
         dc.fillCircle(centerX, centerY, (2.0 * s).toNumber());
+    }
+
+    static function getSlotX(slotId as Lang.Number, w as Lang.Number) as Lang.Number {
+        var centerX = w / 2;
+        var s = w / 260.0;
+        
+        switch (w) {
+            case 260:
+                if (slotId == 1) { return centerX; }
+                if (slotId == 2) { return centerX - 44; }
+                if (slotId == 3) { return centerX + 40; }
+                if (slotId == 4) { return centerX; }
+                if (slotId == 5) { return centerX - 36; }
+                if (slotId == 6) { return centerX + 36; }
+                if (slotId == 7) { return centerX; }
+                break;
+            case 280:
+                if (slotId == 1) { return centerX; }
+                if (slotId == 2) { return centerX - 47; }
+                if (slotId == 3) { return centerX + 43; }
+                if (slotId == 4) { return centerX; }
+                if (slotId == 5) { return centerX - 39; }
+                if (slotId == 6) { return centerX + 39; }
+                if (slotId == 7) { return centerX; }
+                break;
+            default:
+                if (slotId == 1) { return centerX; }
+                if (slotId == 2) { return centerX - (44 * s).toNumber(); }
+                if (slotId == 3) { return centerX + (40 * s).toNumber(); }
+                if (slotId == 4) { return centerX; }
+                if (slotId == 5) { return centerX - (36 * s).toNumber(); }
+                if (slotId == 6) { return centerX + (36 * s).toNumber(); }
+                if (slotId == 7) { return centerX; }
+                break;
+        }
+        return centerX;
+    }
+
+    static function getSlotY(slotId as Lang.Number, h as Lang.Number) as Lang.Number {
+        var centerY = h / 2;
+        var w = h; // Since displays are round, w == h
+        var s = w / 260.0;
+        
+        switch (w) {
+            case 260:
+                if (slotId == 1) { return centerY - 48; }
+                if (slotId == 2) { return centerY - 26; }
+                if (slotId == 3) { return centerY - 26; }
+                if (slotId == 4) { return centerY + 16; } // Center Badge
+                if (slotId == 5) { return centerY + 30; }
+                if (slotId == 6) { return centerY + 30; }
+                if (slotId == 7) { return centerY + 54; }
+                break;
+            case 280:
+                if (slotId == 1) { return centerY - 52; }
+                if (slotId == 2) { return centerY - 28; }
+                if (slotId == 3) { return centerY - 28; }
+                if (slotId == 4) { return centerY + 17; } // Center Badge
+                if (slotId == 5) { return centerY + 32; }
+                if (slotId == 6) { return centerY + 32; }
+                if (slotId == 7) { return centerY + 58; }
+                break;
+            default:
+                if (slotId == 1) { return centerY - (48 * s).toNumber(); }
+                if (slotId == 2) { return centerY - (26 * s).toNumber(); }
+                if (slotId == 3) { return centerY - (26 * s).toNumber(); }
+                if (slotId == 4) { return centerY + (16 * s).toNumber(); }
+                if (slotId == 5) { return centerY + (30 * s).toNumber(); }
+                if (slotId == 6) { return centerY + (30 * s).toNumber(); }
+                if (slotId == 7) { return centerY + (54 * s).toNumber(); }
+                break;
+        }
+        return centerY;
+    }
+    
+    static function getSlotScale(w as Lang.Number) as Lang.Float {
+        if (w == 260) {
+            return 1.0;
+        } else if (w == 280) {
+            return 280.0 / 260.0;
+        }
+        return w / 260.0;
     }
 
     // Extracted for UI Logic Testing: 0000-1159am is sunrise and 1200-2359 is sunset

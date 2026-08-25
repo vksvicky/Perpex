@@ -9,44 +9,46 @@ class SlotPositioningTest {
 
     (:test)
     static function testSlotCoordinatesAndResolutionScaling(logger as Test.Logger) as Lang.Boolean {
-        logger.debug("Testing Slot Coordinates & Scaling Math across all 5 Resolution Classes...");
+        logger.debug("Testing Strict Slot Coordinates across all 5 Resolution Classes...");
 
-        var resolutions = [
-            [260, 260], // Fenix 7 / Fenix 9 Pro Solar 47mm / FR255
-            [280, 280], // Enduro 3 / Fenix 9 Pro Solar 51mm / Fenix 7X
-            [390, 390], // Epix 2 Pro 42mm / Fenix 8 43mm
-            [416, 416], // Epix Gen 2 47mm / Venu 3
-            [454, 454]  // Fenix 8 / Fenix 9 Pro 47mm/51mm / Epix Pro 51mm
+        // 1. Strict verification for 260x260
+        var exp260 = [
+            [130, 82], [86, 104], [170, 104], [130, 146], [94, 160], [166, 160], [130, 184]
         ];
+        for (var i = 1; i <= 7; i++) {
+            var x = GarminBasicWatchFaceView.getSlotX(i, 260);
+            var y = GarminBasicWatchFaceView.getSlotY(i, 260);
+            Test.assertEqualMessage(x, exp260[i-1][0], "260x260 Slot " + i + " X changed!");
+            Test.assertEqualMessage(y, exp260[i-1][1], "260x260 Slot " + i + " Y changed!");
+        }
 
+        // 2. Strict verification for 280x280
+        var exp280 = [
+            [140, 88], [93, 112], [183, 112], [140, 157], [101, 172], [179, 172], [140, 198]
+        ];
+        for (var i = 1; i <= 7; i++) {
+            var x = GarminBasicWatchFaceView.getSlotX(i, 280);
+            var y = GarminBasicWatchFaceView.getSlotY(i, 280);
+            Test.assertEqualMessage(x, exp280[i-1][0], "280x280 Slot " + i + " X changed!");
+            Test.assertEqualMessage(y, exp280[i-1][1], "280x280 Slot " + i + " Y changed!");
+        }
+
+        // 3. Dynamic verification for other resolutions
+        var resolutions = [390, 416, 454];
         for (var i = 0; i < resolutions.size(); i++) {
-            var w = resolutions[i][0];
-            var h = resolutions[i][1];
+            var w = resolutions[i];
             var centerX = w / 2;
-            var centerY = h / 2;
+            var centerY = w / 2;
             var s = w / 260.0;
             var radius = w / 2;
-
-            logger.debug("Resolution: " + w + "x" + h + " | Scale Factor s: " + s);
-
-            // Test 7 Slot Positions
-            var slots = [
-                [centerX, centerY - (48 * s).toNumber()],                // Slot 1: Top Center
-                [centerX - (44 * s).toNumber(), centerY - (26 * s).toNumber()], // Slot 2: Upper-Left
-                [centerX + (40 * s).toNumber(), centerY - (26 * s).toNumber()], // Slot 3: Upper-Right
-                [centerX, centerY + (16 * s).toNumber()],                // Slot 4: Center Badge
-                [centerX - (36 * s).toNumber(), centerY + (30 * s).toNumber()], // Slot 5: Lower-Left
-                [centerX + (36 * s).toNumber(), centerY + (30 * s).toNumber()], // Slot 6: Lower-Right
-                [centerX, centerY + (54 * s).toNumber()]                 // Slot 7: Bottom Center
-            ];
-
-            for (var k = 0; k < slots.size(); k++) {
-                var sx = slots[k][0];
-                var sy = slots[k][1];
-
-                // Verify slot is within screen boundaries
-                var distFromCenter = Math.sqrt(Math.pow(sx - centerX, 2) + Math.pow(sy - centerY, 2));
-                Test.assertMessage(distFromCenter < radius, "Slot " + (k + 1) + " exceeds screen radius on " + w + "x" + h);
+            
+            for (var slotId = 1; slotId <= 7; slotId++) {
+                var sx = GarminBasicWatchFaceView.getSlotX(slotId, w);
+                var sy = GarminBasicWatchFaceView.getSlotY(slotId, w);
+                
+                // Ensure slot is strictly within screen boundaries
+                var dist = Math.sqrt(Math.pow(sx - centerX, 2) + Math.pow(sy - centerY, 2));
+                Test.assertMessage(dist < radius, "Slot " + slotId + " exceeds bounds on " + w + "x" + w);
             }
         }
 
