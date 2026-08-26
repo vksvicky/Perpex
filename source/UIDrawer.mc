@@ -15,31 +15,37 @@ module UIDrawer {
         
         switch (w) {
             case 260:
-                if (slotId == 1) { return centerX; }
-                if (slotId == 2) { return centerX - 44; }
-                if (slotId == 3) { return centerX + 40; }
-                if (slotId == 4) { return centerX; }
-                if (slotId == 5) { return centerX - 36; }
-                if (slotId == 6) { return centerX + 36; }
-                if (slotId == 7) { return centerX; }
+                switch (slotId) {
+                    case 1: return centerX;
+                    case 2: return centerX - 44;
+                    case 3: return centerX + 40;
+                    case 4: return centerX;
+                    case 5: return centerX - 36;
+                    case 6: return centerX + 36;
+                    case 7: return centerX;
+                }
                 break;
             case 280:
-                if (slotId == 1) { return centerX; }
-                if (slotId == 2) { return centerX - 47; }
-                if (slotId == 3) { return centerX + 43; }
-                if (slotId == 4) { return centerX; }
-                if (slotId == 5) { return centerX - 39; }
-                if (slotId == 6) { return centerX + 39; }
-                if (slotId == 7) { return centerX; }
+                switch (slotId) {
+                    case 1: return centerX;
+                    case 2: return centerX - 47;
+                    case 3: return centerX + 43;
+                    case 4: return centerX;
+                    case 5: return centerX - 39;
+                    case 6: return centerX + 39;
+                    case 7: return centerX;
+                }
                 break;
             default:
-                if (slotId == 1) { return centerX; }
-                if (slotId == 2) { return centerX - (44 * s).toNumber(); }
-                if (slotId == 3) { return centerX + (40 * s).toNumber(); }
-                if (slotId == 4) { return centerX; }
-                if (slotId == 5) { return centerX - (36 * s).toNumber(); }
-                if (slotId == 6) { return centerX + (36 * s).toNumber(); }
-                if (slotId == 7) { return centerX; }
+                switch (slotId) {
+                    case 1: return centerX;
+                    case 2: return centerX - (44 * s).toNumber();
+                    case 3: return centerX + (40 * s).toNumber();
+                    case 4: return centerX;
+                    case 5: return centerX - (36 * s).toNumber();
+                    case 6: return centerX + (36 * s).toNumber();
+                    case 7: return centerX;
+                }
                 break;
         }
         return centerX;
@@ -51,31 +57,37 @@ module UIDrawer {
         
         switch (w) {
             case 260:
-                if (slotId == 1) { return centerY - 48; }
-                if (slotId == 2) { return centerY - 26; }
-                if (slotId == 3) { return centerY - 26; }
-                if (slotId == 4) { return centerY + 16; } // Center Badge
-                if (slotId == 5) { return centerY + 30; }
-                if (slotId == 6) { return centerY + 30; }
-                if (slotId == 7) { return centerY + 54; }
+                switch (slotId) {
+                    case 1: return centerY - 48;
+                    case 2: return centerY - 26;
+                    case 3: return centerY - 26;
+                    case 4: return centerY + 16;
+                    case 5: return centerY + 30;
+                    case 6: return centerY + 30;
+                    case 7: return centerY + 54;
+                }
                 break;
             case 280:
-                if (slotId == 1) { return centerY - 52; }
-                if (slotId == 2) { return centerY - 28; }
-                if (slotId == 3) { return centerY - 28; }
-                if (slotId == 4) { return centerY + 17; } // Center Badge
-                if (slotId == 5) { return centerY + 32; }
-                if (slotId == 6) { return centerY + 32; }
-                if (slotId == 7) { return centerY + 58; }
+                switch (slotId) {
+                    case 1: return centerY - 52;
+                    case 2: return centerY - 28;
+                    case 3: return centerY - 28;
+                    case 4: return centerY + 17;
+                    case 5: return centerY + 32;
+                    case 6: return centerY + 32;
+                    case 7: return centerY + 58;
+                }
                 break;
             default:
-                if (slotId == 1) { return centerY - (48 * s).toNumber(); }
-                if (slotId == 2) { return centerY - (26 * s).toNumber(); }
-                if (slotId == 3) { return centerY - (26 * s).toNumber(); }
-                if (slotId == 4) { return centerY + (16 * s).toNumber(); }
-                if (slotId == 5) { return centerY + (30 * s).toNumber(); }
-                if (slotId == 6) { return centerY + (30 * s).toNumber(); }
-                if (slotId == 7) { return centerY + (54 * s).toNumber(); }
+                switch (slotId) {
+                    case 1: return centerY - (48 * s).toNumber();
+                    case 2: return centerY - (26 * s).toNumber();
+                    case 3: return centerY - (26 * s).toNumber();
+                    case 4: return centerY + (16 * s).toNumber();
+                    case 5: return centerY + (30 * s).toNumber();
+                    case 6: return centerY + (30 * s).toNumber();
+                    case 7: return centerY + (54 * s).toNumber();
+                }
                 break;
         }
         return centerY;
@@ -94,44 +106,50 @@ module UIDrawer {
         var bmp = null;
         var themeId = ThemeManager.getPropertyVal("ThemeColor", 1);
 
-        if (type == 1) { bmp = ThemeManager.loadThemedBitmap("icon_battery", themeId); }
-        else if (type == 2) {
-            // Heart Rate: Pumping animation ONLY during active workouts/activities!
-            var isActivityRunning = false;
-            var actInfo = Activity.getActivityInfo();
-            if (actInfo != null && actInfo has :timerState && actInfo.timerState != null) {
-                isActivityRunning = (actInfo.timerState == 3 || actInfo.timerState == 1);
-            }
+        switch (type) {
+            case 1:
+                bmp = ThemeManager.loadThemedBitmap("icon_battery", themeId);
+                break;
+            case 2:
+                // Heart Rate: Pumping animation ONLY during active workouts/activities!
+                var isActivityRunning = false;
+                var actInfo = Activity.getActivityInfo();
+                if (actInfo != null && actInfo has :timerState && actInfo.timerState != null) {
+                    isActivityRunning = (actInfo.timerState == 3 || actInfo.timerState == 1);
+                }
 
-            var sec = System.getClockTime().sec;
-            var isPulseBeat = isActivityRunning ? (sec % 2 == 0) : false;
+                var sec = System.getClockTime().sec;
+                var isPulseBeat = isActivityRunning ? (sec % 2 == 0) : false;
 
-            if (themeId == 2) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_teal : Rez.Drawables.icon_heart_teal); }
-            else if (themeId == 3) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_orange : Rez.Drawables.icon_heart_orange); }
-            else if (themeId == 4) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_green : Rez.Drawables.icon_heart_green); }
-            else if (themeId == 5) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_gold : Rez.Drawables.icon_heart_gold); }
-            else if (themeId == 6) { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_white : Rez.Drawables.icon_heart_white); }
-            else { bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_red : Rez.Drawables.icon_heart_red); }
+                switch (themeId) {
+                    case 2: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_teal : Rez.Drawables.icon_heart_teal); break;
+                    case 3: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_orange : Rez.Drawables.icon_heart_orange); break;
+                    case 4: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_green : Rez.Drawables.icon_heart_green); break;
+                    case 5: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_gold : Rez.Drawables.icon_heart_gold); break;
+                    case 6: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_white : Rez.Drawables.icon_heart_white); break;
+                    default: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_red : Rez.Drawables.icon_heart_red); break;
+                }
+                break;
+            case 3: bmp = ThemeManager.loadThemedBitmap("icon_steps", themeId); break;
+            case 4: bmp = ThemeManager.loadThemedBitmap("icon_step_goal", themeId); break;
+            case 5: bmp = ThemeManager.loadThemedBitmap("icon_flame", themeId); break;
+            case 6: bmp = ThemeManager.loadThemedBitmap("icon_distance", themeId); break;
+            case 7: bmp = ThemeManager.loadThemedBitmap("icon_floors", themeId); break;
+            case 8: bmp = ThemeManager.loadThemedBitmap("icon_active_mins", themeId); break;
+            case 9: bmp = ThemeManager.loadThemedBitmap("icon_stress", themeId); break;
+            case 11: bmp = ThemeManager.loadThemedBitmap("icon_bluetooth", themeId); break;
+            case 12: bmp = ThemeManager.loadThemedBitmap("icon_altitude", themeId); break;
+            case 13: bmp = ThemeManager.loadThemedBitmap("icon_barometer", themeId); break;
+            case 14: bmp = ThemeManager.loadThemedBitmap("icon_weather_temp", themeId); break;
+            case 15: bmp = ThemeManager.loadThemedBitmap("icon_weather_cond", themeId); break;
+            case 16:
+                var nowInfo = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+                bmp = ThemeManager.loadThemedBitmap(MetricProvider.getSolarIcon(nowInfo.hour), themeId);
+                break;
+            case 17: bmp = ThemeManager.loadThemedBitmap("icon_body_battery", themeId); break;
+            case 18: bmp = ThemeManager.loadThemedBitmap("icon_sunrise", themeId); break;
+            case 19: bmp = ThemeManager.loadThemedBitmap("icon_sunset", themeId); break;
         }
-        else if (type == 3) { bmp = ThemeManager.loadThemedBitmap("icon_steps", themeId); }
-        else if (type == 4) { bmp = ThemeManager.loadThemedBitmap("icon_step_goal", themeId); }
-        else if (type == 5) { bmp = ThemeManager.loadThemedBitmap("icon_flame", themeId); }
-        else if (type == 6) { bmp = ThemeManager.loadThemedBitmap("icon_distance", themeId); }
-        else if (type == 7) { bmp = ThemeManager.loadThemedBitmap("icon_floors", themeId); }
-        else if (type == 8) { bmp = ThemeManager.loadThemedBitmap("icon_active_mins", themeId); }
-        else if (type == 9) { bmp = ThemeManager.loadThemedBitmap("icon_stress", themeId); }
-        else if (type == 11) { bmp = ThemeManager.loadThemedBitmap("icon_bluetooth", themeId); }
-        else if (type == 12) { bmp = ThemeManager.loadThemedBitmap("icon_altitude", themeId); }
-        else if (type == 13) { bmp = ThemeManager.loadThemedBitmap("icon_barometer", themeId); }
-        else if (type == 14) { bmp = ThemeManager.loadThemedBitmap("icon_weather_temp", themeId); }
-        else if (type == 15) { bmp = ThemeManager.loadThemedBitmap("icon_weather_cond", themeId); }
-        else if (type == 16) {
-            var nowInfo = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-            bmp = ThemeManager.loadThemedBitmap(MetricProvider.getSolarIcon(nowInfo.hour), themeId);
-        }
-        else if (type == 17) { bmp = ThemeManager.loadThemedBitmap("icon_body_battery", themeId); }
-        else if (type == 18) { bmp = ThemeManager.loadThemedBitmap("icon_sunrise", themeId); }
-        else if (type == 19) { bmp = ThemeManager.loadThemedBitmap("icon_sunset", themeId); }
 
         if (bmp != null) {
             var iconW = bmp.getWidth();
@@ -157,9 +175,11 @@ module UIDrawer {
             if (isCharging) {
                 var sec = System.getClockTime().sec;
                 var step = sec % 3;
-                if (step == 0) { battColor = 0xFF3333; }
-                else if (step == 1) { battColor = 0xFF8800; }
-                else { battColor = 0x00FF66; }
+                switch (step) {
+                    case 0: battColor = 0xFF3333; break;
+                    case 1: battColor = 0xFF8800; break;
+                    default: battColor = 0x00FF66; break;
+                }
             } else {
                 if (pct <= 20) { battColor = 0xFF3333; }
                 else if (pct <= 50) { battColor = 0xFF8800; }
@@ -172,10 +192,9 @@ module UIDrawer {
             }
 
             var battRes = Rez.Drawables.icon_battery_red;
-            if (battColor == 0xFF8800) {
-                battRes = Rez.Drawables.icon_battery_orange;
-            } else if (battColor == 0x00FF66) {
-                battRes = Rez.Drawables.icon_battery_green;
+            switch (battColor) {
+                case 0xFF8800: battRes = Rez.Drawables.icon_battery_orange; break;
+                case 0x00FF66: battRes = Rez.Drawables.icon_battery_green; break;
             }
             var battBmp = WatchUi.loadResource(battRes);
 

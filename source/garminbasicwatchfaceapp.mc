@@ -78,37 +78,45 @@ class GarminSettingsCustomView extends WatchUi.View {
         var subText    = "";
         var subColor   = Graphics.COLOR_WHITE;
 
-        if (itemKey.equals("ThemeColor")) {
-            var themeVal = getPropVal("ThemeColor", 1);
-            var themeNames = ["Vibrant Red", "Teal / Cyan", "Warm Orange", "Electric Green", "Gold / Yellow", "Pure White"];
-            subText = (themeVal >= 1 && themeVal <= 6) ? themeNames[themeVal - 1] : themeNames[0];
-            subColor = getThemeAccentHex(themeVal);
-        } else if (itemKey.equals("TemperatureUnit")) {
-            var unitVal = getPropVal("TemperatureUnit", 0);
-            subText = (unitVal == 1) ? "Fahrenheit (°F)" : "Celsius (°C)";
-            subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
-        } else if (itemKey.equals("TimeFormat")) {
-            var tfVal = getPropVal("TimeFormat", 0);
-            subText = (tfVal == 1) ? "12 Hour (AM/PM)" : "24 Hour";
-            subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
-        } else if (itemKey.equals("NightMode")) {
-            var nVal = getPropVal("NightMode", 1);
-            var nNames = ["Disabled / Off", "Auto (Sun)", "Scheduled", "Always On"];
-            subText = (nVal >= 0 && nVal <= 3) ? nNames[nVal] : nNames[1];
-            subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
-        } else if (itemKey.equals("NightModeColor")) {
-            var ncVal = getPropVal("NightModeColor", 0);
-            var ncNames = ["Tactical Red", "Night Amber", "Stealth Green"];
-            var ncColors = [0xFF0000, 0xFF8800, 0x00FF00];
-            subText = (ncVal >= 0 && ncVal <= 2) ? ncNames[ncVal] : ncNames[0];
-            subColor = (ncVal >= 0 && ncVal <= 2) ? ncColors[ncVal] : 0xFF0000;
-        } else if (itemKey.equals("ResetDefaults")) {
-            subText = "Tap to Reset All";
-            subColor = 0xFF4444;
-        } else {
-            var metricId = getPropVal(itemKey, 1);
-            subText = getMetricNameLabel(metricId);
-            subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
+        switch (itemKey) {
+            case "ThemeColor":
+                var themeVal = getPropVal("ThemeColor", 1);
+                var themeNames = ["Vibrant Red", "Teal / Cyan", "Warm Orange", "Electric Green", "Gold / Yellow", "Pure White"];
+                subText = (themeVal >= 1 && themeVal <= 6) ? themeNames[themeVal - 1] : themeNames[0];
+                subColor = getThemeAccentHex(themeVal);
+                break;
+            case "TemperatureUnit":
+                var unitVal = getPropVal("TemperatureUnit", 0);
+                subText = (unitVal == 1) ? "Fahrenheit (°F)" : "Celsius (°C)";
+                subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
+                break;
+            case "TimeFormat":
+                var tfVal = getPropVal("TimeFormat", 0);
+                subText = (tfVal == 1) ? "12 Hour (AM/PM)" : "24 Hour";
+                subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
+                break;
+            case "NightMode":
+                var nVal = getPropVal("NightMode", 1);
+                var nNames = ["Disabled / Off", "Auto (Sun)", "Scheduled", "Always On"];
+                subText = (nVal >= 0 && nVal <= 3) ? nNames[nVal] : nNames[1];
+                subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
+                break;
+            case "NightModeColor":
+                var ncVal = getPropVal("NightModeColor", 0);
+                var ncNames = ["Tactical Red", "Night Amber", "Stealth Green"];
+                var ncColors = [0xFF0000, 0xFF8800, 0x00FF00];
+                subText = (ncVal >= 0 && ncVal <= 2) ? ncNames[ncVal] : ncNames[0];
+                subColor = (ncVal >= 0 && ncVal <= 2) ? ncColors[ncVal] : 0xFF0000;
+                break;
+            case "ResetDefaults":
+                subText = "Tap to Reset All";
+                subColor = 0xFF4444;
+                break;
+            default:
+                var metricId = getPropVal(itemKey, 1);
+                subText = getMetricNameLabel(metricId);
+                subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
+                break;
         }
 
         // 2. Exact Font Height Metrics & Even Gap Formula
@@ -286,42 +294,50 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
         var items = customView.getMenuItems();
         var itemKey = items[idx][1];
 
-        if (itemKey.equals("ThemeColor")) {
-            var current = getPropVal("ThemeColor", 1);
-            current = (current % 6) + 1;
-            setPropVal("ThemeColor", current);
-        } else if (itemKey.equals("TemperatureUnit")) {
-            var current = getPropVal("TemperatureUnit", 0);
-            current = (current + 1) % 2;
-            setPropVal("TemperatureUnit", current);
-        } else if (itemKey.equals("TimeFormat")) {
-            var current = getPropVal("TimeFormat", 0);
-            current = (current + 1) % 2;
-            setPropVal("TimeFormat", current);
-        } else if (itemKey.equals("NightMode")) {
-            var current = getPropVal("NightMode", 1);
-            current = (current + 1) % 4;
-            setPropVal("NightMode", current);
-        } else if (itemKey.equals("NightModeColor")) {
-            var current = getPropVal("NightModeColor", 0);
-            current = (current + 1) % 3;
-            setPropVal("NightModeColor", current);
-        } else if (itemKey.equals("ResetDefaults")) {
-            setPropVal("ThemeColor", 1);
-            setPropVal("TemperatureUnit", 0);
-            setPropVal("NightMode", 1);
-            setPropVal("NightModeColor", 0);
-            setPropVal("Slot1Metric", 1);  // Battery
-            setPropVal("Slot2Metric", 2);  // Heart Rate
-            setPropVal("Slot3Metric", 3);  // Steps
-            setPropVal("Slot4Metric", 11); // Bluetooth
-            setPropVal("Slot5Metric", 16); // Sunrise/Sunset
-            setPropVal("Slot6Metric", 14); // Weather Temp
-            setPropVal("Slot7Metric", 5);  // Calories
-        } else {
-            var current = getPropVal(itemKey, 0);
-            current = (current + 1) % 20;
-            setPropVal(itemKey, current);
+        switch (itemKey) {
+            case "ThemeColor":
+                var current = getPropVal("ThemeColor", 1);
+                current = (current % 6) + 1;
+                setPropVal("ThemeColor", current);
+                break;
+            case "TemperatureUnit":
+                var currentUnit = getPropVal("TemperatureUnit", 0);
+                currentUnit = (currentUnit + 1) % 2;
+                setPropVal("TemperatureUnit", currentUnit);
+                break;
+            case "TimeFormat":
+                var currentTF = getPropVal("TimeFormat", 0);
+                currentTF = (currentTF + 1) % 2;
+                setPropVal("TimeFormat", currentTF);
+                break;
+            case "NightMode":
+                var currentNM = getPropVal("NightMode", 1);
+                currentNM = (currentNM + 1) % 4;
+                setPropVal("NightMode", currentNM);
+                break;
+            case "NightModeColor":
+                var currentNMC = getPropVal("NightModeColor", 0);
+                currentNMC = (currentNMC + 1) % 3;
+                setPropVal("NightModeColor", currentNMC);
+                break;
+            case "ResetDefaults":
+                setPropVal("ThemeColor", 1);
+                setPropVal("TemperatureUnit", 0);
+                setPropVal("NightMode", 1);
+                setPropVal("NightModeColor", 0);
+                setPropVal("Slot1Metric", 1);  // Battery
+                setPropVal("Slot2Metric", 2);  // Heart Rate
+                setPropVal("Slot3Metric", 3);  // Steps
+                setPropVal("Slot4Metric", 11); // Bluetooth
+                setPropVal("Slot5Metric", 16); // Sunrise/Sunset
+                setPropVal("Slot6Metric", 14); // Weather Temp
+                setPropVal("Slot7Metric", 5);  // Calories
+                break;
+            default:
+                var currentVal = getPropVal(itemKey, 0);
+                currentVal = (currentVal + 1) % 20;
+                setPropVal(itemKey, currentVal);
+                break;
         }
 
         WatchUi.requestUpdate();
