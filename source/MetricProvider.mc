@@ -73,12 +73,12 @@ module MetricProvider {
                 break;
             case 7: // Floors
                 info = ActivityMonitor.getInfo();
-                val = (info != null && info.floorsClimbed != null) ? info.floorsClimbed.toString() : "0";
+                val = (info != null && info has :floorsClimbed && info.floorsClimbed != null) ? info.floorsClimbed.toString() : "0";
                 label = "FLOORS";
                 break;
             case 8: // Active Minutes
                 info = ActivityMonitor.getInfo();
-                val = (info != null && info.activeMinutesWeek != null && info.activeMinutesWeek.total != null) ? info.activeMinutesWeek.total.toString() : "0";
+                val = (info != null && info has :activeMinutesWeek && info.activeMinutesWeek != null && info.activeMinutesWeek.total != null) ? info.activeMinutesWeek.total.toString() : "0";
                 label = "MINS";
                 break;
             case 9: // Stress
@@ -97,12 +97,12 @@ module MetricProvider {
                 break;
             case 12: // Altitude
                 info = Activity.getActivityInfo();
-                val = (info != null && info.altitude != null) ? info.altitude.toNumber().toString() : "--";
+                val = (info != null && info has :altitude && info.altitude != null) ? info.altitude.toNumber().toString() : "--";
                 label = "METERS";
                 break;
             case 13: // Barometer
                 info = Activity.getActivityInfo();
-                val = (info != null && info.rawAmbientPressure != null) ? (info.rawAmbientPressure / 100.0).toNumber().toString() : "--";
+                val = (info != null && info has :rawAmbientPressure && info.rawAmbientPressure != null) ? (info.rawAmbientPressure / 100.0).toNumber().toString() : "--";
                 label = "HPA";
                 break;
             case 14: // Weather Temp

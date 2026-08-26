@@ -20,8 +20,7 @@ class ThemeAndModeTest {
             0xFFFFFF  // White (Theme 6)
         ];
 
-        var view = new GarminBasicWatchFaceView();
-        var resolvedColor = view.getThemeAccentColor();
+        var resolvedColor = ThemeManager.getThemeAccentColor();
 
         Test.assertMessage(resolvedColor != null, "getThemeAccentColor returned null");
         logger.debug("Active theme accent color resolved to: 0x" + resolvedColor.format("%06X"));
