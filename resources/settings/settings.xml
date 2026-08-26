@@ -15,6 +15,12 @@
             <listEntry value="1">@Strings.TempUnitFahrenheit</listEntry>
         </settingConfig>
     </setting>
+    <setting propertyKey="@Properties.TimeFormat" title="@Strings.TimeFormatTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.TimeFormat24</listEntry>
+            <listEntry value="1">@Strings.TimeFormat12</listEntry>
+        </settingConfig>
+    </setting>
     <setting propertyKey="@Properties.NightMode" title="@Strings.NightModeTitle">
         <settingConfig type="list">
             <listEntry value="0">@Strings.NightOff</listEntry>

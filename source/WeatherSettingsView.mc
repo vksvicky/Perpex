@@ -5,12 +5,14 @@ class WeatherSettingsView extends WatchUi.Menu2 {
     private var updateIntervals = [15, 30, 60];  // Minutes
     private var selectedInterval = 0;
     private var selectedUnit = 0;
+    private var selectedTimeFormat = 0;
 
     function initialize() {
-        Menu2.initialize({:title=>"Weather Settings"});
+        Menu2.initialize({:title=>"Settings"});
         
         // Initialize with current settings
         selectedUnit = Settings.getTempUnit();
+        selectedTimeFormat = Settings.getTimeFormat();
         var currentInterval = Settings.getWeatherUpdateInterval();
         
         // Find matching interval index
@@ -35,6 +37,13 @@ class WeatherSettingsView extends WatchUi.Menu2 {
             :tempUnit,
             {}
         ));
+
+        addItem(new WatchUi.MenuItem(
+            "Time Format",
+            selectedTimeFormat == Settings.TIME_FORMAT_24 ? "24 Hour" : "12 Hour",
+            :timeFormat,
+            {}
+        ));
     }
 
     function onSelect(item) {
@@ -42,6 +51,8 @@ class WeatherSettingsView extends WatchUi.Menu2 {
             Settings.setWeatherUpdateInterval(updateIntervals[selectedInterval]);
         } else if (item == :tempUnit) {
             Settings.setTempUnit(selectedUnit);
+        } else if (item == :timeFormat) {
+            Settings.setTimeFormat(selectedTimeFormat);
         }
         WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
@@ -66,6 +77,11 @@ class WeatherSettingsDelegate extends WatchUi.Menu2InputDelegate {
             menu.addItem(new WatchUi.MenuItem("Celsius", null, Settings.TEMP_CELSIUS, null));
             menu.addItem(new WatchUi.MenuItem("Fahrenheit", null, Settings.TEMP_FAHRENHEIT, null));
             WatchUi.pushView(menu, new TempUnitMenuDelegate(), WatchUi.SLIDE_UP);
+        } else if (id == :timeFormat) {
+            var menu = new WatchUi.Menu2({:title=>"Time Format"});
+            menu.addItem(new WatchUi.MenuItem("24 Hour", null, Settings.TIME_FORMAT_24, null));
+            menu.addItem(new WatchUi.MenuItem("12 Hour (AM/PM)", null, Settings.TIME_FORMAT_12, null));
+            WatchUi.pushView(menu, new TimeFormatMenuDelegate(), WatchUi.SLIDE_UP);
         }
     }
 }
@@ -89,6 +105,17 @@ class TempUnitMenuDelegate extends WatchUi.Menu2InputDelegate {
     
     function onSelect(item) {
         Settings.setTempUnit(item.getId());
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+    }
+}
+
+class TimeFormatMenuDelegate extends WatchUi.Menu2InputDelegate {
+    function initialize() {
+        Menu2InputDelegate.initialize();
+    }
+
+    function onSelect(item) {
+        Settings.setTimeFormat(item.getId());
         WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 }

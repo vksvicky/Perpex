@@ -1,6 +1,7 @@
 <properties>
     <property id="ThemeColor" type="number">1</property>
     <property id="TemperatureUnit" type="number">0</property>
+    <property id="TimeFormat" type="number">0</property>
     <property id="NightMode" type="number">1</property>
     <property id="NightModeColor" type="number">0</property>
     <property id="NightStartHour" type="number">22</property>

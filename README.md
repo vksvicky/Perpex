@@ -4,6 +4,7 @@ A heavily customizable, data-rich watch face for Garmin Connect IQ devices. Desi
 
 ## 🌟 Features
 - **7 Customizable Data Slots**: Configure Battery, Heart Rate, Steps, Active Calories, Distance, Floors Climbed, Active Minutes, Stress, Altitude, Barometer, Weather, and Solar Events.
+- **Time Formats**: Support for 12-hour (with standard 'a'/'p' abbreviations) and 24-hour time formats.
 - **6 Themed Color Palettes**: Switch between Red (Default), Teal, Warm Orange, Electric Green, Gold, and Pure White.
 - **Auto Night Mode**: Automatically dims the watch face based on local sunset/sunrise times or a custom schedule.
 - **Battery-Aware Coloring**: Battery indicator changes color dynamically based on charge level (Green > 40%, Yellow < 40%, Red <= 20%).

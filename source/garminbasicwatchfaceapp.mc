@@ -38,6 +38,7 @@ class GarminSettingsCustomView extends WatchUi.View {
     private var menuItems = [
         ["Theme Color", "ThemeColor"],
         ["Temp Unit", "TemperatureUnit"],
+        ["Time Format", "TimeFormat"],
         ["Night Mode", "NightMode"],
         ["Night Color", "NightModeColor"],
         ["Top Field", "Slot1Metric"],
@@ -85,6 +86,10 @@ class GarminSettingsCustomView extends WatchUi.View {
         } else if (itemKey.equals("TemperatureUnit")) {
             var unitVal = getPropVal("TemperatureUnit", 0);
             subText = (unitVal == 1) ? "Fahrenheit (°F)" : "Celsius (°C)";
+            subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
+        } else if (itemKey.equals("TimeFormat")) {
+            var tfVal = getPropVal("TimeFormat", 0);
+            subText = (tfVal == 1) ? "12 Hour (AM/PM)" : "24 Hour";
             subColor = getThemeAccentHex(getPropVal("ThemeColor", 1));
         } else if (itemKey.equals("NightMode")) {
             var nVal = getPropVal("NightMode", 1);
@@ -289,6 +294,10 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
             var current = getPropVal("TemperatureUnit", 0);
             current = (current + 1) % 2;
             setPropVal("TemperatureUnit", current);
+        } else if (itemKey.equals("TimeFormat")) {
+            var current = getPropVal("TimeFormat", 0);
+            current = (current + 1) % 2;
+            setPropVal("TimeFormat", current);
         } else if (itemKey.equals("NightMode")) {
             var current = getPropVal("NightMode", 1);
             current = (current + 1) % 4;

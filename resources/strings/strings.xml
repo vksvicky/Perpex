@@ -14,6 +14,10 @@
     <string id="TempUnitCelsius">Celsius (°C)</string>
     <string id="TempUnitFahrenheit">Fahrenheit (°F)</string>
 
+    <string id="TimeFormatTitle">Time Format</string>
+    <string id="TimeFormat24">24 Hour</string>
+    <string id="TimeFormat12">12 Hour (AM/PM)</string>
+
     <string id="NightModeTitle">Night Mode Mode</string>
     <string id="NightOff">Disabled / Off</string>
     <string id="NightAuto">Auto (Sunset to Sunrise)</string>
