@@ -13,17 +13,16 @@ if [ "$MODE" = "--help" ] || [ "$MODE" = "-h" ] || [ "$MODE" = "help" ]; then
     echo "Usage: ./run_tests.sh [mode] [options]"
     echo ""
     echo "Modes:"
-    echo "  unit         : Runs the headless logic/unit assertions (default)."
-    echo "  ui           : Runs the exhaustive Python visual test harness that generates"
-    echo "                 visual_report.html and captures the properly-sized screenshots."
-    echo "  sim <device> : Compiles the normal watch face (with the UI, no test flags)"
-    echo "                 and launches it directly in the Simulator (e.g. sim fenix7)."
-    echo "                 This will immediately show you the watch face (avoiding the blank screen)."
-    echo "  help         : Show this help message."
+    echo "  unit                      : Runs the headless logic/unit assertions (default)."
+    echo "  ui                        : Runs the visual regression test harness."
+    echo "  ui --update-baselines     : Captures fresh baselines (must be on main branch)."
+    echo "  sim <device>              : Compiles and launches the watch face in the Simulator."
+    echo "  help                      : Show this help message."
     exit 0
 elif [ "$MODE" = "ui" ]; then
+    EXTRA_ARGS="${2:-}"
     echo "========================================================"
-    echo "📸 STARTING VISUAL UI SNAPSHOT TESTS"
+    echo "📸 STARTING VISUAL REGRESSION TESTS"
     echo "========================================================"
     echo "Starting Connect IQ Simulator..."
     killall ConnectIQ 2>/dev/null || true
@@ -31,7 +30,10 @@ elif [ "$MODE" = "ui" ]; then
     sleep 1
     "$SDK_PATH/bin/connectiq" &
     sleep 8
-    python3 run_ui_tests.py
+    # Activate venv so Pillow and other deps are available
+    source venv/bin/activate
+    python3 run_ui_tests.py $EXTRA_ARGS
+    deactivate
     exit 0
 elif [ "$MODE" = "sim" ]; then
     TARGET_DEV="${2:-fenix7}"
