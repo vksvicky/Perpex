@@ -29,7 +29,7 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         dialBg = WatchUi.loadResource(Rez.Drawables.dial_bg);
 
         var fontMap = {
-            454 => Rez.Fonts.Raleway_Native_20
+            320 => Rez.Fonts.SystemLike_14
         };
 
         if (fontMap.hasKey(w)) {

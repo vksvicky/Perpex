@@ -205,7 +205,12 @@ module UIDrawer {
             }
 
             dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+if (customFont != null) {
+                var textW = dc.getTextWidthInPixels(battText, fontValue);
+                dc.drawText(posX - textW / 2, posY + (3 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_LEFT);
+            } else {
+                dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            }
             return;
         }
 
@@ -214,9 +219,14 @@ module UIDrawer {
 
         drawMetricIcon(dc, slotType, posX, posY - (13 * s).toNumber(), s);
 
-        var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
+var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
         dc.setColor(valColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        if (customFont != null) {
+            var textW = dc.getTextWidthInPixels(valStr, fontValue);
+            dc.drawText(posX - textW / 2, posY + (3 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_LEFT);
+        } else {
+            dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        }
     }
 
     function drawDataSlots(dc, aodOffsetX, aodOffsetY, customFont, isLowPower) {
