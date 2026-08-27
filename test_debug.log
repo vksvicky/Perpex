@@ -1,0 +1,28 @@
+========================================================
+📸 STARTING VISUAL UI SNAPSHOT TESTS
+========================================================
+Starting Connect IQ Simulator...
+========================================================
+🎨 PERPEX VISUAL UI & SCREENSHOT TEST HARNESS
+========================================================
+Verifying 40 Exhaustive Test Scenarios across 5 Device Resolutions...
+========================================================
+Connect IQ Simulator should already be running (managed by run_tests.sh).
+
+📱 Generating Visual UI Snapshot for: Fenix 7 / Fenix 9 Pro Solar 47mm (fenix7)...
+
+📱 Generating Visual UI Snapshot for: Enduro 3 / Fenix 9 Pro Solar 51mm (enduro3)...
+
+📱 Generating Visual UI Snapshot for: Epix 2 Pro 42mm (epix2pro42mm)...
+
+📱 Generating Visual UI Snapshot for: Epix Gen 2 47mm (epix2)...
+
+📱 Generating Visual UI Snapshot for: Fenix 8 / Fenix 9 Pro 47mm (fenix847mm)...
+
+📱 Generating Visual UI Snapshot for: Venu Sq 2 (venusq2)...
+
+========================================================
+🎉 VISUAL UI TEST REPORT GENERATED FOR ALL 40 SCENARIOS!
+Report Location: test_output/visual_report.html
+Screenshots Directory: test_output/screenshots/
+========================================================

@@ -22,30 +22,21 @@ def generate_pngs():
         png_file = f"{out_dir}/{name}_0.png"
         
         if not os.path.exists(fnt_file):
-            print(f"Skipping {name}, fnt not found")
             continue
             
-        print(f"Generating PNG for {name} from existing .fnt...")
-        
         with open(fnt_file, 'r') as f:
             fnt_data = f.read()
             
-        # Parse scaleW and scaleH from common line
         common_match = re.search(r'common .*scaleW=(\d+)\s+scaleH=(\d+)', fnt_data)
         if not common_match:
-            print("Could not find scaleW/H")
             continue
             
         atlas_w = int(common_match.group(1))
         atlas_h = int(common_match.group(2))
         
-        # We need a font size that approximately matches the bounding boxes
-        # The '.fnt' sizes were 6, 8, 10 but that was likely 'points' and rendered at a higher DPI
-        # Let's try to infer a good Pillow size by finding the max height
         chars = []
         for line in fnt_data.split('\n'):
             if line.startswith('char '):
-                # parse attributes
                 attrs = dict(re.findall(r'(\w+)=(-?\d+)', line))
                 if attrs:
                     chars.append(attrs)
@@ -53,19 +44,13 @@ def generate_pngs():
         if not chars:
             continue
             
-        # Try to find a font size that fits. size = max_height * 1.2
-        max_h = max(int(c['height']) for c in chars)
-        
-        # Load font
         try:
-            # size is points, usually pixels is slightly larger. Trial and error approximation based on max_h
-            font = ImageFont.truetype(font_path, int(max_h * 1.3)) 
+            font = ImageFont.truetype(font_path, 100) 
         except Exception as e:
             print(f"Failed to load font: {e}")
             continue
             
-        img = Image.new("RGBA", (atlas_w, atlas_h), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(img)
+        img_l = Image.new("L", (atlas_w, atlas_h), 0)
         
         for char_info in chars:
             c_id = int(char_info['id'])
@@ -73,16 +58,36 @@ def generate_pngs():
             y = int(char_info['y'])
             w = int(char_info['width'])
             h = int(char_info['height'])
-            xoff = int(char_info['xoffset'])
-            yoff = int(char_info['yoffset'])
             
+            if w == 0 or h == 0:
+                continue
+                
             c = chr(c_id)
             
-            # Draw character exactly within the bounds
-            # Pillow anchor lt means left ascender. 
-            draw.text((x - (xoff/2), y - (yoff/2)), c, font=font, fill=(255,255,255,255), anchor="lt")
+            temp_img = Image.new("L", (200, 200), 0)
+            temp_draw = ImageDraw.Draw(temp_img)
+            temp_draw.text((50, 50), c, font=font, fill=255)
             
-        img.save(png_file)
+            bbox = temp_img.getbbox()
+            if bbox:
+                char_img = temp_img.crop(bbox)
+                char_img = char_img.resize((w, h), Image.Resampling.LANCZOS)
+                img_l.paste(char_img, (x, y))
+            
+        # Create an 8-bit paletted PNG with anti-aliasing transparency
+        img_p = Image.new("P", (atlas_w, atlas_h), 0)
+        
+        # All colors in the palette are White (255, 255, 255)
+        palette = [255, 255, 255] * 256
+        img_p.putpalette(palette)
+        
+        # We need to tell PIL that each palette index has a specific transparency (alpha)
+        # So index i has alpha=i
+        transparency = bytes(range(256))
+        
+        img_p.paste(img_l, (0, 0))
+        img_p.save(png_file, format="PNG", transparency=transparency)
+        print(f"Generated {png_file} (Paletted with full alpha)")
         
 if __name__ == "__main__":
     generate_pngs()
