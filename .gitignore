@@ -1,5 +1,38 @@
+# Garmin SDK build output
 .venv/
 bin/
 gen/
 *.prg
+
+# macOS
 .DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Test output & baselines (generated, not source-controlled)
+test_output/
+test_baselines/
+
+# Scratch / debug scripts generated during development
+check_*.py
+fix_*.py
+recover*.py
+test_*.py
+test_*.log
+test_*.mc
+test_*.png
+debug_*.png
+debug_*.jpg
+temp*.png
+my_*.png
+old_*.mc
+patch.mc
+*.patch
+
+# Generated font tools (source-of-truth is the .fnt/.png assets in resources/)
+tools/generate_perfect_fonts.py
+tools/generate_system_fonts.py
+
