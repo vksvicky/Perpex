@@ -1,5 +1,6 @@
 # Garmin SDK build output
 .venv/
+venv/
 bin/
 gen/
 *.prg
@@ -12,8 +13,12 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Test output & baselines (generated, not source-controlled)
-test_output/
+# Test output:
+#   test_output/baselines/  → COMMITTED (shared reference snapshots from main)
+#   everything else         → NOT committed (branch runs, diffs, backups)
+test_output/baselines_backup_*/
+test_output/diffs/
+test_output/*/
 test_baselines/
 
 # Scratch / debug scripts generated during development
@@ -35,4 +40,3 @@ patch.mc
 # Generated font tools (source-of-truth is the .fnt/.png assets in resources/)
 tools/generate_perfect_fonts.py
 tools/generate_system_fonts.py
-

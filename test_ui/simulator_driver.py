@@ -5,7 +5,7 @@ from PIL import Image, ImageChops
 
 SDK_PATH = os.path.expanduser("~/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-9.2.0-2026-06-09-92a1605b2")
 KEY_PATH = "developer_key.der"
-OUTPUT_DIR = "test_output/screenshots"
+OUTPUT_DIR = "test_output/screenshots"  # default; overridden at runtime
 
 def get_simulator_window_bounds():
     for _ in range(15):
