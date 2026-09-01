@@ -17,8 +17,8 @@ module UIDrawer {
             case 260:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - 44;
-                    case 3: return centerX + 40;
+                    case 2: return centerX - 36;
+                    case 3: return centerX + 36;
                     case 4: return centerX;
                     case 5: return centerX - 36;
                     case 6: return centerX + 36;
@@ -28,8 +28,8 @@ module UIDrawer {
             case 280:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - 47;
-                    case 3: return centerX + 43;
+                    case 2: return centerX - 39;
+                    case 3: return centerX + 39;
                     case 4: return centerX;
                     case 5: return centerX - 39;
                     case 6: return centerX + 39;
@@ -39,8 +39,8 @@ module UIDrawer {
             default:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - (44 * s).toNumber();
-                    case 3: return centerX + (40 * s).toNumber();
+                    case 2: return centerX - (36 * s).toNumber();
+                    case 3: return centerX + (36 * s).toNumber();
                     case 4: return centerX;
                     case 5: return centerX - (36 * s).toNumber();
                     case 6: return centerX + (36 * s).toNumber();
@@ -58,35 +58,35 @@ module UIDrawer {
         switch (w) {
             case 260:
                 switch (slotId) {
-                    case 1: return centerY - 48;
-                    case 2: return centerY - 26;
-                    case 3: return centerY - 26;
-                    case 4: return centerY + 16;
-                    case 5: return centerY + 30;
-                    case 6: return centerY + 30;
-                    case 7: return centerY + 54;
+                    case 1: return centerY - 42;
+                    case 2: return centerY - 22;
+                    case 3: return centerY - 22;
+                    case 4: return centerY + 10;
+                    case 5: return centerY + 24;
+                    case 6: return centerY + 24;
+                    case 7: return centerY + 48;
                 }
                 break;
             case 280:
                 switch (slotId) {
-                    case 1: return centerY - 52;
-                    case 2: return centerY - 28;
-                    case 3: return centerY - 28;
-                    case 4: return centerY + 17;
-                    case 5: return centerY + 32;
-                    case 6: return centerY + 32;
-                    case 7: return centerY + 58;
+                    case 1: return centerY - 45;
+                    case 2: return centerY - 24;
+                    case 3: return centerY - 24;
+                    case 4: return centerY + 11;
+                    case 5: return centerY + 26;
+                    case 6: return centerY + 26;
+                    case 7: return centerY + 52;
                 }
                 break;
             default:
                 switch (slotId) {
-                    case 1: return centerY - (48 * s).toNumber();
-                    case 2: return centerY - (26 * s).toNumber();
-                    case 3: return centerY - (26 * s).toNumber();
-                    case 4: return centerY + (16 * s).toNumber();
-                    case 5: return centerY + (30 * s).toNumber();
-                    case 6: return centerY + (30 * s).toNumber();
-                    case 7: return centerY + (54 * s).toNumber();
+                    case 1: return centerY - (42 * s).toNumber();
+                    case 2: return centerY - (22 * s).toNumber();
+                    case 3: return centerY - (22 * s).toNumber();
+                    case 4: return centerY + (10 * s).toNumber();
+                    case 5: return centerY + (24 * s).toNumber();
+                    case 6: return centerY + (24 * s).toNumber();
+                    case 7: return centerY + (48 * s).toNumber();
                 }
                 break;
         }
@@ -187,9 +187,6 @@ module UIDrawer {
             }
 
             var battText = pct.toString() + "%";
-            if (isCharging) {
-                battText = "CHG " + battText;
-            }
 
             var battRes = Rez.Drawables.icon_battery_red;
             switch (battColor) {
@@ -323,6 +320,9 @@ var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
     }
 
     function drawHands(dc, hour, min, sec, isLowPower, centerX, centerY) {
+        if (ThemeManager.getPropertyVal("TestHideHands", 1) == 1) {
+            return;
+        }
         var TWO_PI  = Math.PI * 2.0;
         var OFFSET  = Math.PI / 2.0;
 

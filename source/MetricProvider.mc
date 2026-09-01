@@ -127,7 +127,7 @@ module MetricProvider {
                     var cond = Weather.getCurrentConditions();
                     if (cond != null) {
                         if (cond.precipitationChance != null && cond.precipitationChance > 0) {
-                            val = cond.precipitationChance.toString() + "% RAIN";
+                            val = cond.precipitationChance.toString() + "%";
                         } else if (cond.condition != null) {
                             var c = cond.condition;
                             switch (c) {

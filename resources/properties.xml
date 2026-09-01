@@ -14,4 +14,6 @@
     <property id="Slot5Metric" type="number">16</property>
     <property id="Slot6Metric" type="number">14</property>
     <property id="Slot7Metric" type="number">5</property>
+    <property id="TestHideHands" type="number">0</property>
+
 </properties>

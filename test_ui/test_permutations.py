@@ -1,7 +1,7 @@
 import os
 from .config_manager import set_properties
 from .simulator_driver import build_app, launch_simulator_and_screenshot
-from .image_utils import make_3panel_diff
+from .layout_validator import validate_layout
 
 # ---------------------------------------------------------------------------
 # 3 Permutation passes covering all 19 metrics across 7 slots
@@ -20,9 +20,10 @@ PERMUTATION_PASSES = [
             "Slot 6: Distance (6)",
             "Slot 7: Floors Climbed (7)",
         ],
+        "active_slot_ids": [1, 2, 3, 4, 5, 6, 7],
         "expected": "Battery gauge, HR, steps, goal %, calories, distance and floors with icons and values centred.",
         "props": {
-            "NightMode": 0,
+            "NightMode": 0, "TestHideHands": 1,
             "Slot1Metric": 1, "Slot2Metric": 2, "Slot3Metric": 3,
             "Slot4Metric": 4, "Slot5Metric": 5, "Slot6Metric": 6,
             "Slot7Metric": 7,
@@ -41,9 +42,10 @@ PERMUTATION_PASSES = [
             "Slot 6: Barometer (13)",
             "Slot 7: Weather Temp (14)",
         ],
+        "active_slot_ids": [1, 2, 3, 4, 5, 6, 7],
         "expected": "Atmospheric/sensor icons and formatted data (hPa, metres, °C, active mins) render without overlap.",
         "props": {
-            "NightMode": 0,
+            "NightMode": 0, "TestHideHands": 1,
             "Slot1Metric": 8,  "Slot2Metric": 9,  "Slot3Metric": 10,
             "Slot4Metric": 11, "Slot5Metric": 12, "Slot6Metric": 13,
             "Slot7Metric": 14,
@@ -62,9 +64,10 @@ PERMUTATION_PASSES = [
             "Slot 6: Battery Backup (1)",
             "Slot 7: Heart Rate Backup (2)",
         ],
+        "active_slot_ids": [1, 2, 3, 4, 5, 6, 7],
         "expected": "Dynamic solar calculations, precipitation text, and body battery render correctly.",
         "props": {
-            "NightMode": 0,
+            "NightMode": 0, "TestHideHands": 1,
             "Slot1Metric": 15, "Slot2Metric": 16, "Slot3Metric": 17,
             "Slot4Metric": 18, "Slot5Metric": 19, "Slot6Metric": 1,
             "Slot7Metric": 2,
@@ -73,23 +76,21 @@ PERMUTATION_PASSES = [
 ]
 
 
-def run_permutation_tests(dev_id, dev_name, output_dir, baselines_dir, diffs_dir):
+def run_permutation_tests(dev_id, dev_name, res_info, output_dir):
     """
     Runs all 3 metric permutation passes for *dev_id*.
 
     Args:
         dev_id:       Garmin device identifier (e.g. "fenix7")
         dev_name:     Human-readable name for reporting
+        res_info:     Resolution string (e.g. "454×454 AMOLED")
         output_dir:   Directory for current-branch screenshots
-        baselines_dir: Directory containing baseline images from main
-        diffs_dir:    Directory to write 3-panel diff composites
 
     Returns:
         list[dict] – one result entry per pass
     """
     print(f"\n  📊 Metric Permutations ({dev_name})")
     os.makedirs(output_dir, exist_ok=True)
-    os.makedirs(diffs_dir, exist_ok=True)
     results = []
 
     for ppass in PERMUTATION_PASSES:
@@ -98,24 +99,22 @@ def run_permutation_tests(dev_id, dev_name, output_dir, baselines_dir, diffs_dir
         set_properties(ppass["props"])
 
         prg_path  = f"bin/Visual_{dev_id}_{pid}.prg"
-        img_path  = os.path.join(output_dir,   f"{dev_id}_{pid}.png")
-        base_path = os.path.join(baselines_dir, f"{dev_id}_{pid}.png")
-        diff_path = os.path.join(diffs_dir,     f"{dev_id}_{pid}.png")
+        img_path  = os.path.join(output_dir, f"{dev_id}_{pid}.png")
 
         if build_app(dev_id, prg_path):
-            launch_simulator_and_screenshot(dev_id, prg_path, img_path)
+            launch_simulator_and_screenshot(dev_id, prg_path, img_path, res_info)
 
-        diff_result = make_3panel_diff(base_path, img_path, diff_path)
+        val = validate_layout(img_path, ppass["active_slot_ids"])
+
         results.append({
             "pass_name":    ppass["name"],
             "description":  ppass["description"],
             "slots":        ppass["slots"],
             "expected":     ppass["expected"],
-            "baseline_img": base_path,
             "current_img":  img_path,
-            "diff_img":     diff_result["composite_path"],
-            "diff_pct":     diff_result["diff_pct"],
-            "has_baseline": diff_result["has_baseline"],
+            "zones_img":    val["annotated_path"],
+            "passed":       val["pass"],
+            "issues":       val["issues"],
         })
 
     return results
