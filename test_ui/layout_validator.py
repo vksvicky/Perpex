@@ -262,6 +262,21 @@ def validate_layout(img_path, active_slots):
             if shared > 8:
                 issues.append(f"Slots {a}+{b}: OVERLAP — {shared} shared pixels")
 
+    # 3b. DIAL COVERAGE check: Ensure dial background spans full display radius
+    if w == h and w > 260:
+        outer_dial_r = int(w * 0.44)
+        outer_content = 0
+        for deg in range(0, 360, 5):
+            rad = math.radians(deg)
+            for r_offset in range(-8, 8):
+                qx = int(center_x + (outer_dial_r + r_offset) * math.cos(rad))
+                qy = int(center_x + (outer_dial_r + r_offset) * math.sin(rad))
+                if 0 <= qx < w and 0 <= qy < h and _is_bright(pixels[qx, qy]):
+                    outer_content += 1
+                    break
+        if outer_content < 5:
+            issues.append(f"DIAL UNDERSIZED / MISALIGNED: Outer dial perimeter has only {outer_content} markings at radius {outer_dial_r}px (expected full-diameter dial background).")
+
     # 4. Annotated debug image
     annotated = img.copy().convert("RGBA")
     draw = ImageDraw.Draw(annotated, "RGBA")

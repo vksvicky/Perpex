@@ -13,6 +13,7 @@ if [ -z "$DEVICE" ]; then
         "venu3" "fenix843mm" "epix2pro42mm"
         "epix2" "epix2pro47mm" "venu2"
         "fenix847mm" "epix2pro51mm" "fr965"
+        "fenix9pro51mm" "fenix9pro47mm"
         "Quit"
     )
     select sel in "${devices[@]}"; do

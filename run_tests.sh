@@ -5,7 +5,7 @@ SDK_PATH="$HOME/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-
 KEY_PATH="developer_key.der"
 OUTPUT_PRG="bin/GarminWatchFaceTest.prg"
 
-DEVICES=("fenix7" "enduro3" "epix2pro42mm" "epix2" "fenix847mm" "venusq2")
+DEVICES=("fenix7" "enduro3" "epix2pro42mm" "epix2" "fenix847mm" "fenix9pro51mm" "venusq2")
 
 MODE="${1:-unit}"
 

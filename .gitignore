@@ -19,6 +19,7 @@ __pycache__/
 test_output/baselines_backup_*/
 test_output/diffs/
 test_output/*/
+test_output/*.png
 !test_output/baselines/
 !test_output/baselines/**
 test_baselines/

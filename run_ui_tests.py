@@ -33,6 +33,7 @@ DEVICES = [
     ("epix2pro42mm", "390×390 AMOLED",     "Epix 2 Pro 42mm / Venu 3S"),
     ("venu2",        "416×416 AMOLED",     "Venu 2 / Venu 2 Plus / Epix Gen 2"),
     ("venu3",        "454×454 AMOLED",     "Venu 3 / Forerunner 965 / Fenix 8 47mm"),
+    ("fenix9pro51mm","466×466 AMOLED",     "Fenix 9 Pro 51mm"),
     ("venusq2",      "320×360 AMOLED",     "Venu Sq 2"),
 ]
 
