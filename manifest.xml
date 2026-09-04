@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
-    <iq:application entry="GarminBasicWatchFaceApp" id="bd57c3bccf764485b28dd4fcc24a9f02" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="4.0.0" name="@Strings.AppName" type="watchface" version="1.0.1">
+    <iq:application entry="GarminBasicWatchFaceApp" id="bd57c3bccf764485b28dd4fcc24a9f02" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="4.0.0" name="@Strings.AppName" type="watchface" version="1.5.0">
         <iq:products>
             <iq:product id="enduro3"/>
             <iq:product id="epix2"/>
@@ -21,12 +21,17 @@
             <iq:product id="fenix8solar47mm"/>
             <iq:product id="fenix8solar51mm"/>
 
+            <!-- Fenix 8 Pro Series -->
+            <iq:product id="fenix8pro47mm"/>
+
             <!-- Fenix 9 Series -->
-            <iq:product id="fenix9"/>
+            <iq:product id="fenix943mm"/>
+            <iq:product id="fenix947mm"/>
+            <iq:product id="fenix9pro43mm"/>
             <iq:product id="fenix9pro47mm"/>
             <iq:product id="fenix9pro51mm"/>
-            <iq:product id="fenix9solar47mm"/>
-            <iq:product id="fenix9solar51mm"/>
+            <iq:product id="fenix9prosolar47mm"/>
+            <iq:product id="fenix9prosolar51mm"/>
 
             <iq:product id="fenixe"/>
             <iq:product id="venu2"/>
