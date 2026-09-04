@@ -115,10 +115,52 @@ except Exception:
     git_logs = '- Performance and stability improvements.'
 
 notes = f'''Perpex v{version} Release Notes:
-{git_logs}
+========================================================
+✨ WHAT'S NEW IN v{version}:
+========================================================
+- Added full support for 466x466 AMOLED resolution (Fenix 9 Pro 51mm).
+- Expanded official device coverage across Fenix 8 Pro, Fenix 9, Enduro 3, and Venu series.
+- Refined 6-slot grid spacing with increased vertical breathing room between rows.
+- Calibrated Venu Sq 2 (320x360) inner ring track clearance for pixel-perfect alignment.
+- Enhanced offline solar calculations (Sunrise/Sunset) using weather station position fallbacks.
 
-- Optimized high-resolution display rendering.
-- Enhanced color theme contrasts & metric slot legibility.
+========================================================
+📊 SUPPORTED ICONS & DATA METRICS:
+========================================================
+🔋 Battery Level        : Dynamic gauge with smart color thresholds (Green >40%, Yellow <40%, Red <=20%).
+❤️ Heart Rate           : Real-time pulse monitoring with live animated pulsing heart indicator (BPM).
+👟 Steps Counter        : Daily cumulative step count with active progress tracking.
+🎯 Step Goal %          : Percentage completion toward your daily step goal.
+🔥 Active Calories      : Daily active metabolic calorie burn expenditure (kCal).
+📏 Distance             : Total daily walking and running distance displayed in kilometers (KM).
+🪜 Floors Climbed       : Total vertical flights of stairs climbed today.
+⏱️ Active Minutes       : Total moderate and vigorous intensity activity minutes accumulated this week.
+🧘 Stress Score         : Real-time all-day physiological stress score (0–100).
+💬 Notifications        : Unread smartphone notification counter and connectivity indicator.
+🏔️ Altitude            : Real-time elevation tracking in meters above sea level.
+🧭 Barometer            : Ambient atmospheric pressure monitoring in hectopascals (hPa).
+🌡️ Weather Temp        : Ambient outdoor temperature with configurable Celsius (°C) and Fahrenheit (°F).
+🌦️ Weather Condition   : Context-sensitive vector icon with auto-switching precipitation %, humidity, or wind speed.
+☀️ Clear / Sunny        : Solar condition vector icon for sunny and clear skies.
+⛅ Partly Cloudy        : Dual-tone cloud and sun indicator for fair weather.
+☁️ Overcast / Cloudy    : Dense cloud cover indicator for overcast conditions.
+💧 Rain / Precipitation : Raindrop icon displaying live precipitation probability percentage.
+⛈️ Thunderstorms        : Severe weather alert icon for lightning and thunderstorms.
+❄️ Snow & Wintry Mix    : Crisp snowflake icon for freezing temperatures and snowfall.
+💨 Wind Velocity        : Wind speed converted to nautical knots (kt) for outdoor/marine navigation.
+🌅 Sunrise Time         : Civil dawn time calculation with automatic GPS and weather station fallback.
+🌇 Sunset Time          : Civil dusk time calculation with automatic GPS and weather station fallback.
+☀️ Dynamic Solar Event  : Smart single-slot display that automatically toggles between next sunrise and sunset.
+⚡ Body Battery         : Real-time bodily energy reserve percentage (0–100%).
+🛌 Recovery Time        : Recommended recovery hours remaining before your next hard workout.
+🏃 VO2 Max              : Cardiovascular aerobic fitness score for running and cycling.
+
+========================================================
+🎨 THEMES & DISPLAY FEATURES:
+========================================================
+- 6 Handcrafted Color Themes: Red (Default), Teal, Warm Orange, Electric Green, Gold, and Pure White.
+- Night Mode (Tactical Red, Night Amber, Stealth Green) with automatic solar schedule dimming.
+- AMOLED Burn-In Protection: Always-On Display (AOD) compliant with Garmin's <10% active pixel threshold.
 '''
 
 with open(out_path, 'w') as f:
