@@ -72,19 +72,45 @@ def make_3panel_diff(baseline_path: str, current_path: str, diff_output_path: st
 
         w, h = baseline_img.size
 
-        # --- Pixel diff ---
-        diff = ImageChops.difference(baseline_img, current_img)
+        # ── Mask out the clock hands ──────────────────────────────────────────
+        # The hands radiate from the centre of the watch face. We black out a
+        # central ellipse (55% of width, 55% of height) on BOTH images before
+        # comparing, so only the metric data slots around the perimeter matter.
+        # This is pure test-infrastructure — no production code is touched.
+        hands_mask = Image.new("L", (w, h), 255)  # start fully visible
+        draw_mask = ImageDraw.Draw(hands_mask)
+        cx, cy = w // 2, h // 2
+        r_pivot = int(min(w, h) * 0.15)
+        draw_mask.ellipse(
+            [(cx - r_pivot, cy - r_pivot), (cx + r_pivot, cy + r_pivot)],
+            fill=0  # black = masked out
+        )
+        black = Image.new("RGB", (w, h), (0, 0, 0))
+        baseline_cmp = Image.composite(baseline_img, black, hands_mask)
+        current_cmp  = Image.composite(current_img,  black, hands_mask)
+        # ─────────────────────────────────────────────────────────────────────
+
+        # --- Pixel diff (on masked images) ---
+        diff = ImageChops.difference(baseline_cmp, current_cmp)
         mask = diff.convert("L").point(lambda p: 255 if p > 5 else 0)
 
         diff_pixels = sum(mask.getdata()) / 255.0
-        total_pixels = w * h
-        diff_pct = (diff_pixels / total_pixels) * 100.0
+        # Count only the unmasked (visible) pixels in the denominator
+        visible_pixels = sum(1 for p in hands_mask.getdata() if p > 0)
+        diff_pct = (diff_pixels / visible_pixels) * 100.0 if visible_pixels else 0.0
 
-        # Red-highlighted diff panel
+        # Red-highlighted diff panel (show on unmasked current so we can see hands)
         red_layer = Image.new("RGB", (w, h), (220, 38, 38))
         diff_panel = Image.composite(red_layer, current_img, mask)
 
-        # Blue-tinted baseline panel
+        # Overlay the mask boundary on the diff panel so it's clear what was excluded
+        mask_border = ImageDraw.Draw(diff_panel)
+        mask_border.ellipse(
+            [(cx - r_pivot, cy - r_pivot), (cx + r_pivot, cy + r_pivot)],
+            outline=(80, 80, 80), width=1
+        )
+
+        # Blue-tinted baseline panel (unmasked, for visual clarity)
         blue_tint = Image.new("RGB", (w, h), (14, 116, 144))
         baseline_panel = Image.blend(baseline_img, blue_tint, alpha=0.15)
 

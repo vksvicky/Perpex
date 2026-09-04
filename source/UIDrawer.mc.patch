@@ -1,0 +1,13 @@
+--- source/UIDrawer.mc
++++ source/UIDrawer.mc
+@@ -211,6 +211,10 @@
+             var textX = posX;
+             var textY = posY - (7 * s).toNumber();
+             System.println("DEBUG DRAW BATT TEXT: '" + battText + "' at X:" + textX + " Y:" + textY + " Color:" + battColor);
++            
++            // DEBUG RECTANGLE
++            dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
++            dc.fillRectangle(textX, textY, 50, 20);
++            dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
++            
+             dc.drawText(textX, textY, fontValue, battText, Graphics.TEXT_JUSTIFY_LEFT);

@@ -5,7 +5,7 @@ SDK_PATH="$HOME/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-
 KEY_PATH="developer_key.der"
 OUTPUT_PRG="bin/GarminWatchFaceTest.prg"
 
-DEVICES=("fenix7" "enduro3" "epix2pro42mm" "epix2" "fenix847mm" "venusq2")
+DEVICES=("fenix7" "enduro3" "epix2pro42mm" "epix2" "fenix847mm" "fenix9pro51mm" "venusq2")
 
 MODE="${1:-unit}"
 
@@ -15,12 +15,13 @@ if [ "$MODE" = "--help" ] || [ "$MODE" = "-h" ] || [ "$MODE" = "help" ]; then
     echo "Modes:"
     echo "  unit                      : Runs the headless logic/unit assertions (default)."
     echo "  ui                        : Runs the visual regression test harness."
+    echo "  ui --with-hands           : Runs visual test harness rendering hour/min/sec hands."
     echo "  ui --update-baselines     : Captures fresh baselines (must be on main branch)."
     echo "  sim <device>              : Compiles and launches the watch face in the Simulator."
     echo "  help                      : Show this help message."
     exit 0
 elif [ "$MODE" = "ui" ]; then
-    EXTRA_ARGS="${2:-}"
+    shift
     echo "========================================================"
     echo "📸 STARTING VISUAL REGRESSION TESTS"
     echo "========================================================"
@@ -32,7 +33,7 @@ elif [ "$MODE" = "ui" ]; then
     sleep 8
     # Activate venv so Pillow and other deps are available
     source venv/bin/activate
-    python3 run_ui_tests.py $EXTRA_ARGS
+    python3 run_ui_tests.py "$@"
     deactivate
     exit 0
 elif [ "$MODE" = "sim" ]; then

@@ -36,7 +36,11 @@ def set_properties(props_dict):
     for prop in root.findall('property'):
         prop_id = prop.get('id')
         if prop_id in props_dict:
-            prop.text = str(props_dict[prop_id])
+            val = props_dict[prop_id]
+            if isinstance(val, bool):
+                prop.text = "true" if val else "false"
+            else:
+                prop.text = str(val)
     tree.write(PROPERTIES_FILE, encoding="utf-8", xml_declaration=False)
 
     # 2. Mutate manifest UUID to trick simulator into a fresh install
@@ -45,7 +49,7 @@ def set_properties(props_dict):
     manifest_root = manifest_tree.getroot()
     app_node = manifest_root.find('{http://www.garmin.com/xml/connectiq}application')
     if app_node is not None:
-        new_uuid = uuid.uuid4().hex
+        new_uuid = str(uuid.uuid4())
         app_node.set('id', new_uuid)
     manifest_tree.write(MANIFEST_FILE, encoding="utf-8", xml_declaration=True)
 

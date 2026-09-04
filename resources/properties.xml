@@ -1,6 +1,7 @@
 <properties>
     <property id="ThemeColor" type="number">1</property>
     <property id="TemperatureUnit" type="number">0</property>
+    <property id="TimeFormat" type="number">0</property>
     <property id="NightMode" type="number">1</property>
     <property id="NightModeColor" type="number">0</property>
     <property id="NightStartHour" type="number">22</property>
@@ -9,8 +10,10 @@
     <property id="Slot1Metric" type="number">1</property>
     <property id="Slot2Metric" type="number">2</property>
     <property id="Slot3Metric" type="number">3</property>
-    <property id="Slot4Metric" type="number">11</property>
-    <property id="Slot5Metric" type="number">16</property>
+    <property id="Slot4Metric" type="number">5</property>
+    <property id="Slot5Metric" type="number">6</property>
     <property id="Slot6Metric" type="number">14</property>
-    <property id="Slot7Metric" type="number">5</property>
+    <property id="TestHideHands" type="number">0</property>
+    <property id="TestWeatherOverride" type="number">0</property>
+    <property id="WeatherDisplayMode" type="number">0</property>
 </properties>

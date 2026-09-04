@@ -5,6 +5,7 @@ import Toybox.ActivityMonitor;
 import Toybox.Activity;
 import Toybox.Weather;
 import Toybox.SensorHistory;
+import Toybox.UserProfile;
 
 module MetricProvider {
 
@@ -25,6 +26,59 @@ module MetricProvider {
             return "icon_sunset";
         }
         return "icon_sunrise";
+    }
+
+    function getWeatherIcon() {
+        var override = ThemeManager.getPropertyVal("TestWeatherOverride", 0);
+        switch (override) {
+            case 1: return "icon_raindrop";
+            case 2: return "icon_weather_sunny";
+            case 3: return "icon_weather_partly_cloudy";
+            case 4: return "icon_weather_cloudy";
+            case 5: return "icon_weather_rain";
+            case 6: return "icon_weather_thunderstorm";
+            case 7: return "icon_weather_snow";
+            case 8: return "icon_weather_wind";
+        }
+
+        if (Toybox has :Weather && Weather has :getCurrentConditions) {
+            var cond = Weather.getCurrentConditions();
+            if (cond != null) {
+                if (cond.precipitationChance != null && cond.precipitationChance > 0) {
+                    return "icon_raindrop";
+                } else if (cond.condition != null) {
+                    var c = cond.condition;
+                    switch (c) {
+                        case Weather.CONDITION_CLEAR:
+                        case Weather.CONDITION_FAIR:
+                            return "icon_weather_sunny";
+                        case Weather.CONDITION_PARTLY_CLOUDY:
+                            return "icon_weather_partly_cloudy";
+                        case Weather.CONDITION_CLOUDY:
+                        case Weather.CONDITION_MOSTLY_CLOUDY:
+                            return "icon_weather_cloudy";
+                        case Weather.CONDITION_RAIN:
+                        case Weather.CONDITION_SHOWERS:
+                        case Weather.CONDITION_HEAVY_RAIN:
+                        case Weather.CONDITION_SCATTERED_SHOWERS:
+                        case Weather.CONDITION_LIGHT_RAIN:
+                            return "icon_weather_rain";
+                        case Weather.CONDITION_THUNDERSTORMS:
+                        case Weather.CONDITION_SCATTERED_THUNDERSTORMS:
+                            return "icon_weather_thunderstorm";
+                        case Weather.CONDITION_SNOW:
+                        case Weather.CONDITION_WINTRY_MIX:
+                        case Weather.CONDITION_HAIL:
+                            return "icon_weather_snow";
+                        case Weather.CONDITION_WINDY:
+                            return "icon_weather_wind";
+                        default:
+                            return "icon_weather_cond";
+                    }
+                }
+            }
+        }
+        return "icon_weather_cond";
     }
 
     function getMetricData(type) {
@@ -121,39 +175,79 @@ module MetricProvider {
                     }
                 }
                 break;
-            case 15: // Weather Condition
-                val = "CLOUDY";
-                if (Toybox has :Weather && Weather has :getCurrentConditions) {
+            case 15: // Weather Condition (Icon + user-chosen value: Precip %, Temp °, Humidity %, or Wind)
+                var weatherMode = ThemeManager.getPropertyVal("WeatherDisplayMode", 0);
+                unitVal = ThemeManager.getPropertyVal("TemperatureUnit", 0);
+                isFahrenheit = (unitVal == 1);
+                var weatherOverride = ThemeManager.getPropertyVal("TestWeatherOverride", 0);
+
+                var tempUnitStr = isFahrenheit ? "°F" : "°C";
+
+                if (weatherOverride > 0) {
+                    switch (weatherOverride) {
+                        case 1: val = "27%"; break; // Raindrop / Precip %
+                        case 2: val = (isFahrenheit ? "72" : "22") + tempUnitStr; break; // Sunny / Clear
+                        case 3: val = (isFahrenheit ? "68" : "20") + tempUnitStr; break; // Partly Cloudy
+                        case 4: val = (isFahrenheit ? "64" : "18") + tempUnitStr; break; // Cloudy
+                        case 5: val = "85%"; break; // Rain / Showers %
+                        case 6: val = "90%"; break; // Storm %
+                        case 7: val = (isFahrenheit ? "30" : "-1") + tempUnitStr; break; // Snow
+                        case 8: val = "12kt"; break; // Wind in knots (kt)
+                        default: val = (isFahrenheit ? "70" : "21") + tempUnitStr; break;
+                    }
+                } else if (Toybox has :Weather && Weather has :getCurrentConditions) {
                     var cond = Weather.getCurrentConditions();
                     if (cond != null) {
-                        if (cond.precipitationChance != null && cond.precipitationChance > 0) {
-                            val = cond.precipitationChance.toString() + "% RAIN";
-                        } else if (cond.condition != null) {
-                            var c = cond.condition;
-                            switch (c) {
-                                case Weather.CONDITION_CLEAR:
-                                case Weather.CONDITION_FAIR:
-                                    val = "CLEAR";
-                                    break;
-                                case Weather.CONDITION_CLOUDY:
-                                case Weather.CONDITION_MOSTLY_CLOUDY:
-                                case Weather.CONDITION_PARTLY_CLOUDY:
-                                    val = "CLOUDY";
-                                    break;
-                                case Weather.CONDITION_RAIN:
-                                case Weather.CONDITION_SHOWERS:
-                                case Weather.CONDITION_HEAVY_RAIN:
-                                    val = "RAIN";
-                                    break;
-                                case Weather.CONDITION_SNOW:
-                                    val = "SNOW";
-                                    break;
-                                default:
-                                    val = "WEATHER";
-                                    break;
-                            }
+                        switch (weatherMode) {
+                            case 1: // Precipitation Chance (%) Only
+                                if (cond.precipitationChance != null) {
+                                    val = cond.precipitationChance.toString() + "%";
+                                } else {
+                                    val = "--%";
+                                }
+                                break;
+                            case 2: // Temperature Only (°C / °F)
+                                if (cond.temperature != null) {
+                                    var t = cond.temperature;
+                                    if (isFahrenheit) { t = (t * 9.0 / 5.0) + 32.0; }
+                                    val = t.toNumber().toString() + tempUnitStr;
+                                } else {
+                                    val = "--" + tempUnitStr;
+                                }
+                                break;
+                            case 3: // Humidity (%)
+                                if (cond.relativeHumidity != null) {
+                                    val = cond.relativeHumidity.toString() + "%";
+                                } else {
+                                    val = "--%";
+                                }
+                                break;
+                            case 4: // Wind Speed (knots / kt)
+                                if (cond.windSpeed != null) {
+                                    // Garmin windSpeed is in meters per second (m/s) -> 1 m/s = 1.94384 knots
+                                    var knots = (cond.windSpeed * 1.94384 + 0.5).toNumber();
+                                    val = knots.toString() + "kt";
+                                } else {
+                                    val = "--kt";
+                                }
+                                break;
+                            default: // Auto: Precip % if > 0, else Temp °C / °F
+                                if (cond.precipitationChance != null && cond.precipitationChance > 0) {
+                                    val = cond.precipitationChance.toString() + "%";
+                                } else if (cond.temperature != null) {
+                                    var temp = cond.temperature;
+                                    if (isFahrenheit) { temp = (temp * 9.0 / 5.0) + 32.0; }
+                                    val = temp.toNumber().toString() + tempUnitStr;
+                                } else {
+                                    val = "--" + tempUnitStr;
+                                }
+                                break;
                         }
+                    } else {
+                        val = (isFahrenheit ? "70" : "21") + tempUnitStr;
                     }
+                } else {
+                    val = (isFahrenheit ? "70" : "21") + tempUnitStr;
                 }
                 break;
             case 16: // Sunrise / Sunset (Dynamic)
@@ -219,6 +313,28 @@ module MetricProvider {
                         if (wSunset != null) {
                             var infoWSunset = Gregorian.info(wSunset, Time.FORMAT_SHORT);
                             val = formatTimeString(infoWSunset.hour, infoWSunset.min);
+                        }
+                    }
+                }
+                break;
+            case 20: // Recovery Time (Hours)
+                val = "24h";
+                label = "RECOVERY";
+                info = ActivityMonitor.getInfo();
+                if (info != null && info has :timeToRecovery && info.timeToRecovery != null) {
+                    val = info.timeToRecovery.toString() + "h";
+                }
+                break;
+            case 21: // VO2 Max
+                val = "48";
+                label = "VO2 MAX";
+                if (Toybox has :UserProfile && UserProfile has :getProfile) {
+                    var profile = UserProfile.getProfile();
+                    if (profile != null) {
+                        if (profile has :vo2maxRunning && profile.vo2maxRunning != null) {
+                            val = profile.vo2maxRunning.toString();
+                        } else if (profile has :vo2maxCycling && profile.vo2maxCycling != null) {
+                            val = profile.vo2maxCycling.toString();
                         }
                     }
                 }

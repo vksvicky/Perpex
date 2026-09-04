@@ -110,15 +110,14 @@ version = '$CURRENT_VERSION'
 out_path = '$RELEASE_NOTES_PATH'
 
 try:
-    git_logs = subprocess.check_output(['git', 'log', '-n', '5', '--pretty=format:- %s'], text=True).strip()
+    raw_logs = subprocess.check_output(['git', 'log', '-n', '5', '--pretty=format:* %s'], text=True).strip()
+    # Strip any emojis or non-ascii characters to satisfy Garmin store validation
+    git_logs = raw_logs.encode('ascii', 'ignore').decode('ascii').strip()
 except Exception:
-    git_logs = '- Performance and stability improvements.'
+    git_logs = '* Performance and stability improvements'
 
-notes = f'''Perpex v{version} Release Notes:
+notes = f'''What's New in v{version}:
 {git_logs}
-
-- Optimized high-resolution display rendering.
-- Enhanced color theme contrasts & metric slot legibility.
 '''
 
 with open(out_path, 'w') as f:

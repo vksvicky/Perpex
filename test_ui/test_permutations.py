@@ -1,7 +1,7 @@
 import os
 from .config_manager import set_properties
 from .simulator_driver import build_app, launch_simulator_and_screenshot
-from .image_utils import make_3panel_diff
+from .layout_validator import validate_layout
 
 # ---------------------------------------------------------------------------
 # 3 Permutation passes covering all 19 metrics across 7 slots
@@ -18,104 +18,105 @@ PERMUTATION_PASSES = [
             "Slot 4: Step Goal % (4)",
             "Slot 5: Active Calories (5)",
             "Slot 6: Distance (6)",
-            "Slot 7: Floors Climbed (7)",
         ],
-        "expected": "Battery gauge, HR, steps, goal %, calories, distance and floors with icons and values centred.",
+        "active_slot_ids": [1, 2, 3, 4, 5, 6],
+        "expected": "Battery gauge, HR, steps, goal %, calories and distance with icons and values centred.",
         "props": {
-            "NightMode": 0,
+            "NightMode": 0, "TestHideHands": 1,
             "Slot1Metric": 1, "Slot2Metric": 2, "Slot3Metric": 3,
             "Slot4Metric": 4, "Slot5Metric": 5, "Slot6Metric": 6,
-            "Slot7Metric": 7,
         },
     },
     {
         "id": "perm2",
-        "name": "Permutation 2: Sensors & Environment (Metrics 8–14)",
-        "description": "Stress, atmospheric sensors, digital clock, and weather metrics.",
+        "name": "Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)",
+        "description": "Floors climbed, active minutes, stress score, notifications, altitude, and barometer.",
         "slots": [
-            "Slot 1: Active Minutes (8)",
-            "Slot 2: Stress Score (9)",
-            "Slot 3: Digital Time (10)",
+            "Slot 1: Floors Climbed (7)",
+            "Slot 2: Active Minutes (8)",
+            "Slot 3: Stress Score (9)",
             "Slot 4: Notifications (11)",
             "Slot 5: Altitude (12)",
             "Slot 6: Barometer (13)",
-            "Slot 7: Weather Temp (14)",
         ],
-        "expected": "Atmospheric/sensor icons and formatted data (hPa, metres, °C, active mins) render without overlap.",
+        "active_slot_ids": [1, 2, 3, 4, 5, 6],
+        "expected": "Atmospheric, sensor and alert icons and formatted data (hPa, metres, active mins) render cleanly without overlap.",
         "props": {
-            "NightMode": 0,
-            "Slot1Metric": 8,  "Slot2Metric": 9,  "Slot3Metric": 10,
+            "NightMode": 0, "TestHideHands": 1,
+            "Slot1Metric": 7,  "Slot2Metric": 8,  "Slot3Metric": 9,
             "Slot4Metric": 11, "Slot5Metric": 12, "Slot6Metric": 13,
-            "Slot7Metric": 14,
         },
     },
     {
         "id": "perm3",
-        "name": "Permutation 3: Solar, Weather & Body Battery (Metrics 15–19)",
-        "description": "Weather conditions, dynamic solar times (sunrise/sunset), and Body Battery.",
+        "name": "Permutation 3: Solar, Weather & Performance (Metrics 14–21)",
+        "description": "Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.",
         "slots": [
-            "Slot 1: Weather Condition (15)",
-            "Slot 2: Sun Times / Solar Gauge (16)",
-            "Slot 3: Body Battery (17)",
-            "Slot 4: Next Sunrise (18)",
-            "Slot 5: Next Sunset (19)",
-            "Slot 6: Battery Backup (1)",
-            "Slot 7: Heart Rate Backup (2)",
+            "Slot 1: Weather Temp (14)",
+            "Slot 2: Weather Condition (15)",
+            "Slot 3: Sun Times Dynamic (16)",
+            "Slot 4: Body Battery (17)",
+            "Slot 5: Recovery Time (20)",
+            "Slot 6: VO2 Max (21)",
         ],
-        "expected": "Dynamic solar calculations, precipitation text, and body battery render correctly.",
+        "active_slot_ids": [1, 2, 3, 4, 5, 6],
+        "expected": "Weather temp, condition, dynamic solar, Body Battery, Recovery Time, and VO2 Max render with crisp icons and values.",
         "props": {
-            "NightMode": 0,
-            "Slot1Metric": 15, "Slot2Metric": 16, "Slot3Metric": 17,
-            "Slot4Metric": 18, "Slot5Metric": 19, "Slot6Metric": 1,
-            "Slot7Metric": 2,
+            "NightMode": 0, "TestHideHands": 1,
+            "Slot1Metric": 14, "Slot2Metric": 15, "Slot3Metric": 16,
+            "Slot4Metric": 17, "Slot5Metric": 20, "Slot6Metric": 21,
         },
     },
 ]
 
 
-def run_permutation_tests(dev_id, dev_name, output_dir, baselines_dir, diffs_dir):
+def run_permutation_tests(dev_id, dev_name, res_info, output_dir, hide_hands=1):
     """
     Runs all 3 metric permutation passes for *dev_id*.
 
     Args:
         dev_id:       Garmin device identifier (e.g. "fenix7")
         dev_name:     Human-readable name for reporting
+        res_info:     Resolution string (e.g. "454×454 AMOLED")
         output_dir:   Directory for current-branch screenshots
-        baselines_dir: Directory containing baseline images from main
-        diffs_dir:    Directory to write 3-panel diff composites
+        hide_hands:   1 to hide analog hands for diff testing, 0 to show hands
 
     Returns:
         list[dict] – one result entry per pass
     """
     print(f"\n  📊 Metric Permutations ({dev_name})")
     os.makedirs(output_dir, exist_ok=True)
-    os.makedirs(diffs_dir, exist_ok=True)
     results = []
 
     for ppass in PERMUTATION_PASSES:
         pid = ppass["id"]
         print(f"    → {ppass['name']}")
-        set_properties(ppass["props"])
+        props = dict(ppass["props"])
+        props["TestHideHands"] = hide_hands
+        set_properties(props)
 
         prg_path  = f"bin/Visual_{dev_id}_{pid}.prg"
-        img_path  = os.path.join(output_dir,   f"{dev_id}_{pid}.png")
-        base_path = os.path.join(baselines_dir, f"{dev_id}_{pid}.png")
-        diff_path = os.path.join(diffs_dir,     f"{dev_id}_{pid}.png")
+        img_path  = os.path.join(output_dir, f"{dev_id}_{pid}.png")
 
+        captured = False
+        val = {"pass": False, "issues": ["Build failed"], "annotated_path": None}
         if build_app(dev_id, prg_path):
-            launch_simulator_and_screenshot(dev_id, prg_path, img_path)
+            captured = launch_simulator_and_screenshot(dev_id, prg_path, img_path, res_info)
+            if captured:
+                val = validate_layout(img_path, ppass["active_slot_ids"])
+            else:
+                val = {"pass": False, "issues": ["Simulator capture timed out / failed"], "annotated_path": None}
 
-        diff_result = make_3panel_diff(base_path, img_path, diff_path)
         results.append({
+            "id":           pid,
             "pass_name":    ppass["name"],
             "description":  ppass["description"],
             "slots":        ppass["slots"],
             "expected":     ppass["expected"],
-            "baseline_img": base_path,
-            "current_img":  img_path,
-            "diff_img":     diff_result["composite_path"],
-            "diff_pct":     diff_result["diff_pct"],
-            "has_baseline": diff_result["has_baseline"],
+            "current_img":  img_path if captured else None,
+            "zones_img":    val.get("annotated_path") if captured else None,
+            "passed":       val.get("pass", False),
+            "issues":       list(val.get("issues", [])),
         })
 
     return results

@@ -1,112 +1,1185 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Perpex Visual UI Testing Gallery Report</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #f8fafc; padding: 30px; margin: 0; }
-        h1 { text-align: center; color: #38bdf8; margin-bottom: 5px; }
-        p.sub { text-align: center; color: #94a3b8; margin-bottom: 30px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 25px; max-width: 1600px; margin: 0 auto; }
-        .card { background: #1e293b; border-radius: 12px; padding: 20px; border: 1px solid #334155; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); text-align: center; }
-        .badge { display: inline-block; background: #0284c7; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; margin-bottom: 15px; }
-        .img-wrapper { background: #000; border-radius: 8px; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 250px; border: 1px solid #475569; }
-        img { max-width: 100%; height: auto; border-radius: 4px; }
-        .scenario-box { text-align: left; margin-top: 15px; background: #0f172a; border-radius: 8px; padding: 12px 15px; border: 1px solid #334155; max-height: 200px; overflow-y: auto; }
-        .scenario-box h4 { color: #38bdf8; margin: 0 0 10px 0; font-size: 0.9rem; }
-        ol { margin: 0; padding-left: 20px; font-size: 0.8rem; color: #cbd5e1; }
-        li { margin-bottom: 4px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Perpex Visual Regression & Layout Validation Report</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a; color: #f1f5f9; margin: 0; padding: 24px; }
+    h1   { text-align:center; color: #38bdf8; margin-bottom: 4px; font-size: 1.8rem; }
+    .meta { text-align:center; color:#94a3b8; margin-bottom:28px; font-size:.9rem; }
+    .meta code { background:#1e293b; padding:2px 6px; border-radius:4px; color:#7dd3fc; }
+
+    .device-section { background:#1e293b; border-radius:12px; border:1px solid #334155;
+                        margin-bottom:32px; overflow:hidden; }
+    .device-header  { padding:16px 20px; background:#162032; display:flex;
+                        align-items:center; gap:14px; flex-wrap:wrap; }
+    .device-header h2 { margin:0; color:#e2e8f0; font-size:1.1rem; }
+    .badge-res { background:#0284c7; color:#fff; padding:3px 10px;
+                   border-radius:20px; font-size:.8rem; font-weight:700; }
+    .stat      { font-size:.82rem; color:#4ade80; }
+    .stat.warn { color:#f87171; }
+
+    .result-table { width:100%; border-collapse:collapse; }
+    .result-table th { background:#0f172a; color:#7dd3fc; text-align:left;
+                         padding:10px 16px; font-size:.8rem; text-transform:uppercase;
+                         letter-spacing:.05em; }
+    .result-table td { padding:12px 16px; border-top:1px solid #1e293b; vertical-align:top; }
+    .result-table tr:hover td { background:#162032; }
+    .pass-name  { width:260px; min-width:200px; }
+    .pass-name strong { color:#e2e8f0; font-size:.9rem; }
+    .pass-name small  { color:#94a3b8; font-size:.78rem; }
+    .img-cell  { }
+    .img-cell img { max-width:100%; border-radius:6px; border:1px solid #334155; }
+    .no-img { color:#475569; font-size:.8rem; padding:20px; text-align:center; }
+
+    .slot-list { margin:6px 0 0 0; padding-left:16px; font-size:.75rem; color:#94a3b8; }
+    .slot-list li { margin-bottom:2px; }
+    
+    .issues-list { margin:6px 0 0 0; padding-left:16px; font-size:.75rem; color:#f87171; font-weight: bold; }
+
+    .badge { display:inline-block; padding:2px 8px; border-radius:12px;
+               font-size:.75rem; font-weight:700; margin-top:6px; }
+    .badge-pass   { background:#14532d; color:#4ade80; }
+    .badge-fail   { background:#7f1d1d; color:#f87171; }
+    .badge-nobase { background:#854d0e; color:#fef08a; }
+  </style>
 </head>
 <body>
-    <h1>🎨 Perpex Multi-Device Visual UI Test Gallery</h1>
-    <p class="sub">Generated Visual Snapshots across 40 Test Scenarios on MIP & AMOLED Resolution Classes</p>
-    <div class="grid">
+  <h1>🎨 Perpex Visual Regression & Layout Report</h1>
+  <p class="meta">
+    branch: <code>feature/issue-4-new-metrics</code> &nbsp;·&nbsp; 2026-09-04 20:13 &nbsp;·&nbsp;
+    10 devices
+  </p>
+  
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Fenix 7S / 7S Pro</h2>
+        <span class="badge-res">240×240 MIP</span>
+        <span class="stat">✅ 5 passed</span>
         
-    <div class="card">
-        <h3>Fenix 7 / Fenix 9 Pro Solar 47mm</h3>
-        <p class="badge">260x260 MIP Solar</p>
-        <div class="img-wrapper">
-            <img src="screenshots/fenix7.png" alt="Fenix 7 / Fenix 9 Pro Solar 47mm">
-        </div>
-        <div class="scenario-box">
-            <h4>40 Test Scenarios Executed:</h4>
-            <ol>
-                <li>1. Battery Slot (50%, 10%, 100%)</li><li>2. Heart Rate (80 BPM, 199 BPM)</li><li>3. Step Counter (99,999 STEPS)</li><li>4. Step Goal % (100% GOAL)</li><li>5. Active Calories (1000 kCal)</li><li>6. Distance (999.9 KM)</li><li>7. Floors Climbed (999 FLOORS)</li><li>8. Active Minutes (9,999 MINS)</li><li>9. Stress Score (100 STRESS)</li><li>10. Digital Time (23:59)</li><li>11. Notifications (99 NOTIF)</li><li>12. Altitude (9,999 M)</li><li>13. Barometer (1013 hPa)</li><li>14. Weather Temp (45°C)</li><li>15. Weather Condition (SUNRISE/RAIN)</li><li>16. Solar Sun Event (06:14 SUNRISE)</li><li>17. Body Battery (100% BODY BATT)</li><li>18. Sunrise Only (06:14 AM)</li><li>19. Sunset Only (07:45 PM)</li><li>20. Max Character String Length Bounds in All 7 Slots</li><li>21. Min Character String Length Bounds in All 7 Slots</li><li>22. Uniform Heart Rate in All 7 Slots</li><li>23. Uniform Battery in All 7 Slots</li><li>24. Uniform Steps in All 7 Slots</li><li>25. Uniform Distance in All 7 Slots</li><li>26. Uniform Calories in All 7 Slots</li><li>27. Uniform Weather in All 7 Slots</li><li>28. Color Theme 1 (Red / Default)</li><li>29. Color Theme 2 (Teal / Cyan)</li><li>30. Color Theme 3 (Warm Orange)</li><li>31. Color Theme 4 (Electric Green)</li><li>32. Color Theme 5 (Gold / Yellow)</li><li>33. Color Theme 6 (Pure White)</li><li>34. Battery Low Warning Level (<= 20% Red)</li><li>35. Battery Charging Animation State</li><li>36. Low-Power AOD Mode (Dimmed Gray, Hidden Dial BG)</li><li>37. Night Mode Red Theme Override</li><li>38. Night Mode Green Theme Override</li><li>39. Night Mode Orange Theme Override</li><li>40. Full Active Mode (Analog Hands, Seconds, Rings, All 7 Slots)</li>
-            </ol>
-        </div>
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.11% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Night Mode: Tactical Red</strong><br>
+            <small>Tactical Red Night Mode for preserved night vision.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_night_red.png" alt="Night Mode: Tactical Red" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_night_red_zones.png" alt="Night Mode: Tactical Red Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_night_red.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.11% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Weather: Snow & Wintry Mix</strong><br>
+            <small></small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_weather_snow.png" alt="Weather: Snow & Wintry Mix" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7s_weather_snow_zones.png" alt="Weather: Snow & Wintry Mix Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_weather_snow.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    
-    <div class="card">
-        <h3>Enduro 3 / Fenix 9 Pro Solar 51mm</h3>
-        <p class="badge">280x280 MIP Solar</p>
-        <div class="img-wrapper">
-            <img src="screenshots/enduro3.png" alt="Enduro 3 / Fenix 9 Pro Solar 51mm">
-        </div>
-        <div class="scenario-box">
-            <h4>40 Test Scenarios Executed:</h4>
-            <ol>
-                <li>1. Battery Slot (50%, 10%, 100%)</li><li>2. Heart Rate (80 BPM, 199 BPM)</li><li>3. Step Counter (99,999 STEPS)</li><li>4. Step Goal % (100% GOAL)</li><li>5. Active Calories (1000 kCal)</li><li>6. Distance (999.9 KM)</li><li>7. Floors Climbed (999 FLOORS)</li><li>8. Active Minutes (9,999 MINS)</li><li>9. Stress Score (100 STRESS)</li><li>10. Digital Time (23:59)</li><li>11. Notifications (99 NOTIF)</li><li>12. Altitude (9,999 M)</li><li>13. Barometer (1013 hPa)</li><li>14. Weather Temp (45°C)</li><li>15. Weather Condition (SUNRISE/RAIN)</li><li>16. Solar Sun Event (06:14 SUNRISE)</li><li>17. Body Battery (100% BODY BATT)</li><li>18. Sunrise Only (06:14 AM)</li><li>19. Sunset Only (07:45 PM)</li><li>20. Max Character String Length Bounds in All 7 Slots</li><li>21. Min Character String Length Bounds in All 7 Slots</li><li>22. Uniform Heart Rate in All 7 Slots</li><li>23. Uniform Battery in All 7 Slots</li><li>24. Uniform Steps in All 7 Slots</li><li>25. Uniform Distance in All 7 Slots</li><li>26. Uniform Calories in All 7 Slots</li><li>27. Uniform Weather in All 7 Slots</li><li>28. Color Theme 1 (Red / Default)</li><li>29. Color Theme 2 (Teal / Cyan)</li><li>30. Color Theme 3 (Warm Orange)</li><li>31. Color Theme 4 (Electric Green)</li><li>32. Color Theme 5 (Gold / Yellow)</li><li>33. Color Theme 6 (Pure White)</li><li>34. Battery Low Warning Level (<= 20% Red)</li><li>35. Battery Charging Animation State</li><li>36. Low-Power AOD Mode (Dimmed Gray, Hidden Dial BG)</li><li>37. Night Mode Red Theme Override</li><li>38. Night Mode Green Theme Override</li><li>39. Night Mode Orange Theme Override</li><li>40. Full Active Mode (Analog Hands, Seconds, Rings, All 7 Slots)</li>
-            </ol>
-        </div>
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Fenix 7 / Fenix 9 Pro Solar 47mm</h2>
+        <span class="badge-res">260×260 MIP Solar</span>
+        <span class="stat">✅ 5 passed</span>
+        
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.09% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Theme: Vibrant Red (Default)</strong><br>
+            <small>Standard Tactical Red theme accent on hands, date arcs, and status icons.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_theme1.png" alt="Theme: Vibrant Red (Default)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_theme1_zones.png" alt="Theme: Vibrant Red (Default) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_theme1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.09% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Weather: Raindrop / Precipitation Chance</strong><br>
+            <small></small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_weather_rain.png" alt="Weather: Raindrop / Precipitation Chance" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix7_weather_rain_zones.png" alt="Weather: Raindrop / Precipitation Chance Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_weather_rain.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    
-    <div class="card">
-        <h3>Epix 2 Pro 42mm</h3>
-        <p class="badge">390x390 AMOLED</p>
-        <div class="img-wrapper">
-            <img src="screenshots/epix2pro42mm.png" alt="Epix 2 Pro 42mm">
-        </div>
-        <div class="scenario-box">
-            <h4>40 Test Scenarios Executed:</h4>
-            <ol>
-                <li>1. Battery Slot (50%, 10%, 100%)</li><li>2. Heart Rate (80 BPM, 199 BPM)</li><li>3. Step Counter (99,999 STEPS)</li><li>4. Step Goal % (100% GOAL)</li><li>5. Active Calories (1000 kCal)</li><li>6. Distance (999.9 KM)</li><li>7. Floors Climbed (999 FLOORS)</li><li>8. Active Minutes (9,999 MINS)</li><li>9. Stress Score (100 STRESS)</li><li>10. Digital Time (23:59)</li><li>11. Notifications (99 NOTIF)</li><li>12. Altitude (9,999 M)</li><li>13. Barometer (1013 hPa)</li><li>14. Weather Temp (45°C)</li><li>15. Weather Condition (SUNRISE/RAIN)</li><li>16. Solar Sun Event (06:14 SUNRISE)</li><li>17. Body Battery (100% BODY BATT)</li><li>18. Sunrise Only (06:14 AM)</li><li>19. Sunset Only (07:45 PM)</li><li>20. Max Character String Length Bounds in All 7 Slots</li><li>21. Min Character String Length Bounds in All 7 Slots</li><li>22. Uniform Heart Rate in All 7 Slots</li><li>23. Uniform Battery in All 7 Slots</li><li>24. Uniform Steps in All 7 Slots</li><li>25. Uniform Distance in All 7 Slots</li><li>26. Uniform Calories in All 7 Slots</li><li>27. Uniform Weather in All 7 Slots</li><li>28. Color Theme 1 (Red / Default)</li><li>29. Color Theme 2 (Teal / Cyan)</li><li>30. Color Theme 3 (Warm Orange)</li><li>31. Color Theme 4 (Electric Green)</li><li>32. Color Theme 5 (Gold / Yellow)</li><li>33. Color Theme 6 (Pure White)</li><li>34. Battery Low Warning Level (<= 20% Red)</li><li>35. Battery Charging Animation State</li><li>36. Low-Power AOD Mode (Dimmed Gray, Hidden Dial BG)</li><li>37. Night Mode Red Theme Override</li><li>38. Night Mode Green Theme Override</li><li>39. Night Mode Orange Theme Override</li><li>40. Full Active Mode (Analog Hands, Seconds, Rings, All 7 Slots)</li>
-            </ol>
-        </div>
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Forerunner 255 / 255 Music</h2>
+        <span class="badge-res">260×260 MIP Running</span>
+        <span class="stat">✅ 5 passed</span>
+        
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Theme: Gold / Yellow Accent</strong><br>
+            <small>High-visibility Gold/Yellow theme accent.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_theme5.png" alt="Theme: Gold / Yellow Accent" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_theme5_zones.png" alt="Theme: Gold / Yellow Accent Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_theme5.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Weather: Partly Cloudy</strong><br>
+            <small></small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_weather_partly_cloudy.png" alt="Weather: Partly Cloudy" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fr255_weather_partly_cloudy_zones.png" alt="Weather: Partly Cloudy Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_weather_partly_cloudy.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    
-    <div class="card">
-        <h3>Epix Gen 2 47mm</h3>
-        <p class="badge">416x416 AMOLED</p>
-        <div class="img-wrapper">
-            <img src="screenshots/epix2.png" alt="Epix Gen 2 47mm">
-        </div>
-        <div class="scenario-box">
-            <h4>40 Test Scenarios Executed:</h4>
-            <ol>
-                <li>1. Battery Slot (50%, 10%, 100%)</li><li>2. Heart Rate (80 BPM, 199 BPM)</li><li>3. Step Counter (99,999 STEPS)</li><li>4. Step Goal % (100% GOAL)</li><li>5. Active Calories (1000 kCal)</li><li>6. Distance (999.9 KM)</li><li>7. Floors Climbed (999 FLOORS)</li><li>8. Active Minutes (9,999 MINS)</li><li>9. Stress Score (100 STRESS)</li><li>10. Digital Time (23:59)</li><li>11. Notifications (99 NOTIF)</li><li>12. Altitude (9,999 M)</li><li>13. Barometer (1013 hPa)</li><li>14. Weather Temp (45°C)</li><li>15. Weather Condition (SUNRISE/RAIN)</li><li>16. Solar Sun Event (06:14 SUNRISE)</li><li>17. Body Battery (100% BODY BATT)</li><li>18. Sunrise Only (06:14 AM)</li><li>19. Sunset Only (07:45 PM)</li><li>20. Max Character String Length Bounds in All 7 Slots</li><li>21. Min Character String Length Bounds in All 7 Slots</li><li>22. Uniform Heart Rate in All 7 Slots</li><li>23. Uniform Battery in All 7 Slots</li><li>24. Uniform Steps in All 7 Slots</li><li>25. Uniform Distance in All 7 Slots</li><li>26. Uniform Calories in All 7 Slots</li><li>27. Uniform Weather in All 7 Slots</li><li>28. Color Theme 1 (Red / Default)</li><li>29. Color Theme 2 (Teal / Cyan)</li><li>30. Color Theme 3 (Warm Orange)</li><li>31. Color Theme 4 (Electric Green)</li><li>32. Color Theme 5 (Gold / Yellow)</li><li>33. Color Theme 6 (Pure White)</li><li>34. Battery Low Warning Level (<= 20% Red)</li><li>35. Battery Charging Animation State</li><li>36. Low-Power AOD Mode (Dimmed Gray, Hidden Dial BG)</li><li>37. Night Mode Red Theme Override</li><li>38. Night Mode Green Theme Override</li><li>39. Night Mode Orange Theme Override</li><li>40. Full Active Mode (Analog Hands, Seconds, Rings, All 7 Slots)</li>
-            </ol>
-        </div>
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Enduro 3 / Fenix 7X / Fenix 8 Solar 51mm</h2>
+        <span class="badge-res">280×280 MIP Solar</span>
+        <span class="stat">✅ 5 passed</span>
+        
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Theme: Warm Orange Accent</strong><br>
+            <small>High-visibility Warm Orange theme accent.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_theme3.png" alt="Theme: Warm Orange Accent" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_theme3_zones.png" alt="Theme: Warm Orange Accent Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_theme3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Weather: Clear / Sunny</strong><br>
+            <small></small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_weather_sunny.png" alt="Weather: Clear / Sunny" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/enduro3_weather_sunny_zones.png" alt="Weather: Clear / Sunny Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_weather_sunny.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    
-    <div class="card">
-        <h3>Fenix 8 / Fenix 9 Pro 47mm</h3>
-        <p class="badge">454x454 AMOLED</p>
-        <div class="img-wrapper">
-            <img src="screenshots/fenix847mm.png" alt="Fenix 8 / Fenix 9 Pro 47mm">
-        </div>
-        <div class="scenario-box">
-            <h4>40 Test Scenarios Executed:</h4>
-            <ol>
-                <li>1. Battery Slot (50%, 10%, 100%)</li><li>2. Heart Rate (80 BPM, 199 BPM)</li><li>3. Step Counter (99,999 STEPS)</li><li>4. Step Goal % (100% GOAL)</li><li>5. Active Calories (1000 kCal)</li><li>6. Distance (999.9 KM)</li><li>7. Floors Climbed (999 FLOORS)</li><li>8. Active Minutes (9,999 MINS)</li><li>9. Stress Score (100 STRESS)</li><li>10. Digital Time (23:59)</li><li>11. Notifications (99 NOTIF)</li><li>12. Altitude (9,999 M)</li><li>13. Barometer (1013 hPa)</li><li>14. Weather Temp (45°C)</li><li>15. Weather Condition (SUNRISE/RAIN)</li><li>16. Solar Sun Event (06:14 SUNRISE)</li><li>17. Body Battery (100% BODY BATT)</li><li>18. Sunrise Only (06:14 AM)</li><li>19. Sunset Only (07:45 PM)</li><li>20. Max Character String Length Bounds in All 7 Slots</li><li>21. Min Character String Length Bounds in All 7 Slots</li><li>22. Uniform Heart Rate in All 7 Slots</li><li>23. Uniform Battery in All 7 Slots</li><li>24. Uniform Steps in All 7 Slots</li><li>25. Uniform Distance in All 7 Slots</li><li>26. Uniform Calories in All 7 Slots</li><li>27. Uniform Weather in All 7 Slots</li><li>28. Color Theme 1 (Red / Default)</li><li>29. Color Theme 2 (Teal / Cyan)</li><li>30. Color Theme 3 (Warm Orange)</li><li>31. Color Theme 4 (Electric Green)</li><li>32. Color Theme 5 (Gold / Yellow)</li><li>33. Color Theme 6 (Pure White)</li><li>34. Battery Low Warning Level (<= 20% Red)</li><li>35. Battery Charging Animation State</li><li>36. Low-Power AOD Mode (Dimmed Gray, Hidden Dial BG)</li><li>37. Night Mode Red Theme Override</li><li>38. Night Mode Green Theme Override</li><li>39. Night Mode Orange Theme Override</li><li>40. Full Active Mode (Analog Hands, Seconds, Rings, All 7 Slots)</li>
-            </ol>
-        </div>
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Venu 2S</h2>
+        <span class="badge-res">360×360 AMOLED</span>
+        <span class="stat">✅ 4 passed</span>
+        
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2s_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2s_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2s_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2s_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2s_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2s_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2s_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2s_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2s_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Night Mode: Night Amber</strong><br>
+            <small>Night Amber mode for low-light legibility.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2s_night_amber.png" alt="Night Mode: Night Amber" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2s_night_amber_zones.png" alt="Night Mode: Night Amber Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2s_night_amber.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    
-    <div class="card">
-        <h3>Venu Sq 2</h3>
-        <p class="badge">320x360 AMOLED</p>
-        <div class="img-wrapper">
-            <img src="screenshots/venusq2.png" alt="Venu Sq 2">
-        </div>
-        <div class="scenario-box">
-            <h4>40 Test Scenarios Executed:</h4>
-            <ol>
-                <li>1. Battery Slot (50%, 10%, 100%)</li><li>2. Heart Rate (80 BPM, 199 BPM)</li><li>3. Step Counter (99,999 STEPS)</li><li>4. Step Goal % (100% GOAL)</li><li>5. Active Calories (1000 kCal)</li><li>6. Distance (999.9 KM)</li><li>7. Floors Climbed (999 FLOORS)</li><li>8. Active Minutes (9,999 MINS)</li><li>9. Stress Score (100 STRESS)</li><li>10. Digital Time (23:59)</li><li>11. Notifications (99 NOTIF)</li><li>12. Altitude (9,999 M)</li><li>13. Barometer (1013 hPa)</li><li>14. Weather Temp (45°C)</li><li>15. Weather Condition (SUNRISE/RAIN)</li><li>16. Solar Sun Event (06:14 SUNRISE)</li><li>17. Body Battery (100% BODY BATT)</li><li>18. Sunrise Only (06:14 AM)</li><li>19. Sunset Only (07:45 PM)</li><li>20. Max Character String Length Bounds in All 7 Slots</li><li>21. Min Character String Length Bounds in All 7 Slots</li><li>22. Uniform Heart Rate in All 7 Slots</li><li>23. Uniform Battery in All 7 Slots</li><li>24. Uniform Steps in All 7 Slots</li><li>25. Uniform Distance in All 7 Slots</li><li>26. Uniform Calories in All 7 Slots</li><li>27. Uniform Weather in All 7 Slots</li><li>28. Color Theme 1 (Red / Default)</li><li>29. Color Theme 2 (Teal / Cyan)</li><li>30. Color Theme 3 (Warm Orange)</li><li>31. Color Theme 4 (Electric Green)</li><li>32. Color Theme 5 (Gold / Yellow)</li><li>33. Color Theme 6 (Pure White)</li><li>34. Battery Low Warning Level (<= 20% Red)</li><li>35. Battery Charging Animation State</li><li>36. Low-Power AOD Mode (Dimmed Gray, Hidden Dial BG)</li><li>37. Night Mode Red Theme Override</li><li>38. Night Mode Green Theme Override</li><li>39. Night Mode Orange Theme Override</li><li>40. Full Active Mode (Analog Hands, Seconds, Rings, All 7 Slots)</li>
-            </ol>
-        </div>
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Epix 2 Pro 42mm / Venu 3S</h2>
+        <span class="badge-res">390×390 AMOLED</span>
+        <span class="stat">✅ 6 passed</span>
+        
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Theme: Pure White Accent</strong><br>
+            <small>Monochrome crisp Pure White theme accent.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_theme6.png" alt="Theme: Pure White Accent" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_theme6_zones.png" alt="Theme: Pure White Accent Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_theme6.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Low-Power AOD Mode</strong><br>
+            <small>Always-on display: dimmed grey face, hidden dial background, minimal hands.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_low_power.png" alt="Low-Power AOD Mode" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_low_power_zones.png" alt="Low-Power AOD Mode Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_low_power.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Weather: Thunderstorm</strong><br>
+            <small></small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_weather_thunderstorm.png" alt="Weather: Thunderstorm" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/epix2pro42mm_weather_thunderstorm_zones.png" alt="Weather: Thunderstorm Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_weather_thunderstorm.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Venu 2 / Venu 2 Plus / Epix Gen 2</h2>
+        <span class="badge-res">416×416 AMOLED</span>
+        <span class="stat">✅ 6 passed</span>
+        
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Theme: Teal / Cyan Accent</strong><br>
+            <small>High-contrast Teal / Cyan theme accent.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_theme2.png" alt="Theme: Teal / Cyan Accent" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_theme2_zones.png" alt="Theme: Teal / Cyan Accent Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_theme2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Low-Power AOD Mode</strong><br>
+            <small>Always-on display: dimmed grey face, hidden dial background, minimal hands.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_low_power.png" alt="Low-Power AOD Mode" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_low_power_zones.png" alt="Low-Power AOD Mode Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_low_power.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Weather: Overcast / Cloudy</strong><br>
+            <small></small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_weather_cloudy.png" alt="Weather: Overcast / Cloudy" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu2_weather_cloudy_zones.png" alt="Weather: Overcast / Cloudy Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_weather_cloudy.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Venu 3 / Forerunner 965 / Fenix 8 47mm</h2>
+        <span class="badge-res">454×454 AMOLED</span>
+        <span class="stat">✅ 6 passed</span>
+        
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Theme: Electric Green Accent</strong><br>
+            <small>High-visibility Electric Green theme accent.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_theme4.png" alt="Theme: Electric Green Accent" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_theme4_zones.png" alt="Theme: Electric Green Accent Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_theme4.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Low-Power AOD Mode</strong><br>
+            <small>Always-on display: dimmed grey face, hidden dial background, minimal hands.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_low_power.png" alt="Low-Power AOD Mode" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_low_power_zones.png" alt="Low-Power AOD Mode Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_low_power.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Weather: Rain / Showers</strong><br>
+            <small></small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_weather_showers.png" alt="Weather: Rain / Showers" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venu3_weather_showers_zones.png" alt="Weather: Rain / Showers Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_weather_showers.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Fenix 9 Pro 51mm</h2>
+        <span class="badge-res">466×466 AMOLED</span>
+        <span class="stat">✅ 3 passed</span>
+        
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix9pro51mm_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix9pro51mm_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix9pro51mm_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix9pro51mm_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix9pro51mm_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix9pro51mm_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix9pro51mm_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/fenix9pro51mm_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix9pro51mm_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="device-section">
+      <div class="device-header">
+        <h2>Venu Sq 2</h2>
+        <span class="badge-res">320×360 AMOLED</span>
+        <span class="stat">✅ 6 passed</span>
+        
+      </div>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 1: Core Activity (Metrics 1–7)</strong><br>
+            <small>Standard fitness & activity metrics layout.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Battery (1)</li><li>Slot 2: Heart Rate (2)</li><li>Slot 3: Steps (3)</li><li>Slot 4: Step Goal % (4)</li><li>Slot 5: Active Calories (5)</li><li>Slot 6: Distance (6)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_perm1.png" alt="Permutation 1: Core Activity (Metrics 1–7)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">1.90% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)</strong><br>
+            <small>Floors climbed, active minutes, stress score, notifications, altitude, and barometer.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Floors Climbed (7)</li><li>Slot 2: Active Minutes (8)</li><li>Slot 3: Stress Score (9)</li><li>Slot 4: Notifications (11)</li><li>Slot 5: Altitude (12)</li><li>Slot 6: Barometer (13)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_perm2.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">2.14% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Permutation 3: Solar, Weather & Performance (Metrics 14–21)</strong><br>
+            <small>Weather temp, weather conditions, dynamic solar times, Body Battery, Recovery Time, and VO2 Max.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            <ul class="slot-list"><li>Slot 1: Weather Temp (14)</li><li>Slot 2: Weather Condition (15)</li><li>Slot 3: Sun Times Dynamic (16)</li><li>Slot 4: Body Battery (17)</li><li>Slot 5: Recovery Time (20)</li><li>Slot 6: VO2 Max (21)</li></ul>
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_perm3.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21)" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">2.25% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Night Mode: Stealth Green</strong><br>
+            <small>Stealth Green mode for tactical night use.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_night_green.png" alt="Night Mode: Stealth Green" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_night_green_zones.png" alt="Night Mode: Stealth Green Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_night_green.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">1.62% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Low-Power AOD Mode</strong><br>
+            <small>Always-on display: dimmed grey face, hidden dial background, minimal hands.</small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_low_power.png" alt="Low-Power AOD Mode" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_low_power_zones.png" alt="Low-Power AOD Mode Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_low_power.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">2.25% diff</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="pass-name">
+            <strong>Weather: High Wind</strong><br>
+            <small></small><br>
+            <span class="badge badge-pass">✅ PASS</span>
+            
+            
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_weather_wind.png" alt="Weather: High Wind" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="feature_issue-4-new-metrics/venusq2_weather_wind_zones.png" alt="Weather: High Wind Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_weather_wind.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">2.17% diff</span></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
 </body>
 </html>

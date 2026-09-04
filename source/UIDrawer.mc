@@ -12,39 +12,58 @@ module UIDrawer {
     function getSlotX(slotId, w, offsetX) {
         var centerX = (w / 2) + offsetX;
         var s = w / 260.0;
-        
+
+        if (w == 320) {
+            switch (slotId) {
+                case 1: return centerX;
+                case 2: return centerX - 52;
+                case 3: return centerX + 52;
+                case 4: return centerX - 52;
+                case 5: return centerX + 52;
+                case 6: return centerX;
+            }
+            return centerX;
+        }
+
         switch (w) {
+            case 240:
+                switch (slotId) {
+                    case 1: return centerX;
+                    case 2: return centerX - 42;
+                    case 3: return centerX + 42;
+                    case 4: return centerX - 42;
+                    case 5: return centerX + 42;
+                    case 6: return centerX;
+                }
+                break;
             case 260:
                 switch (slotId) {
                     case 1: return centerX;
                     case 2: return centerX - 44;
-                    case 3: return centerX + 40;
-                    case 4: return centerX;
-                    case 5: return centerX - 36;
-                    case 6: return centerX + 36;
-                    case 7: return centerX;
+                    case 3: return centerX + 44;
+                    case 4: return centerX - 44;
+                    case 5: return centerX + 44;
+                    case 6: return centerX;
                 }
                 break;
             case 280:
                 switch (slotId) {
                     case 1: return centerX;
                     case 2: return centerX - 47;
-                    case 3: return centerX + 43;
-                    case 4: return centerX;
-                    case 5: return centerX - 39;
-                    case 6: return centerX + 39;
-                    case 7: return centerX;
+                    case 3: return centerX + 47;
+                    case 4: return centerX - 47;
+                    case 5: return centerX + 47;
+                    case 6: return centerX;
                 }
                 break;
             default:
                 switch (slotId) {
                     case 1: return centerX;
                     case 2: return centerX - (44 * s).toNumber();
-                    case 3: return centerX + (40 * s).toNumber();
-                    case 4: return centerX;
-                    case 5: return centerX - (36 * s).toNumber();
-                    case 6: return centerX + (36 * s).toNumber();
-                    case 7: return centerX;
+                    case 3: return centerX + (44 * s).toNumber();
+                    case 4: return centerX - (44 * s).toNumber();
+                    case 5: return centerX + (44 * s).toNumber();
+                    case 6: return centerX;
                 }
                 break;
         }
@@ -54,39 +73,58 @@ module UIDrawer {
     function getSlotY(slotId, w, h, offsetY) {
         var centerY = (h / 2) + offsetY;
         var s = w / 260.0;
-        
+
+        if (w == 320 && h == 360) {
+            switch (slotId) {
+                case 1: return centerY - 62;
+                case 2: return centerY - 25;
+                case 3: return centerY - 25;
+                case 4: return centerY + 28;
+                case 5: return centerY + 28;
+                case 6: return centerY + 62;
+            }
+            return centerY;
+        }
+
         switch (w) {
-            case 260:
+            case 240:
                 switch (slotId) {
                     case 1: return centerY - 48;
-                    case 2: return centerY - 26;
-                    case 3: return centerY - 26;
-                    case 4: return centerY + 16;
-                    case 5: return centerY + 30;
-                    case 6: return centerY + 30;
-                    case 7: return centerY + 54;
+                    case 2: return centerY - 24;
+                    case 3: return centerY - 24;
+                    case 4: return centerY + 26;
+                    case 5: return centerY + 26;
+                    case 6: return centerY + 48;
+                }
+                break;
+            case 260:
+                switch (slotId) {
+                    case 1: return centerY - 52;
+                    case 2: return centerY - 25;
+                    case 3: return centerY - 25;
+                    case 4: return centerY + 27;
+                    case 5: return centerY + 27;
+                    case 6: return centerY + 52;
                 }
                 break;
             case 280:
                 switch (slotId) {
-                    case 1: return centerY - 52;
-                    case 2: return centerY - 28;
-                    case 3: return centerY - 28;
-                    case 4: return centerY + 17;
-                    case 5: return centerY + 32;
-                    case 6: return centerY + 32;
-                    case 7: return centerY + 58;
+                    case 1: return centerY - 56;
+                    case 2: return centerY - 27;
+                    case 3: return centerY - 27;
+                    case 4: return centerY + 29;
+                    case 5: return centerY + 29;
+                    case 6: return centerY + 56;
                 }
                 break;
             default:
                 switch (slotId) {
-                    case 1: return centerY - (48 * s).toNumber();
-                    case 2: return centerY - (26 * s).toNumber();
-                    case 3: return centerY - (26 * s).toNumber();
-                    case 4: return centerY + (16 * s).toNumber();
-                    case 5: return centerY + (30 * s).toNumber();
-                    case 6: return centerY + (30 * s).toNumber();
-                    case 7: return centerY + (54 * s).toNumber();
+                    case 1: return centerY - (52 * s).toNumber();
+                    case 2: return centerY - (25 * s).toNumber();
+                    case 3: return centerY - (25 * s).toNumber();
+                    case 4: return centerY + (27 * s).toNumber();
+                    case 5: return centerY + (27 * s).toNumber();
+                    case 6: return centerY + (52 * s).toNumber();
                 }
                 break;
         }
@@ -94,7 +132,9 @@ module UIDrawer {
     }
 
     function getSlotScale(w) {
-        if (w == 260) {
+        if (w == 240) {
+            return 240.0 / 260.0;
+        } else if (w == 260) {
             return 1.0;
         } else if (w == 280) {
             return 280.0 / 260.0;
@@ -141,7 +181,7 @@ module UIDrawer {
             case 12: bmp = ThemeManager.loadThemedBitmap("icon_altitude", themeId); break;
             case 13: bmp = ThemeManager.loadThemedBitmap("icon_barometer", themeId); break;
             case 14: bmp = ThemeManager.loadThemedBitmap("icon_weather_temp", themeId); break;
-            case 15: bmp = ThemeManager.loadThemedBitmap("icon_weather_cond", themeId); break;
+            case 15: bmp = ThemeManager.loadThemedBitmap(MetricProvider.getWeatherIcon(), themeId); break;
             case 16:
                 var nowInfo = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
                 bmp = ThemeManager.loadThemedBitmap(MetricProvider.getSolarIcon(nowInfo.hour), themeId);
@@ -149,6 +189,8 @@ module UIDrawer {
             case 17: bmp = ThemeManager.loadThemedBitmap("icon_body_battery", themeId); break;
             case 18: bmp = ThemeManager.loadThemedBitmap("icon_sunrise", themeId); break;
             case 19: bmp = ThemeManager.loadThemedBitmap("icon_sunset", themeId); break;
+            case 20: bmp = ThemeManager.loadThemedBitmap("icon_recovery_time", themeId); break;
+            case 21: bmp = ThemeManager.loadThemedBitmap("icon_vo2max", themeId); break;
         }
 
         if (bmp != null) {
@@ -187,9 +229,6 @@ module UIDrawer {
             }
 
             var battText = pct.toString() + "%";
-            if (isCharging) {
-                battText = "CHG " + battText;
-            }
 
             var battRes = Rez.Drawables.icon_battery_red;
             switch (battColor) {
@@ -198,63 +237,72 @@ module UIDrawer {
             }
             var battBmp = WatchUi.loadResource(battRes);
 
+            var dw = dc.getWidth();
+            var iconOffsetY = (13 * s).toNumber();
+            var textOffsetY = (9 * s).toNumber();
+            if (dw == 240) {
+                iconOffsetY = 11;
+                textOffsetY = 8;
+            }
+
             if (battBmp != null) {
                 var iconW = battBmp.getWidth();
                 var iconH = battBmp.getHeight();
-                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - (13 * s)) - iconH / 2).toNumber(), battBmp);
+                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - iconOffsetY) - iconH / 2).toNumber(), battBmp);
             }
 
             dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
-if (customFont != null) {
+            if (customFont != null) {
                 var textW = dc.getTextWidthInPixels(battText, fontValue);
                 dc.drawText(posX - textW / 2, posY + (3 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_LEFT);
             } else {
-                dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+                dc.drawText(posX, posY + textOffsetY, fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
             }
             return;
+        }
+
+        var dw = dc.getWidth();
+        var iconOffsetY = (13 * s).toNumber();
+        var textOffsetY = (9 * s).toNumber();
+        if (dw == 240) {
+            iconOffsetY = 11;
+            textOffsetY = 8;
         }
 
         var data = MetricProvider.getMetricData(slotType);
         var valStr = data[0];
 
-        drawMetricIcon(dc, slotType, posX, posY - (13 * s).toNumber(), s);
+        drawMetricIcon(dc, slotType, posX, posY - iconOffsetY, s);
 
-var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
+        var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
         dc.setColor(valColor, Graphics.COLOR_TRANSPARENT);
         if (customFont != null) {
             var textW = dc.getTextWidthInPixels(valStr, fontValue);
             dc.drawText(posX - textW / 2, posY + (3 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_LEFT);
         } else {
-            dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            dc.drawText(posX, posY + textOffsetY, fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
         }
     }
 
     function drawDataSlots(dc, aodOffsetX, aodOffsetY, customFont, isLowPower) {
         var w = dc.getWidth();
         var h = dc.getHeight();
-        var s = w / 260.0;
 
         var s1 = ThemeManager.getPropertyVal("Slot1Metric", 1);  
         var s2 = ThemeManager.getPropertyVal("Slot2Metric", 2);  
         var s3 = ThemeManager.getPropertyVal("Slot3Metric", 3);  
-        var s4 = ThemeManager.getPropertyVal("Slot4Metric", 11); 
-        var s5 = ThemeManager.getPropertyVal("Slot5Metric", 16); 
+        var s4 = ThemeManager.getPropertyVal("Slot4Metric", 5); 
+        var s5 = ThemeManager.getPropertyVal("Slot5Metric", 6); 
         var s6 = ThemeManager.getPropertyVal("Slot6Metric", 14); 
-        var s7 = ThemeManager.getPropertyVal("Slot7Metric", 5);  
 
         var sc = getSlotScale(w);
         
         drawSingleDataSlot(dc, s1, 1, getSlotX(1, w, aodOffsetX), getSlotY(1, w, h, aodOffsetY), sc, customFont, isLowPower);
         drawSingleDataSlot(dc, s2, 2, getSlotX(2, w, aodOffsetX), getSlotY(2, w, h, aodOffsetY), sc, customFont, isLowPower);
         drawSingleDataSlot(dc, s3, 3, getSlotX(3, w, aodOffsetX), getSlotY(3, w, h, aodOffsetY), sc, customFont, isLowPower);
-        
-        if (s4 != 0) { 
-            drawMetricIcon(dc, s4, getSlotX(4, w, aodOffsetX), getSlotY(4, w, h, aodOffsetY), sc); 
-        }
-        
+        drawSingleDataSlot(dc, s4, 4, getSlotX(4, w, aodOffsetX), getSlotY(4, w, h, aodOffsetY), sc, customFont, isLowPower);
         drawSingleDataSlot(dc, s5, 5, getSlotX(5, w, aodOffsetX), getSlotY(5, w, h, aodOffsetY), sc, customFont, isLowPower);
         drawSingleDataSlot(dc, s6, 6, getSlotX(6, w, aodOffsetX), getSlotY(6, w, h, aodOffsetY), sc, customFont, isLowPower);
-        drawSingleDataSlot(dc, s7, 7, getSlotX(7, w, aodOffsetX), getSlotY(7, w, h, aodOffsetY), sc, customFont, isLowPower);
     }
 
     function drawConcentricRings(dc, now, dialBg, isLowPower, centerX, centerY) {
@@ -323,6 +371,9 @@ var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
     }
 
     function drawHands(dc, hour, min, sec, isLowPower, centerX, centerY) {
+        if (ThemeManager.getPropertyVal("TestHideHands", 1) == 1) {
+            return;
+        }
         var TWO_PI  = Math.PI * 2.0;
         var OFFSET  = Math.PI / 2.0;
 
