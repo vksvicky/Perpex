@@ -13,7 +13,7 @@ class SlotPositioningTest {
 
         // 1. Strict verification for 260x260
         var exp260 = [
-            [130, 80], [86, 112], [174, 112], [86, 152], [174, 152], [130, 180]
+            [130, 78], [86, 105], [174, 105], [86, 157], [174, 157], [130, 182]
         ];
         for (var i = 1; i <= 6; i++) {
             var x = UIDrawer.getSlotX(i, 260, 0);
@@ -24,7 +24,7 @@ class SlotPositioningTest {
 
         // 2. Strict verification for 280x280
         var exp280 = [
-            [140, 86], [93, 121], [187, 121], [93, 164], [187, 164], [140, 194]
+            [140, 84], [93, 113], [187, 113], [93, 169], [187, 169], [140, 196]
         ];
         for (var i = 1; i <= 6; i++) {
             var x = UIDrawer.getSlotX(i, 280, 0);
@@ -34,7 +34,7 @@ class SlotPositioningTest {
         }
 
         // 3. Dynamic verification for other resolutions
-        var resolutions = [390, 416, 454];
+        var resolutions = [390, 416, 454, 466];
         for (var i = 0; i < resolutions.size(); i++) {
             var w = resolutions[i];
             var centerX = w / 2;
@@ -58,7 +58,7 @@ class SlotPositioningTest {
         var sq2_cy = sq2_h / 2;
         var sq2_radius = 160; // Concentric rings are constrained by width
         var exp320 = [
-            [160, 118], [108, 158], [212, 158], [108, 206], [212, 206], [160, 242]
+            [160, 116], [108, 155], [212, 155], [108, 208], [212, 208], [160, 244]
         ];
         for (var slotId = 1; slotId <= 6; slotId++) {
             var sx = UIDrawer.getSlotX(slotId, sq2_w, 0);
