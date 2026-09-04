@@ -127,7 +127,7 @@ notes = f'''Perpex v{version} Release Notes:
 ========================================================
 📊 SUPPORTED ICONS & DATA METRICS:
 ========================================================
-🔋 Battery Level        : Dynamic gauge with smart color thresholds (Green >40%, Yellow <40%, Red <=20%).
+🔋 Battery Level        : Dynamic gauge with smart color thresholds (Green above 40%, Yellow under 40%, Red 20% or below).
 ❤️ Heart Rate           : Real-time pulse monitoring with live animated pulsing heart indicator (BPM).
 👟 Steps Counter        : Daily cumulative step count with active progress tracking.
 🎯 Step Goal %          : Percentage completion toward your daily step goal.
@@ -160,7 +160,7 @@ notes = f'''Perpex v{version} Release Notes:
 ========================================================
 - 6 Handcrafted Color Themes: Red (Default), Teal, Warm Orange, Electric Green, Gold, and Pure White.
 - Night Mode (Tactical Red, Night Amber, Stealth Green) with automatic solar schedule dimming.
-- AMOLED Burn-In Protection: Always-On Display (AOD) compliant with Garmin's <10% active pixel threshold.
+- AMOLED Burn-In Protection: Always-On Display (AOD) compliant with Garmin's under 10% active pixel threshold.
 '''
 
 with open(out_path, 'w') as f:
