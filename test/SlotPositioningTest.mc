@@ -13,9 +13,9 @@ class SlotPositioningTest {
 
         // 1. Strict verification for 260x260
         var exp260 = [
-            [130, 82], [86, 104], [170, 104], [130, 146], [94, 160], [166, 160], [130, 184]
+            [130, 80], [86, 112], [174, 112], [86, 152], [174, 152], [130, 180]
         ];
-        for (var i = 1; i <= 7; i++) {
+        for (var i = 1; i <= 6; i++) {
             var x = UIDrawer.getSlotX(i, 260, 0);
             var y = UIDrawer.getSlotY(i, 260, 260, 0);
             Test.assertEqualMessage(x, exp260[i-1][0], "260x260 Slot " + i + " X changed!");
@@ -24,9 +24,9 @@ class SlotPositioningTest {
 
         // 2. Strict verification for 280x280
         var exp280 = [
-            [140, 88], [93, 112], [183, 112], [140, 157], [101, 172], [179, 172], [140, 198]
+            [140, 86], [93, 121], [187, 121], [93, 164], [187, 164], [140, 194]
         ];
-        for (var i = 1; i <= 7; i++) {
+        for (var i = 1; i <= 6; i++) {
             var x = UIDrawer.getSlotX(i, 280, 0);
             var y = UIDrawer.getSlotY(i, 280, 280, 0);
             Test.assertEqualMessage(x, exp280[i-1][0], "280x280 Slot " + i + " X changed!");
@@ -41,7 +41,7 @@ class SlotPositioningTest {
             var centerY = w / 2;
             var radius = w / 2;
             
-            for (var slotId = 1; slotId <= 7; slotId++) {
+            for (var slotId = 1; slotId <= 6; slotId++) {
                 var sx = UIDrawer.getSlotX(slotId, w, 0);
                 var sy = UIDrawer.getSlotY(slotId, w, w, 0);
                 
@@ -57,9 +57,14 @@ class SlotPositioningTest {
         var sq2_cx = sq2_w / 2;
         var sq2_cy = sq2_h / 2;
         var sq2_radius = 160; // Concentric rings are constrained by width
-        for (var slotId = 1; slotId <= 7; slotId++) {
+        var exp320 = [
+            [160, 118], [108, 158], [212, 158], [108, 206], [212, 206], [160, 242]
+        ];
+        for (var slotId = 1; slotId <= 6; slotId++) {
             var sx = UIDrawer.getSlotX(slotId, sq2_w, 0);
             var sy = UIDrawer.getSlotY(slotId, sq2_w, sq2_h, 0);
+            Test.assertEqualMessage(sx, exp320[slotId-1][0], "320x360 Slot " + slotId + " X changed!");
+            Test.assertEqualMessage(sy, exp320[slotId-1][1], "320x360 Slot " + slotId + " Y changed!");
             
             var dist = Math.sqrt(Math.pow(sx - sq2_cx, 2) + Math.pow(sy - sq2_cy, 2));
             Test.assertMessage(dist < sq2_radius, "Slot " + slotId + " exceeds bounds on 320x360!");
@@ -103,13 +108,13 @@ class SlotPositioningTest {
     
     (:test)
     static function testDynamicMetricSlotPermutations(logger as Test.Logger) as Lang.Boolean {
-        logger.debug("Testing all 19 Metric Types dynamically injected into all 7 layout slots...");
+        logger.debug("Testing all 19 Metric Types dynamically injected into all 6 layout slots...");
         
         var w = 260; // Test on 260x260
         var s = w / 260.0;
         
-        // Let's iterate all metric types (1-19) for all slots (1-7)
-        for (var slotId = 1; slotId <= 7; slotId++) {
+        // Let's iterate all metric types (1-19) for all slots (1-6)
+        for (var slotId = 1; slotId <= 6; slotId++) {
             var sx = UIDrawer.getSlotX(slotId, w, 0);
             var sy = UIDrawer.getSlotY(slotId, w, w, 0);
             Test.assertMessage(sx > 0 && sy > 0, "Slot " + slotId + " coordinates invalid");

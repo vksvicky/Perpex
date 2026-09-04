@@ -31,11 +31,17 @@ test_*.mc
 test_*.png
 debug_*.png
 debug_*.jpg
+debug_*.py
+analyze_*.py
+ascii_*.py
 temp*.png
 my_*.png
 old_*.mc
 patch.mc
 *.patch
+.repolens/
+reports/
+.trunk/
 
 # Generated font tools (source-of-truth is the .fnt/.png assets in resources/)
 tools/generate_perfect_fonts.py

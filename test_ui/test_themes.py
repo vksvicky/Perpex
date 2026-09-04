@@ -28,6 +28,48 @@ THEME_PASSES = [
         "expected": "Accent elements render in warm orange (#FF8800).",
         "props": {"ThemeColor": 3, "NightMode": 0, "TestHideHands": 1},
     },
+    {
+        "id": "theme4",
+        "name": "Theme: Electric Green Accent",
+        "description": "High-visibility Electric Green theme accent.",
+        "expected": "Accent elements render in electric green (#00FF66).",
+        "props": {"ThemeColor": 4, "NightMode": 0, "TestHideHands": 1},
+    },
+    {
+        "id": "theme5",
+        "name": "Theme: Gold / Yellow Accent",
+        "description": "High-visibility Gold/Yellow theme accent.",
+        "expected": "Accent elements render in bright gold (#FFFF00).",
+        "props": {"ThemeColor": 5, "NightMode": 0, "TestHideHands": 1},
+    },
+    {
+        "id": "theme6",
+        "name": "Theme: Pure White Accent",
+        "description": "Monochrome crisp Pure White theme accent.",
+        "expected": "Accent elements render in pure white (#FFFFFF).",
+        "props": {"ThemeColor": 6, "NightMode": 0, "TestHideHands": 1},
+    },
+    {
+        "id": "night_red",
+        "name": "Night Mode: Tactical Red",
+        "description": "Tactical Red Night Mode for preserved night vision.",
+        "expected": "All active elements shift to Tactical Red (#FF0000).",
+        "props": {"NightMode": 3, "NightModeColor": 0, "TestHideHands": 1},
+    },
+    {
+        "id": "night_amber",
+        "name": "Night Mode: Night Amber",
+        "description": "Night Amber mode for low-light legibility.",
+        "expected": "All active elements shift to Amber (#FF8800).",
+        "props": {"NightMode": 3, "NightModeColor": 1, "TestHideHands": 1},
+    },
+    {
+        "id": "night_green",
+        "name": "Night Mode: Stealth Green",
+        "description": "Stealth Green mode for tactical night use.",
+        "expected": "All active elements shift to Stealth Green (#00FF00).",
+        "props": {"NightMode": 3, "NightModeColor": 2, "TestHideHands": 1},
+    },
 ]
 
 # ---------------------------------------------------------------------------

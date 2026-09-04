@@ -44,10 +44,9 @@ class GarminSettingsCustomView extends WatchUi.View {
         ["Top Field", "Slot1Metric"],
         ["Upper-Left Field", "Slot2Metric"],
         ["Upper-Right Field", "Slot3Metric"],
-        ["Center Badge", "Slot4Metric"],
-        ["Lower-Left Field", "Slot5Metric"],
-        ["Lower-Right Field", "Slot6Metric"],
-        ["Bottom Field", "Slot7Metric"],
+        ["Lower-Left Field", "Slot4Metric"],
+        ["Lower-Right Field", "Slot5Metric"],
+        ["Bottom Field", "Slot6Metric"],
         ["Reset Defaults", "ResetDefaults"]
     ];
 
@@ -217,7 +216,7 @@ class GarminSettingsCustomView extends WatchUi.View {
             "Calories", "Distance", "Floors", "Active Mins", "Stress",
             "Unused", "Notifications", "Altitude", "Barometer",
             "Weather Temp", "Weather Condition", "Sunrise / Sunset", "Body Battery",
-            "Sunrise Only", "Sunset Only"
+            "Sunrise Only", "Sunset Only", "Recovery Time", "VO2 Max"
         ];
         if (id >= 0 && id < names.size()) { return names[id]; }
         return "Hidden";
@@ -325,13 +324,12 @@ class GarminSettingsCustomDelegate extends WatchUi.BehaviorDelegate {
                 setPropVal("TemperatureUnit", 0);
                 setPropVal("NightMode", 1);
                 setPropVal("NightModeColor", 0);
-                setPropVal("Slot1Metric", 1);  // Battery
-                setPropVal("Slot2Metric", 2);  // Heart Rate
-                setPropVal("Slot3Metric", 3);  // Steps
-                setPropVal("Slot4Metric", 11); // Bluetooth
-                setPropVal("Slot5Metric", 16); // Sunrise/Sunset
-                setPropVal("Slot6Metric", 14); // Weather Temp
-                setPropVal("Slot7Metric", 5);  // Calories
+                setPropVal("Slot1Metric", 1);  // Top: Battery
+                setPropVal("Slot2Metric", 2);  // Upper-Left: Heart Rate
+                setPropVal("Slot3Metric", 3);  // Upper-Right: Steps
+                setPropVal("Slot4Metric", 5);  // Lower-Left: Calories
+                setPropVal("Slot5Metric", 6);  // Lower-Right: Distance
+                setPropVal("Slot6Metric", 14); // Bottom: Weather Temp
                 break;
             default:
                 var currentVal = getPropVal(itemKey, 0);

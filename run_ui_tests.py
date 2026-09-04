@@ -19,12 +19,15 @@ REPORT_PATH  = "test_output/visual_report.html"
 
 # ── Devices ───────────────────────────────────────────────────────────────────
 DEVICES = [
-    ("fenix7",      "260×260 MIP Solar",  "Fenix 7 / Fenix 9 Pro Solar 47mm"),
-    ("enduro3",     "280×280 MIP Solar",  "Enduro 3 / Fenix 9 Pro Solar 51mm"),
-    ("epix2pro42mm","390×390 AMOLED",     "Epix 2 Pro 42mm"),
-    ("epix2",       "416×416 AMOLED",     "Epix Gen 2 47mm"),
-    ("fenix847mm",  "454×454 AMOLED",     "Fenix 8 / Fenix 9 Pro 47mm"),
-    ("venusq2",     "320×360 AMOLED",     "Venu Sq 2"),
+    ("fenix7s",      "240×240 MIP",        "Fenix 7S / 7S Pro"),
+    ("fenix7",       "260×260 MIP Solar",  "Fenix 7 / Fenix 9 Pro Solar 47mm"),
+    ("fr255",        "260×260 MIP Running","Forerunner 255 / 255 Music"),
+    ("enduro3",      "280×280 MIP Solar",  "Enduro 3 / Fenix 7X / Fenix 8 Solar 51mm"),
+    ("venu2s",       "360×360 AMOLED",     "Venu 2S"),
+    ("epix2pro42mm", "390×390 AMOLED",     "Epix 2 Pro 42mm / Venu 3S"),
+    ("venu2",        "416×416 AMOLED",     "Venu 2 / Venu 2 Plus / Epix Gen 2"),
+    ("venu3",        "454×454 AMOLED",     "Venu 3 / Forerunner 965 / Fenix 8 47mm"),
+    ("venusq2",      "320×360 AMOLED",     "Venu Sq 2"),
 ]
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -60,58 +63,76 @@ def _img_tag(path, alt=""):
     return '<div class="no-img">No image</div>'
 
 
-def _result_row(result):
-    """Renders one test pass as an HTML row."""
-    badge = _val_badge(result.get("passed"))
-    curr_img_tag = _img_tag(result.get("current_img"), "Current screenshot")
-    zones_img_tag = _img_tag(result.get("zones_img"), "Annotated zones")
-    
-    slots_html = "".join(f"<li>{s}</li>" for s in result.get("slots", []))
-    
-    issues_html = ""
-    if result.get("issues"):
-        issues_html = "<strong>Issues:</strong><ul class='issues-list'>" + "".join(f"<li>{issue}</li>" for issue in result["issues"]) + "</ul>"
-
-    return f"""
-      <tr>
-        <td class="pass-name">
-          <strong>{result['pass_name']}</strong><br>
-          <small>{result['description']}</small><br>
-          {badge}
-          <ul class="slot-list">{slots_html}</ul>
-          {issues_html}
-        </td>
-        <td class="img-cell">{curr_img_tag}</td>
-        <td class="img-cell">{zones_img_tag}</td>
-      </tr>"""
-
-
-def generate_report(all_results: list, branch: str):
-    os.makedirs("test_output", exist_ok=True)
-
-    mode_label = f"Branch: <code>{branch}</code>"
-    timestamp  = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def generate_report(all_results, branch):
+    """
+    all_results: list of (dev_id, res_info, dev_name, list_of_pass_results)
+    """
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+    mode_label = f"branch: <code>{branch}</code>"
 
     device_sections = ""
     for dev_id, res_info, dev_name, results in all_results:
-        pass_rows = "".join(_result_row(r) for r in results)
-        total = len(results)
         passed = sum(1 for r in results if r.get("passed"))
-        failed = total - passed
+        failed = len(results) - passed
+        warn_cls = " warn" if failed > 0 else ""
+
+        rows = ""
+        for r in results:
+            pass_name = r.get("pass_name") or r.get("name") or r.get("id", "")
+            desc = r.get("description", "")
+            img_path = r.get("current_img") or r.get("img_path", "")
+            zones_path = r.get("zones_img") or r.get("annotated_path", "")
+            val_passed = r.get("passed", False)
+            issues = r.get("issues", [])
+
+            slots_html = ""
+            if "slots" in r:
+                items = "".join(f"<li>{s}</li>" for s in r["slots"])
+                slots_html = f'<ul class="slot-list">{items}</ul>'
+
+            issues_html = ""
+            if issues:
+                items = "".join(f"<li>⚠️ {iss}</li>" for iss in issues)
+                issues_html = f'<ul class="issues-list">{items}</ul>'
+
+            rows += f"""
+        <tr>
+          <td class="pass-name">
+            <strong>{pass_name}</strong><br>
+            <small>{desc}</small><br>
+            {_val_badge(val_passed)}
+            {slots_html}
+            {issues_html}
+          </td>
+          <td class="img-cell">
+            {_img_tag(img_path, pass_name)}
+          </td>
+          <td class="img-cell">
+            {_img_tag(zones_path, pass_name + ' Zones')}
+          </td>
+        </tr>"""
 
         device_sections += f"""
-    <section class="device-section">
+    <div class="device-section">
       <div class="device-header">
         <h2>{dev_name}</h2>
         <span class="badge-res">{res_info}</span>
-        <span class="stat">✓ {passed} passed</span>
-        <span class="stat warn">❌ {failed} failed</span>
+        <span class="stat">✅ {passed} passed</span>
+        {f'<span class="stat{warn_cls}">❌ {failed} failed</span>' if failed else ''}
       </div>
       <table class="result-table">
-        <thead><tr><th>Pass</th><th>Screenshot</th><th>Zones & Issues</th></tr></thead>
-        <tbody>{pass_rows}</tbody>
+        <thead>
+          <tr>
+            <th>Pass & Assertions</th>
+            <th>Watch Face Screenshot</th>
+            <th>Layout Zones & Clearance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows}
+        </tbody>
       </table>
-    </section>"""
+    </div>"""
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -164,8 +185,7 @@ def generate_report(all_results: list, branch: str):
   <h1>🎨 Perpex Layout Validation Report</h1>
   <p class="meta">
     {mode_label} &nbsp;·&nbsp; {timestamp} &nbsp;·&nbsp;
-    {len(all_results)} devices &nbsp;·&nbsp;
-    {sum(len(r[3]) for r in all_results)} total passes
+    {len(all_results)} devices
   </p>
   {device_sections}
 </body>
@@ -176,42 +196,148 @@ def generate_report(all_results: list, branch: str):
     print(f"\n  📄 Report → {REPORT_PATH}")
 
 
+# ── Focused 48-Pass Resolution Matrix ─────────────────────────────────────────
+
+THEME_DISTRIBUTION = {
+    "fenix7":       ["theme1"],           # Vibrant Red (Default)
+    "venu2":        ["theme2", "low_power"], # Teal / Cyan + AOD Mode
+    "enduro3":      ["theme3"],           # Warm Orange
+    "venu3":        ["theme4", "low_power"], # Electric Green + AOD Mode
+    "fr255":        ["theme5"],           # Gold / Yellow
+    "epix2pro42mm": ["theme6", "low_power"], # Pure White + AOD Mode
+    "fenix7s":      ["night_red"],        # Night Mode: Tactical Red
+    "venu2s":       ["night_amber"],      # Night Mode: Night Amber
+    "venusq2":      ["night_green", "low_power"], # Night Mode: Stealth Green + AOD Mode
+}
+
+WEATHER_DISTRIBUTION = {
+    "fenix7":       ["weather_rain"],          # Raindrop 27%
+    "enduro3":      ["weather_sunny"],         # Clear / Sunny 22°C
+    "fr255":        ["weather_partly_cloudy"],  # Partly Cloudy 20°C
+    "venu2":        ["weather_cloudy"],        # Cloudy 18°C
+    "venu3":        ["weather_showers"],       # Showers 85%
+    "epix2pro42mm": ["weather_thunderstorm"],  # Thunderstorm 90%
+    "fenix7s":      ["weather_snow"],          # Snow -1°C
+    "venusq2":      ["weather_wind"],          # High Wind 12kt
+}
+
+
+def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False):
+    from test_ui.test_permutations import run_permutation_tests
+    from test_ui.test_themes import run_theme_tests, THEME_PASSES, LOW_POWER_PASS
+    from test_ui.test_weather import run_weather_tests, WEATHER_PASSES
+    from test_ui.simulator_driver import build_app, launch_simulator_and_screenshot
+    from test_ui.layout_validator import validate_layout
+    from test_ui.config_manager import set_properties
+
+    # 1. Permutations: always run all 3 zero-duplicate passes (Metrics 1-21)
+    results = run_permutation_tests(dev_id, dev_name, res_info, output_dir)
+
+    # 2. Themes: run full or targeted distribution
+    if full_mode:
+        results += run_theme_tests(dev_id, dev_name, res_info, output_dir)
+        results += run_weather_tests(dev_id, dev_name, res_info, output_dir)
+    else:
+        # Targeted Theme passes
+        theme_ids = THEME_DISTRIBUTION.get(dev_id, [])
+        all_theme_passes = THEME_PASSES + [LOW_POWER_PASS]
+        for p in all_theme_passes:
+            if p["id"] in theme_ids:
+                print(f"  🎨 [{p['id']}] {p['name']}")
+                set_properties(p["props"])
+                prg_path = f"bin/Theme_{dev_id}_{p['id']}.prg"
+                img_path = os.path.join(output_dir, f"{dev_id}_{p['id']}.png")
+                built = build_app(dev_id, prg_path)
+                captured = False
+                val_result = {"pass": False, "issues": ["Build failed"]}
+                if built:
+                    captured = launch_simulator_and_screenshot(dev_id, prg_path, img_path, res_info)
+                    if captured:
+                        val_result = validate_layout(img_path, [1, 2, 3, 4, 5, 6])
+                res = dict(p)
+                res["pass_name"] = p["name"]
+                res["current_img"] = img_path if captured else None
+                res["zones_img"] = val_result["annotated_path"] if captured else None
+                res["passed"] = val_result["pass"]
+                res["issues"] = val_result["issues"]
+                results.append(res)
+
+        # Targeted Weather passes
+        weather_ids = WEATHER_DISTRIBUTION.get(dev_id, [])
+        for w in WEATHER_PASSES:
+            if w["id"] in weather_ids:
+                print(f"  🌦️ [{w['id']}] {w['name']} -> {w['condition_text']}")
+                weather_props = {
+                    "NightMode": 0, "TestHideHands": 1,
+                    "Slot1Metric": 15, "Slot2Metric": 2, "Slot3Metric": 3,
+                    "Slot4Metric": 4, "Slot5Metric": 5, "Slot6Metric": 6,
+                    "TestWeatherOverride": w["override"],
+                }
+                set_properties(weather_props)
+                prg_path = f"bin/Weather_{dev_id}_{w['id']}.prg"
+                img_path = os.path.join(output_dir, f"{dev_id}_{w['id']}.png")
+                built = build_app(dev_id, prg_path)
+                captured = False
+                val_result = {"pass": False, "issues": ["Build failed"], "annotated_path": None}
+                if built:
+                    val_result["issues"] = ["Simulator capture timed out"]
+                    captured = launch_simulator_and_screenshot(dev_id, prg_path, img_path, res_info)
+                    if captured:
+                        val_result = validate_layout(img_path, [1, 2, 3, 4, 5, 6])
+                res = dict(w)
+                res["pass_name"] = w["name"]
+                res["current_img"] = img_path if captured else None
+                res["zones_img"] = val_result["annotated_path"] if captured else None
+                res["passed"] = val_result["pass"]
+                res["issues"] = val_result["issues"]
+                results.append(res)
+
+    return results
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Perpex Layout Validation Test Harness")
+    parser.add_argument("--device", help="Run only on a specific device (e.g. fenix7, venu2, venusq2)")
+    parser.add_argument("--full", action="store_true", help="Run full 21 passes on every device instead of 48-pass matrix")
+    args = parser.parse_args()
+
     branch = get_current_branch()
     safe_branch = sanitise_branch(branch)
-
     output_dir = f"test_output/{safe_branch}"
     os.makedirs(output_dir, exist_ok=True)
 
+    target_devices = DEVICES
+    if args.device:
+        target_devices = [d for d in DEVICES if d[0] == args.device]
+        if not target_devices:
+            print(f"❌ Unknown device '{args.device}'. Choose from: {[d[0] for d in DEVICES]}")
+            return
+
     print()
     print("╔══════════════════════════════════════════════════════════════════╗")
-    print("║  🎨  PERPEX LAYOUT VALIDATION TEST HARNESS                      ║")
+    print("║  🎨  PERPEX FOCUSED LAYOUT VALIDATION MATRIX                     ║")
     print("╚══════════════════════════════════════════════════════════════════╝")
     print(f"  Branch  : {branch}")
-    print(f"  Mode    : LAYOUT VALIDATION")
     print(f"  Output  : {output_dir}")
-    print(f"  Devices : {len(DEVICES)}")
-    print(f"  Passes  : 3 metric permutations + 3 themes + 1 low-power = 7 per device")
+    print(f"  Devices : {len(target_devices)} ({', '.join(d[0] for d in target_devices)})")
+    if args.full:
+        print(f"  Mode    : FULL EXHAUSTIVE (21 passes per device)")
+    else:
+        print(f"  Mode    : FOCUSED RESOLUTION MATRIX (~48 total passes across all devices)")
     print()
 
-    # Lazy imports after sys.path is set (module runs from project root)
     from test_ui.config_manager import backup_properties, restore_properties
-    from test_ui.test_permutations import run_permutation_tests
-    from test_ui.test_themes import run_theme_tests
-
     backup_properties()
     all_results = []
 
     try:
-        for dev_id, res_info, dev_name in DEVICES:
+        for dev_id, res_info, dev_name in target_devices:
             print(f"\n📱 {dev_name} ({res_info})")
-
-            perm_results  = run_permutation_tests(dev_id, dev_name, res_info, output_dir)
-            theme_results = run_theme_tests(dev_id, dev_name, res_info, output_dir)
-
-            all_results.append((dev_id, res_info, dev_name, perm_results + theme_results))
+            dev_results = run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=args.full)
+            all_results.append((dev_id, res_info, dev_name, dev_results))
     finally:
         restore_properties()
 

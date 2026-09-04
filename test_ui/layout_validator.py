@@ -29,17 +29,19 @@ def _slot_center(slot_id, w, h):
     cx, cy = w / 2.0, h / 2.0
     s = w / 260.0
 
-    if w == 260:
-        dx = {1: 0, 2: -36, 3: 36, 4: 0, 5: -36, 6: 36, 7: 0}
-        dy = {1: -42, 2: -22, 3: -22, 4: 10, 5: 24, 6: 24, 7: 48}
+    if w == 320 and h == 360:
+        dx = {1: 0, 2: -52, 3: 52, 4: -52, 5: 52, 6: 0}
+        dy = {1: -62, 2: -22, 3: -22, 4: 26, 5: 26, 6: 62}
+    elif w == 260:
+        dx = {1: 0, 2: -44, 3: 44, 4: -44, 5: 44, 6: 0}
+        dy = {1: -50, 2: -18, 3: -18, 4: 22, 5: 22, 6: 50}
     elif w == 280:
-        dx = {1: 0, 2: -39, 3: 39, 4: 0, 5: -39, 6: 39, 7: 0}
-        dy = {1: -45, 2: -24, 3: -24, 4: 11, 5: 26, 6: 26, 7: 52}
+        dx = {1: 0, 2: -47, 3: 47, 4: -47, 5: 47, 6: 0}
+        dy = {1: -54, 2: -19, 3: -19, 4: 24, 5: 24, 6: 54}
     else:
-        dx = {1: 0, 2: int(-36*s), 3: int(36*s), 4: 0,
-              5: int(-36*s), 6: int(36*s), 7: 0}
-        dy = {1: int(-42*s), 2: int(-22*s), 3: int(-22*s),
-              4: int(10*s),  5: int(24*s),  6: int(24*s),  7: int(48*s)}
+        dx = {1: 0, 2: int(-44*s), 3: int(44*s), 4: int(-44*s), 5: int(44*s), 6: 0}
+        dy = {1: int(-50*s), 2: int(-18*s), 3: int(-18*s),
+              4: int(22*s),  5: int(22*s),  6: int(50*s)}
 
     return cx + dx.get(slot_id, 0), cy + dy.get(slot_id, 0)
 
@@ -52,11 +54,12 @@ def _slot_zone(slot_id, w, h):
     s = w / 260.0
     hw = int(18 * s)
     hh = int(18 * s)
+    center_y_box = sy - int(2 * s)
     return (
         max(0, int(sx - hw)),
-        max(0, int(sy - hh)),
+        max(0, int(center_y_box - hh)),
         min(w,  int(sx + hw)),
-        min(h,  int(sy + hh)),
+        min(h,  int(center_y_box + hh)),
     )
 
 
@@ -92,10 +95,18 @@ def _zone_content_pixels(pixels, x1, y1, x2, y2, w, h, exclude_hands=False):
 
 
 def _zone_overflows_bezel(pixels, x1, y1, x2, y2, w, h):
-    """Return count of bright pixels in the zone that are outside the bezel ellipse."""
+    """Return count of bright pixels in the zone that are outside the screen bezel."""
+    count = 0
+    if w != h:
+        for y in range(y1, y2):
+            for x in range(x1, x2):
+                if _is_bright(pixels[x, y]):
+                    if x < 4 or x >= w - 4 or y < 4 or y >= h - 4:
+                        count += 1
+        return count
+
     rx, ry = w / 2.0, h / 2.0
     cx, cy = w / 2.0, h / 2.0
-    count = 0
     for y in range(y1, y2):
         for x in range(x1, x2):
             if _is_bright(pixels[x, y]):
@@ -110,6 +121,8 @@ def _zone_overflows_inner_ring(pixels, x1, y1, x2, y2, w, h):
     """Return count of bright pixels in the zone that cross outside the safe inner dial (into concentric rings)."""
     s = w / 260.0
     max_safe_r = 72.0 * s
+    if w == 320 and h == 360:
+        max_safe_r = 88.0
     cx, cy = w / 2.0, h / 2.0
     count = 0
     for y in range(y1, y2):
@@ -163,6 +176,19 @@ def validate_layout(img_path, active_slots):
     slot_results = {}
     zones = {sid: _slot_zone(sid, w, h) for sid in active_slots}
 
+    # 0. DIAL SANITY check: Ensure screenshot is actually a rendered dark watch face
+    dark_pixels = 0
+    total_samples = 0
+    step = 4
+    for y in range(0, h, step):
+        for x in range(0, w, step):
+            total_samples += 1
+            if max(pixels[x, y]) < 40:
+                dark_pixels += 1
+    dark_ratio = dark_pixels / total_samples
+    if dark_ratio < 0.35:
+        issues.append(f"SCREENSHOT INVALID / BLANK: Only {dark_ratio*100:.1f}% dark pixels (expected watch dial background >= 35%). Simulator failed to render.")
+
     # 1. RENDERED check
     for sid in active_slots:
         x1, y1, x2, y2 = zones[sid]
@@ -191,8 +217,42 @@ def validate_layout(img_path, active_slots):
         if ring_overflow > 15:
             issues.append(f"Slot {sid}: RING COLLISION — {ring_overflow} pixels crossed into concentric date/month rings")
 
-    # 3. OVERLAP check (only directly adjacent slot pairs)
-    adjacent_pairs = [(1,2),(1,3),(2,4),(3,4),(4,5),(4,6),(5,7),(6,7)]
+    # 3. OVERLAP & HORIZONTAL CLEARANCE check
+    # Check if Slot 1 content bleeds into Slot 2 (left) or Slot 3 (right)
+    s = w / 260.0
+    center_x = w // 2
+    
+    if 1 in active_slots:
+        z1 = zones[1]
+        z2 = zones.get(2)
+        z3 = zones.get(3)
+        # Scan Slot 1 text row region (from y1 to y2)
+        # For each y, measure contiguous text span starting from center_x
+        text_min_x, text_max_x = center_x, center_x
+        found_text = False
+        for y in range(z1[1], z1[3]):
+            # Scan left from center_x while pixels are bright and not concentric rings
+            lx = center_x
+            while lx >= 0 and _is_bright(pixels[lx, y]) and math.hypot(lx - center_x, y - (h // 2)) <= 68 * s:
+                lx -= 1
+            # Scan right from center_x while pixels are bright and not concentric rings
+            rx = center_x
+            while rx < w and _is_bright(pixels[rx, y]) and math.hypot(rx - center_x, y - (h // 2)) <= 68 * s:
+                rx += 1
+            if rx - lx - 1 > 3:
+                found_text = True
+                if lx + 1 < text_min_x: text_min_x = lx + 1
+                if rx - 1 > text_max_x: text_max_x = rx - 1
+        
+        if found_text:
+            text_width = text_max_x - text_min_x + 1
+            # Slot 1 text should not extend past the inner boundary of Slot 2 or Slot 3
+            if z2 and text_min_x <= z2[2] - int(2 * s):
+                issues.append(f"Slot 1: HORIZONTAL OVERLAP with Slot 2 (text width {text_width}px extends into Slot 2 boundary)")
+            if z3 and text_max_x >= z3[0] + int(2 * s):
+                issues.append(f"Slot 1: HORIZONTAL OVERLAP with Slot 3 (text width {text_width}px extends into Slot 3 boundary)")
+
+    adjacent_pairs = [(1,2), (1,3), (2,4), (3,5), (4,6), (5,6)]
     for (a, b) in adjacent_pairs:
         if a in active_slots and b in active_slots:
             shared = _zones_overlap_count(pixels, zones[a], zones[b], w, h)
@@ -204,11 +264,14 @@ def validate_layout(img_path, active_slots):
     draw = ImageDraw.Draw(annotated, "RGBA")
 
     # Draw bezel boundary
-    draw.ellipse([(2, 2), (w-2, h-2)], outline=(80, 80, 80, 200), width=2)
+    if w != h:
+        draw.rounded_rectangle([(2, 2), (w-2, h-2)], radius=24, outline=(80, 80, 80, 200), width=2)
+    else:
+        draw.ellipse([(2, 2), (w-2, h-2)], outline=(80, 80, 80, 200), width=2)
 
     # Draw safe inner dial ring (concentric ring boundary)
     s = w / 260.0
-    r_inner = int(72.0 * s)
+    r_inner = 88 if (w == 320 and h == 360) else int(72.0 * s)
     cx, cy = w // 2, h // 2
     draw.ellipse([(cx - r_inner, cy - r_inner), (cx + r_inner, cy + r_inner)], outline=(200, 140, 40, 160), width=1)
 

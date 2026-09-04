@@ -12,39 +12,48 @@ module UIDrawer {
     function getSlotX(slotId, w, offsetX) {
         var centerX = (w / 2) + offsetX;
         var s = w / 260.0;
-        
+
+        if (w == 320) {
+            switch (slotId) {
+                case 1: return centerX;
+                case 2: return centerX - 52;
+                case 3: return centerX + 52;
+                case 4: return centerX - 52;
+                case 5: return centerX + 52;
+                case 6: return centerX;
+            }
+            return centerX;
+        }
+
         switch (w) {
             case 260:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - 36;
-                    case 3: return centerX + 36;
-                    case 4: return centerX;
-                    case 5: return centerX - 36;
-                    case 6: return centerX + 36;
-                    case 7: return centerX;
+                    case 2: return centerX - 44;
+                    case 3: return centerX + 44;
+                    case 4: return centerX - 44;
+                    case 5: return centerX + 44;
+                    case 6: return centerX;
                 }
                 break;
             case 280:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - 39;
-                    case 3: return centerX + 39;
-                    case 4: return centerX;
-                    case 5: return centerX - 39;
-                    case 6: return centerX + 39;
-                    case 7: return centerX;
+                    case 2: return centerX - 47;
+                    case 3: return centerX + 47;
+                    case 4: return centerX - 47;
+                    case 5: return centerX + 47;
+                    case 6: return centerX;
                 }
                 break;
             default:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - (36 * s).toNumber();
-                    case 3: return centerX + (36 * s).toNumber();
-                    case 4: return centerX;
-                    case 5: return centerX - (36 * s).toNumber();
-                    case 6: return centerX + (36 * s).toNumber();
-                    case 7: return centerX;
+                    case 2: return centerX - (44 * s).toNumber();
+                    case 3: return centerX + (44 * s).toNumber();
+                    case 4: return centerX - (44 * s).toNumber();
+                    case 5: return centerX + (44 * s).toNumber();
+                    case 6: return centerX;
                 }
                 break;
         }
@@ -54,39 +63,48 @@ module UIDrawer {
     function getSlotY(slotId, w, h, offsetY) {
         var centerY = (h / 2) + offsetY;
         var s = w / 260.0;
-        
+
+        if (w == 320 && h == 360) {
+            switch (slotId) {
+                case 1: return centerY - 62;
+                case 2: return centerY - 22;
+                case 3: return centerY - 22;
+                case 4: return centerY + 26;
+                case 5: return centerY + 26;
+                case 6: return centerY + 62;
+            }
+            return centerY;
+        }
+
         switch (w) {
             case 260:
                 switch (slotId) {
-                    case 1: return centerY - 42;
-                    case 2: return centerY - 22;
-                    case 3: return centerY - 22;
-                    case 4: return centerY + 10;
-                    case 5: return centerY + 24;
-                    case 6: return centerY + 24;
-                    case 7: return centerY + 48;
+                    case 1: return centerY - 50;
+                    case 2: return centerY - 18;
+                    case 3: return centerY - 18;
+                    case 4: return centerY + 22;
+                    case 5: return centerY + 22;
+                    case 6: return centerY + 50;
                 }
                 break;
             case 280:
                 switch (slotId) {
-                    case 1: return centerY - 45;
-                    case 2: return centerY - 24;
-                    case 3: return centerY - 24;
-                    case 4: return centerY + 11;
-                    case 5: return centerY + 26;
-                    case 6: return centerY + 26;
-                    case 7: return centerY + 52;
+                    case 1: return centerY - 54;
+                    case 2: return centerY - 19;
+                    case 3: return centerY - 19;
+                    case 4: return centerY + 24;
+                    case 5: return centerY + 24;
+                    case 6: return centerY + 54;
                 }
                 break;
             default:
                 switch (slotId) {
-                    case 1: return centerY - (42 * s).toNumber();
-                    case 2: return centerY - (22 * s).toNumber();
-                    case 3: return centerY - (22 * s).toNumber();
-                    case 4: return centerY + (10 * s).toNumber();
-                    case 5: return centerY + (24 * s).toNumber();
-                    case 6: return centerY + (24 * s).toNumber();
-                    case 7: return centerY + (48 * s).toNumber();
+                    case 1: return centerY - (50 * s).toNumber();
+                    case 2: return centerY - (18 * s).toNumber();
+                    case 3: return centerY - (18 * s).toNumber();
+                    case 4: return centerY + (22 * s).toNumber();
+                    case 5: return centerY + (22 * s).toNumber();
+                    case 6: return centerY + (50 * s).toNumber();
                 }
                 break;
         }
@@ -141,7 +159,7 @@ module UIDrawer {
             case 12: bmp = ThemeManager.loadThemedBitmap("icon_altitude", themeId); break;
             case 13: bmp = ThemeManager.loadThemedBitmap("icon_barometer", themeId); break;
             case 14: bmp = ThemeManager.loadThemedBitmap("icon_weather_temp", themeId); break;
-            case 15: bmp = ThemeManager.loadThemedBitmap("icon_weather_cond", themeId); break;
+            case 15: bmp = ThemeManager.loadThemedBitmap(MetricProvider.getWeatherIcon(), themeId); break;
             case 16:
                 var nowInfo = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
                 bmp = ThemeManager.loadThemedBitmap(MetricProvider.getSolarIcon(nowInfo.hour), themeId);
@@ -149,6 +167,8 @@ module UIDrawer {
             case 17: bmp = ThemeManager.loadThemedBitmap("icon_body_battery", themeId); break;
             case 18: bmp = ThemeManager.loadThemedBitmap("icon_sunrise", themeId); break;
             case 19: bmp = ThemeManager.loadThemedBitmap("icon_sunset", themeId); break;
+            case 20: bmp = ThemeManager.loadThemedBitmap("icon_recovery_time", themeId); break;
+            case 21: bmp = ThemeManager.loadThemedBitmap("icon_vo2max", themeId); break;
         }
 
         if (bmp != null) {
@@ -229,29 +249,22 @@ var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
     function drawDataSlots(dc, aodOffsetX, aodOffsetY, customFont, isLowPower) {
         var w = dc.getWidth();
         var h = dc.getHeight();
-        var s = w / 260.0;
 
         var s1 = ThemeManager.getPropertyVal("Slot1Metric", 1);  
         var s2 = ThemeManager.getPropertyVal("Slot2Metric", 2);  
         var s3 = ThemeManager.getPropertyVal("Slot3Metric", 3);  
-        var s4 = ThemeManager.getPropertyVal("Slot4Metric", 11); 
-        var s5 = ThemeManager.getPropertyVal("Slot5Metric", 16); 
+        var s4 = ThemeManager.getPropertyVal("Slot4Metric", 5); 
+        var s5 = ThemeManager.getPropertyVal("Slot5Metric", 6); 
         var s6 = ThemeManager.getPropertyVal("Slot6Metric", 14); 
-        var s7 = ThemeManager.getPropertyVal("Slot7Metric", 5);  
 
         var sc = getSlotScale(w);
         
         drawSingleDataSlot(dc, s1, 1, getSlotX(1, w, aodOffsetX), getSlotY(1, w, h, aodOffsetY), sc, customFont, isLowPower);
         drawSingleDataSlot(dc, s2, 2, getSlotX(2, w, aodOffsetX), getSlotY(2, w, h, aodOffsetY), sc, customFont, isLowPower);
         drawSingleDataSlot(dc, s3, 3, getSlotX(3, w, aodOffsetX), getSlotY(3, w, h, aodOffsetY), sc, customFont, isLowPower);
-        
-        if (s4 != 0) { 
-            drawMetricIcon(dc, s4, getSlotX(4, w, aodOffsetX), getSlotY(4, w, h, aodOffsetY), sc); 
-        }
-        
+        drawSingleDataSlot(dc, s4, 4, getSlotX(4, w, aodOffsetX), getSlotY(4, w, h, aodOffsetY), sc, customFont, isLowPower);
         drawSingleDataSlot(dc, s5, 5, getSlotX(5, w, aodOffsetX), getSlotY(5, w, h, aodOffsetY), sc, customFont, isLowPower);
         drawSingleDataSlot(dc, s6, 6, getSlotX(6, w, aodOffsetX), getSlotY(6, w, h, aodOffsetY), sc, customFont, isLowPower);
-        drawSingleDataSlot(dc, s7, 7, getSlotX(7, w, aodOffsetX), getSlotY(7, w, h, aodOffsetY), sc, customFont, isLowPower);
     }
 
     function drawConcentricRings(dc, now, dialBg, isLowPower, centerX, centerY) {
