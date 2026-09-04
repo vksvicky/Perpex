@@ -76,12 +76,12 @@ module UIDrawer {
 
         if (w == 320 && h == 360) {
             switch (slotId) {
-                case 1: return centerY - 64;
+                case 1: return centerY - 62;
                 case 2: return centerY - 25;
                 case 3: return centerY - 25;
                 case 4: return centerY + 28;
                 case 5: return centerY + 28;
-                case 6: return centerY + 64;
+                case 6: return centerY + 62;
             }
             return centerY;
         }

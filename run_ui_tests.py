@@ -72,7 +72,8 @@ def process_result_baseline(r, dev_id, update_baselines=False):
             r["diff_pct"] = 0.0
             r["passed"] = True
         else:
-            print(f"    ❌ [BASELINE FAILED] Capture failed for {dev_id}_{pass_id}!")
+            reasons = ", ".join(r.get("issues", [])) or "No valid screenshot captured"
+            print(f"    ❌ [BASELINE FAILED] {dev_id}_{pass_id}: {reasons}")
             r["has_baseline"] = False
             r["baseline_img"] = None
             r["diff_img"] = None
@@ -80,7 +81,8 @@ def process_result_baseline(r, dev_id, update_baselines=False):
             r["passed"] = False
             if "issues" not in r or r["issues"] is None:
                 r["issues"] = []
-            r["issues"].append("CAPTURE FAILED: No valid screenshot captured to save as baseline.")
+            if not any("CAPTURE FAILED" in iss for iss in r["issues"]):
+                r["issues"].append(f"CAPTURE FAILED: {reasons}")
         return r
 
     has_baseline = os.path.exists(base_path)

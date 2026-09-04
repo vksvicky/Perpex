@@ -78,8 +78,9 @@ def kill_running_simulator_app():
     subprocess.run(["osascript", "-e", script], capture_output=True)
 
 def launch_simulator_and_screenshot(dev_id, prg_path, img_path, res_info=None):
-    # Clean any previous monkeydo instances and tell simulator to kill active app
+    # Clean any previous monkeydo/MonkeyDoDeux instances and tell simulator to kill active app
     subprocess.run(["killall", "-9", "monkeydo"], capture_output=True)
+    subprocess.run(["pkill", "-9", "-f", "MonkeyDoDeux"], capture_output=True)
     kill_running_simulator_app()
     ensure_simulator_running(target_dev_id=dev_id)
     time.sleep(0.5)

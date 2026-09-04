@@ -58,7 +58,7 @@ class SlotPositioningTest {
         var sq2_cy = sq2_h / 2;
         var sq2_radius = 160; // Concentric rings are constrained by width
         var exp320 = [
-            [160, 116], [108, 155], [212, 155], [108, 208], [212, 208], [160, 244]
+            [160, 118], [108, 155], [212, 155], [108, 208], [212, 208], [160, 242]
         ];
         for (var slotId = 1; slotId <= 6; slotId++) {
             var sx = UIDrawer.getSlotX(slotId, sq2_w, 0);
