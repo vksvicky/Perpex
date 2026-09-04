@@ -1,0 +1,26 @@
+# .repolensignore
+# Patterns and directories excluded from RepoLens code review scans
+
+# Build outputs and intermediate binaries
+bin/
+gen/
+*.prg
+*.mir
+*.mcgen
+
+# Test artifacts and baseline screenshots
+test_output/
+test_baselines/
+
+# Generated review reports
+reports/
+.repolens/
+
+# Python virtual environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# OS artifacts
+.DS_Store
