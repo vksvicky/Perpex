@@ -15,6 +15,7 @@ if [ "$MODE" = "--help" ] || [ "$MODE" = "-h" ] || [ "$MODE" = "help" ]; then
     echo "Modes:"
     echo "  unit                      : Runs the headless logic/unit assertions (default)."
     echo "  ui                        : Runs the visual regression test harness."
+    echo "  ui --with-hands           : Runs visual test harness rendering hour/min/sec hands."
     echo "  ui --update-baselines     : Captures fresh baselines (must be on main branch)."
     echo "  sim <device>              : Compiles and launches the watch face in the Simulator."
     echo "  help                      : Show this help message."

@@ -306,7 +306,7 @@ WEATHER_DISTRIBUTION = {
 }
 
 
-def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False, update_baselines=False):
+def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False, update_baselines=False, hide_hands=1):
     from test_ui.test_permutations import run_permutation_tests
     from test_ui.test_themes import run_theme_tests, THEME_PASSES, LOW_POWER_PASS
     from test_ui.test_weather import run_weather_tests, WEATHER_PASSES
@@ -317,16 +317,16 @@ def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False, u
     results = []
 
     # 1. Permutations: always run all 3 zero-duplicate passes (Metrics 1-21)
-    raw_perms = run_permutation_tests(dev_id, dev_name, res_info, output_dir)
+    raw_perms = run_permutation_tests(dev_id, dev_name, res_info, output_dir, hide_hands=hide_hands)
     for p in raw_perms:
         results.append(process_result_baseline(p, dev_id, update_baselines=update_baselines))
 
     # 2. Themes: run full or targeted distribution
     if full_mode:
-        raw_themes = run_theme_tests(dev_id, dev_name, res_info, output_dir)
+        raw_themes = run_theme_tests(dev_id, dev_name, res_info, output_dir, hide_hands=hide_hands)
         for t in raw_themes:
             results.append(process_result_baseline(t, dev_id, update_baselines=update_baselines))
-        raw_weathers = run_weather_tests(dev_id, dev_name, res_info, output_dir)
+        raw_weathers = run_weather_tests(dev_id, dev_name, res_info, output_dir, hide_hands=hide_hands)
         for w in raw_weathers:
             results.append(process_result_baseline(w, dev_id, update_baselines=update_baselines))
     else:
@@ -336,7 +336,9 @@ def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False, u
         for p in all_theme_passes:
             if p["id"] in theme_ids:
                 print(f"  🎨 [{p['id']}] {p['name']}")
-                set_properties(p["props"])
+                props = dict(p["props"])
+                props["TestHideHands"] = hide_hands
+                set_properties(props)
                 prg_path = f"bin/Theme_{dev_id}_{p['id']}.prg"
                 img_path = os.path.join(output_dir, f"{dev_id}_{p['id']}.png")
                 built = build_app(dev_id, prg_path)
@@ -360,7 +362,7 @@ def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False, u
             if w["id"] in weather_ids:
                 print(f"  🌦️ [{w['id']}] {w['name']} -> {w['condition_text']}")
                 weather_props = {
-                    "NightMode": 0, "TestHideHands": 1,
+                    "NightMode": 0, "TestHideHands": hide_hands,
                     "Slot1Metric": 15, "Slot2Metric": 2, "Slot3Metric": 3,
                     "Slot4Metric": 4, "Slot5Metric": 5, "Slot6Metric": 6,
                     "TestWeatherOverride": w["override"],
@@ -394,6 +396,7 @@ def main():
     parser.add_argument("--device", help="Run only on a specific device (e.g. fenix7, venu2s, venusq2)")
     parser.add_argument("--full", action="store_true", help="Run full 21 passes on every device instead of 48-pass matrix")
     parser.add_argument("--update-baselines", action="store_true", help="Capture and save baseline images into test_output/baselines")
+    parser.add_argument("--with-hands", action="store_true", help="Render watch hour, minute, and second hands instead of hiding them")
     args = parser.parse_args()
 
     branch = get_current_branch()
@@ -422,6 +425,8 @@ def main():
             print(f"❌ Unknown device '{args.device}'. Choose from: {[d[0] for d in DEVICES]}")
             return
 
+    hide_hands = 0 if args.with_hands else 1
+
     print()
     print("╔══════════════════════════════════════════════════════════════════╗")
     print("║  🎨  PERPEX VISUAL VALIDATION MATRIX                             ║")
@@ -429,6 +434,7 @@ def main():
     print(f"  Branch  : {branch}")
     print(f"  Output  : {output_dir}")
     print(f"  Devices : {len(target_devices)} ({', '.join(d[0] for d in target_devices)})")
+    print(f"  Hands   : {'ENABLED (Hour, Minute, Seconds hands rendered)' if args.with_hands else 'HIDDEN (Diff-optimized)'}")
     if args.update_baselines:
         print(f"  Action  : CAPTURE BASELINES → {BASELINES_DIR}")
     elif args.full:
@@ -446,7 +452,8 @@ def main():
             print(f"\n📱 {dev_name} ({res_info})")
             dev_results = run_device_passes(
                 dev_id, dev_name, res_info, output_dir,
-                full_mode=args.full, update_baselines=args.update_baselines
+                full_mode=args.full, update_baselines=args.update_baselines,
+                hide_hands=hide_hands
             )
             all_results.append((dev_id, res_info, dev_name, dev_results))
     finally:

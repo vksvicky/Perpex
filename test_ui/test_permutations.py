@@ -70,7 +70,7 @@ PERMUTATION_PASSES = [
 ]
 
 
-def run_permutation_tests(dev_id, dev_name, res_info, output_dir):
+def run_permutation_tests(dev_id, dev_name, res_info, output_dir, hide_hands=1):
     """
     Runs all 3 metric permutation passes for *dev_id*.
 
@@ -79,6 +79,7 @@ def run_permutation_tests(dev_id, dev_name, res_info, output_dir):
         dev_name:     Human-readable name for reporting
         res_info:     Resolution string (e.g. "454×454 AMOLED")
         output_dir:   Directory for current-branch screenshots
+        hide_hands:   1 to hide analog hands for diff testing, 0 to show hands
 
     Returns:
         list[dict] – one result entry per pass
@@ -90,7 +91,9 @@ def run_permutation_tests(dev_id, dev_name, res_info, output_dir):
     for ppass in PERMUTATION_PASSES:
         pid = ppass["id"]
         print(f"    → {ppass['name']}")
-        set_properties(ppass["props"])
+        props = dict(ppass["props"])
+        props["TestHideHands"] = hide_hands
+        set_properties(props)
 
         prg_path  = f"bin/Visual_{dev_id}_{pid}.prg"
         img_path  = os.path.join(output_dir, f"{dev_id}_{pid}.png")

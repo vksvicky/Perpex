@@ -84,7 +84,7 @@ LOW_POWER_PASS = {
 }
 
 
-def run_theme_tests(dev_id, dev_name, res_info, output_dir):
+def run_theme_tests(dev_id, dev_name, res_info, output_dir, hide_hands=1):
     """
     Runs all colour-theme passes + the low-power AOD pass for *dev_id*.
 
@@ -99,7 +99,9 @@ def run_theme_tests(dev_id, dev_name, res_info, output_dir):
     for tpass in all_passes:
         pid = tpass["id"]
         print(f"    → {tpass['name']}")
-        set_properties(tpass["props"])
+        props = dict(tpass["props"])
+        props["TestHideHands"] = hide_hands
+        set_properties(props)
 
         prg_path  = f"bin/Visual_{dev_id}_{pid}.prg"
         img_path  = os.path.join(output_dir, f"{dev_id}_{pid}.png")

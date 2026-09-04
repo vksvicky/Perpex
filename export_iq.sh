@@ -110,43 +110,14 @@ version = '$CURRENT_VERSION'
 out_path = '$RELEASE_NOTES_PATH'
 
 try:
-    git_logs = subprocess.check_output(['git', 'log', '-n', '5', '--pretty=format:- %s'], text=True).strip()
+    raw_logs = subprocess.check_output(['git', 'log', '-n', '5', '--pretty=format:* %s'], text=True).strip()
+    # Strip any emojis or non-ascii characters to satisfy Garmin store validation
+    git_logs = raw_logs.encode('ascii', 'ignore').decode('ascii').strip()
 except Exception:
-    git_logs = '- Performance and stability improvements.'
+    git_logs = '* Performance and stability improvements'
 
-notes = f'''Perpex v{version} Release Notes
-
-What's New in v{version}
-• Full support for 466x466 AMOLED displays including Fenix 9 Pro 51mm
-• Expanded compatibility for Fenix 8 Pro, Fenix 9, Enduro 3, and Venu series
-• Refined 6-slot grid spacing with generous breathing room between data rows
-• Optimized layout clearance for rectangular AMOLED screens like Venu Sq 2
-• Enhanced offline sunrise and sunset solar calculations
-
-Supported Data Slots and Metrics
-• Battery: Dynamic gauge with smart green, yellow, and red charge thresholds
-• Heart Rate: Continuous pulse tracking with animated heart indicator
-• Steps: Daily step tracking toward your active goal
-• Step Goal %: Percentage progress toward your daily step target
-• Active Calories: Estimated active calorie expenditure burned throughout the day
-• Distance: Total walking and running distance in kilometers
-• Floors Climbed: Vertical flights of stairs climbed today
-• Active Minutes: Weekly moderate and vigorous intensity activity minutes
-• Stress Level: Real-time all-day physiological stress score
-• Notifications: Smartphone connectivity status and unread alert count
-• Altitude: Real-time elevation tracking above sea level
-• Barometer: Ambient atmospheric pressure monitoring in hPa
-• Weather Temperature: Current outdoor temperature in Celsius or Fahrenheit
-• Weather Condition: Condition-aware display for rain probability, temperature, humidity, and wind speed
-• Sunrise and Sunset: Solar event times with automatic offline fallback
-• Body Battery: Real-time energy reserve tracking from 0 to 100%
-• Recovery Time: Recommended rest hours remaining before your next workout
-• VO2 Max: Cardiovascular fitness and performance capacity score
-
-Themes and Display
-• 6 Accent Themes: Vibrant Red, Teal, Warm Orange, Electric Green, Gold, and Pure White
-• Automatic Night Mode: Solar-timed stealth red, amber, or green night view
-• AMOLED Always-On Display: Strict burn-in protection under 10% active pixel load
+notes = f'''What's New in v{version}:
+{git_logs}
 '''
 
 with open(out_path, 'w') as f:
