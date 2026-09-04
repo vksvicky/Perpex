@@ -80,9 +80,9 @@ def make_3panel_diff(baseline_path: str, current_path: str, diff_output_path: st
         hands_mask = Image.new("L", (w, h), 255)  # start fully visible
         draw_mask = ImageDraw.Draw(hands_mask)
         cx, cy = w // 2, h // 2
-        rx, ry = int(w * 0.52), int(h * 0.52)     # 52% masks hour+minute hands, keeps metric ring
+        r_pivot = int(min(w, h) * 0.15)
         draw_mask.ellipse(
-            [(cx - rx, cy - ry), (cx + rx, cy + ry)],
+            [(cx - r_pivot, cy - r_pivot), (cx + r_pivot, cy + r_pivot)],
             fill=0  # black = masked out
         )
         black = Image.new("RGB", (w, h), (0, 0, 0))
@@ -106,7 +106,7 @@ def make_3panel_diff(baseline_path: str, current_path: str, diff_output_path: st
         # Overlay the mask boundary on the diff panel so it's clear what was excluded
         mask_border = ImageDraw.Draw(diff_panel)
         mask_border.ellipse(
-            [(cx - rx, cy - ry), (cx + rx, cy + ry)],
+            [(cx - r_pivot, cy - r_pivot), (cx + r_pivot, cy + r_pivot)],
             outline=(80, 80, 80), width=1
         )
 

@@ -19,6 +19,8 @@ __pycache__/
 test_output/baselines_backup_*/
 test_output/diffs/
 test_output/*/
+!test_output/baselines/
+!test_output/baselines/**
 test_baselines/
 
 # Scratch / debug scripts generated during development

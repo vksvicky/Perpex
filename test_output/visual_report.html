@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Perpex Layout Validation Report</title>
+  <title>Perpex Visual Regression & Layout Validation Report</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -27,7 +27,7 @@
                          letter-spacing:.05em; }
     .result-table td { padding:12px 16px; border-top:1px solid #1e293b; vertical-align:top; }
     .result-table tr:hover td { background:#162032; }
-    .pass-name  { width:280px; min-width:220px; }
+    .pass-name  { width:260px; min-width:200px; }
     .pass-name strong { color:#e2e8f0; font-size:.9rem; }
     .pass-name small  { color:#94a3b8; font-size:.78rem; }
     .img-cell  { }
@@ -43,12 +43,13 @@
                font-size:.75rem; font-weight:700; margin-top:6px; }
     .badge-pass   { background:#14532d; color:#4ade80; }
     .badge-fail   { background:#7f1d1d; color:#f87171; }
+    .badge-nobase { background:#854d0e; color:#fef08a; }
   </style>
 </head>
 <body>
-  <h1>🎨 Perpex Layout Validation Report</h1>
+  <h1>🎨 Perpex Visual Regression & Layout Report</h1>
   <p class="meta">
-    branch: <code>feature/issue-4-new-metrics</code> &nbsp;·&nbsp; 2026-09-04 13:53 &nbsp;·&nbsp;
+    branch: <code>feature/issue-4-new-metrics</code> &nbsp;·&nbsp; 2026-09-04 17:26 &nbsp;·&nbsp;
     9 devices
   </p>
   
@@ -65,6 +66,7 @@
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -83,6 +85,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7s_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -97,6 +102,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7s_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -113,6 +121,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7s_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -128,6 +139,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7s_night_red_zones.png" alt="Night Mode: Tactical Red Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_night_red.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -142,6 +156,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7s_weather_snow_zones.png" alt="Weather: Snow & Wintry Mix Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7s_weather_snow.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         </tbody>
@@ -160,6 +177,7 @@
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -178,6 +196,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -192,6 +213,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -208,6 +232,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -223,6 +250,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7_theme1_zones.png" alt="Theme: Vibrant Red (Default) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_theme1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -237,6 +267,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fenix7_weather_rain_zones.png" alt="Weather: Raindrop / Precipitation Chance Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fenix7_weather_rain.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         </tbody>
@@ -255,6 +288,7 @@
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -273,6 +307,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fr255_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -287,6 +324,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fr255_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -303,6 +343,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fr255_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -318,6 +361,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fr255_theme5_zones.png" alt="Theme: Gold / Yellow Accent Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_theme5.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -332,6 +378,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/fr255_weather_partly_cloudy_zones.png" alt="Weather: Partly Cloudy Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/fr255_weather_partly_cloudy.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         </tbody>
@@ -350,6 +399,7 @@
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -368,6 +418,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/enduro3_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -382,6 +435,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/enduro3_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -398,6 +454,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/enduro3_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -413,6 +472,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/enduro3_theme3_zones.png" alt="Theme: Warm Orange Accent Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_theme3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -427,6 +489,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/enduro3_weather_sunny_zones.png" alt="Weather: Clear / Sunny Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/enduro3_weather_sunny.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         </tbody>
@@ -445,6 +510,7 @@
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -463,6 +529,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2s_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venu2s_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -477,6 +546,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2s_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2s_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -493,6 +565,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2s_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venu2s_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -507,6 +582,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2s_night_amber_zones.png" alt="Night Mode: Night Amber Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2s_night_amber.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         </tbody>
@@ -525,6 +603,7 @@
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -543,6 +622,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/epix2pro42mm_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.30% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -557,6 +639,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/epix2pro42mm_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -573,6 +658,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/epix2pro42mm_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -587,6 +675,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/epix2pro42mm_theme6_zones.png" alt="Theme: Pure White Accent Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_theme6.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -603,6 +694,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/epix2pro42mm_low_power_zones.png" alt="Low-Power AOD Mode Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_low_power.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -617,6 +711,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/epix2pro42mm_weather_thunderstorm_zones.png" alt="Weather: Thunderstorm Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/epix2pro42mm_weather_thunderstorm.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         </tbody>
@@ -635,6 +732,7 @@
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -653,6 +751,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.26% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -667,6 +768,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -683,6 +787,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -697,6 +804,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2_theme2_zones.png" alt="Theme: Teal / Cyan Accent Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_theme2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -713,6 +823,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2_low_power_zones.png" alt="Low-Power AOD Mode Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_low_power.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -727,6 +840,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu2_weather_cloudy_zones.png" alt="Weather: Overcast / Cloudy Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu2_weather_cloudy.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         </tbody>
@@ -745,6 +861,7 @@
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -763,6 +880,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu3_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.22% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -777,6 +897,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu3_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -793,6 +916,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu3_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -807,6 +933,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu3_theme4_zones.png" alt="Theme: Electric Green Accent Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_theme4.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -823,6 +952,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu3_low_power_zones.png" alt="Low-Power AOD Mode Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_low_power.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -837,6 +969,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venu3_weather_showers_zones.png" alt="Weather: Rain / Showers Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venu3_weather_showers.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         </tbody>
@@ -855,6 +990,7 @@
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -873,6 +1009,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venusq2_perm1_zones.png" alt="Permutation 1: Core Activity (Metrics 1–7) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_perm1.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -887,6 +1026,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venusq2_perm2_zones.png" alt="Permutation 2: Sensors, Alerts & Atmosphere (Metrics 7–13) Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_perm2.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -903,6 +1045,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venusq2_perm3_zones.png" alt="Permutation 3: Solar, Weather & Performance (Metrics 14–21) Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_perm3.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -917,6 +1062,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venusq2_night_green_zones.png" alt="Night Mode: Stealth Green Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_night_green.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         <tr>
@@ -933,6 +1081,9 @@
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venusq2_low_power_zones.png" alt="Low-Power AOD Mode Zones" loading="lazy">
           </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_low_power.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
+          </td>
         </tr>
         <tr>
           <td class="pass-name">
@@ -947,6 +1098,9 @@
           </td>
           <td class="img-cell">
             <img src="feature_issue-4-new-metrics/venusq2_weather_wind_zones.png" alt="Weather: High Wind Zones" loading="lazy">
+          </td>
+          <td class="img-cell">
+            <img src="diffs/venusq2_weather_wind.png" alt="Diff" loading="lazy"><div style="margin-top:4px;"><span class="badge badge-pass">0.00% diff</span></div>
           </td>
         </tr>
         </tbody>

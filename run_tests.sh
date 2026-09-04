@@ -20,7 +20,7 @@ if [ "$MODE" = "--help" ] || [ "$MODE" = "-h" ] || [ "$MODE" = "help" ]; then
     echo "  help                      : Show this help message."
     exit 0
 elif [ "$MODE" = "ui" ]; then
-    EXTRA_ARGS="${2:-}"
+    shift
     echo "========================================================"
     echo "📸 STARTING VISUAL REGRESSION TESTS"
     echo "========================================================"
@@ -32,7 +32,7 @@ elif [ "$MODE" = "ui" ]; then
     sleep 8
     # Activate venv so Pillow and other deps are available
     source venv/bin/activate
-    python3 run_ui_tests.py $EXTRA_ARGS
+    python3 run_ui_tests.py "$@"
     deactivate
     exit 0
 elif [ "$MODE" = "sim" ]; then

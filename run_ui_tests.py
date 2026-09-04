@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
 """
-Perpex UI Layout Validation Test Harness
-========================================
+Perpex UI Layout Validation & Visual Regression Test Harness
+=============================================================
 Usage:
-  python3 run_ui_tests.py
+  python3 run_ui_tests.py                    # Run tests against baselines
+  python3 run_ui_tests.py --update-baselines # Capture and update baseline images
+  python3 run_ui_tests.py --device venu2s    # Test specific device
 """
+import argparse
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
 from datetime import datetime
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
-SDK_PATH     = os.path.expanduser("~/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-9.2.0-2026-06-09-92a1605b2")
-KEY_PATH     = "developer_key.der"
-REPORT_PATH  = "test_output/visual_report.html"
+SDK_PATH      = os.path.expanduser("~/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-9.2.0-2026-06-09-92a1605b2")
+KEY_PATH      = "developer_key.der"
+REPORT_PATH   = "test_output/visual_report.html"
+BASELINES_DIR = "test_output/baselines"
+DIFFS_DIR     = "test_output/diffs"
 
 # ── Devices ───────────────────────────────────────────────────────────────────
 DEVICES = [
@@ -48,10 +54,68 @@ def sanitise_branch(branch: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_\-]", "_", branch)
 
 
+def process_result_baseline(r, dev_id, update_baselines=False):
+    pass_id = r.get("id", "")
+    img_path = r.get("current_img")
+    base_path = os.path.join(BASELINES_DIR, f"{dev_id}_{pass_id}.png")
+    diff_path = os.path.join(DIFFS_DIR, f"{dev_id}_{pass_id}.png")
+
+    if update_baselines:
+        if img_path and os.path.exists(img_path) and r.get("passed", False):
+            os.makedirs(BASELINES_DIR, exist_ok=True)
+            shutil.copy2(img_path, base_path)
+            print(f"    📸 [BASELINE SAVED] {base_path}")
+            r["has_baseline"] = True
+            r["baseline_img"] = base_path
+            r["diff_img"] = None
+            r["diff_pct"] = 0.0
+            r["passed"] = True
+        else:
+            print(f"    ❌ [BASELINE FAILED] Capture failed for {dev_id}_{pass_id}!")
+            r["has_baseline"] = False
+            r["baseline_img"] = None
+            r["diff_img"] = None
+            r["diff_pct"] = None
+            r["passed"] = False
+            if "issues" not in r or r["issues"] is None:
+                r["issues"] = []
+            r["issues"].append("CAPTURE FAILED: No valid screenshot captured to save as baseline.")
+        return r
+
+    has_baseline = os.path.exists(base_path)
+    r["has_baseline"] = has_baseline
+    r["baseline_img"] = base_path if has_baseline else None
+
+    if "issues" not in r or r["issues"] is None:
+        r["issues"] = []
+
+    if not has_baseline:
+        print(f"    ⚠️  MISSING BASELINE: {base_path} not found!")
+        r["issues"].insert(0, f"MISSING BASELINE: No reference baseline found at '{base_path}'. Run './run_tests.sh ui --update-baselines' to generate.")
+        r["passed"] = False
+        r["diff_img"] = None
+        r["diff_pct"] = None
+    else:
+        if img_path and os.path.exists(img_path):
+            from test_ui.image_utils import make_3panel_diff
+            os.makedirs(DIFFS_DIR, exist_ok=True)
+            diff_res = make_3panel_diff(base_path, img_path, diff_path)
+            r["diff_img"] = diff_res.get("composite_path")
+            r["diff_pct"] = diff_res.get("diff_pct")
+            if diff_res.get("diff_pct") is not None and diff_res["diff_pct"] > 5.0:
+                r["issues"].append(f"VISUAL REGRESSION: {diff_res['diff_pct']:.2f}% pixel variance from baseline.")
+                r["passed"] = False
+    return r
+
+
 # ── HTML report ───────────────────────────────────────────────────────────────
 
-def _val_badge(passed):
-    if passed:
+def _val_badge(r, update_baselines=False):
+    if update_baselines:
+        return '<span class="badge badge-pass">BASELINE UPDATED</span>'
+    if not r.get("has_baseline", False):
+        return '<span class="badge badge-nobase">⚠️ NO BASELINE</span>'
+    if r.get("passed", False):
         return '<span class="badge badge-pass">✅ PASS</span>'
     return '<span class="badge badge-fail">❌ FAIL</span>'
 
@@ -63,12 +127,25 @@ def _img_tag(path, alt=""):
     return '<div class="no-img">No image</div>'
 
 
-def generate_report(all_results, branch):
-    """
-    all_results: list of (dev_id, res_info, dev_name, list_of_pass_results)
-    """
+def _diff_cell(r):
+    if not r.get("has_baseline"):
+        return '<div class="no-img" style="color:#fef08a; background:#291e0a; border:1px dashed #854d0e; padding:16px; border-radius:6px;">⚠️ No Baseline<br><small style="color:#94a3b8">Run with --update-baselines</small></div>'
+    if r.get("diff_img") and os.path.exists(r["diff_img"]):
+        diff_badge = ""
+        if r.get("diff_pct") is not None:
+            cls = "badge-pass" if r["diff_pct"] <= 5.0 else "badge-fail"
+            diff_badge = f'<div style="margin-top:4px;"><span class="badge {cls}">{r["diff_pct"]:.2f}% diff</span></div>'
+        return _img_tag(r["diff_img"], "Diff") + diff_badge
+    elif r.get("baseline_img") and os.path.exists(r["baseline_img"]):
+        return _img_tag(r["baseline_img"], "Baseline")
+    return '<div class="no-img">No diff</div>'
+
+
+def generate_report(all_results, branch, update_baselines=False):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     mode_label = f"branch: <code>{branch}</code>"
+    if update_baselines:
+        mode_label += " &nbsp;·&nbsp; <strong>BASELINE CAPTURE MODE</strong>"
 
     device_sections = ""
     for dev_id, res_info, dev_name, results in all_results:
@@ -82,7 +159,6 @@ def generate_report(all_results, branch):
             desc = r.get("description", "")
             img_path = r.get("current_img") or r.get("img_path", "")
             zones_path = r.get("zones_img") or r.get("annotated_path", "")
-            val_passed = r.get("passed", False)
             issues = r.get("issues", [])
 
             slots_html = ""
@@ -100,7 +176,7 @@ def generate_report(all_results, branch):
           <td class="pass-name">
             <strong>{pass_name}</strong><br>
             <small>{desc}</small><br>
-            {_val_badge(val_passed)}
+            {_val_badge(r, update_baselines)}
             {slots_html}
             {issues_html}
           </td>
@@ -109,6 +185,9 @@ def generate_report(all_results, branch):
           </td>
           <td class="img-cell">
             {_img_tag(zones_path, pass_name + ' Zones')}
+          </td>
+          <td class="img-cell">
+            {_diff_cell(r)}
           </td>
         </tr>"""
 
@@ -126,6 +205,7 @@ def generate_report(all_results, branch):
             <th>Pass & Assertions</th>
             <th>Watch Face Screenshot</th>
             <th>Layout Zones & Clearance</th>
+            <th>Baseline Comparison (Diff)</th>
           </tr>
         </thead>
         <tbody>
@@ -138,7 +218,7 @@ def generate_report(all_results, branch):
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Perpex Layout Validation Report</title>
+  <title>Perpex Visual Regression & Layout Validation Report</title>
   <style>
     *, *::before, *::after {{ box-sizing: border-box; }}
     body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -163,7 +243,7 @@ def generate_report(all_results, branch):
                          letter-spacing:.05em; }}
     .result-table td {{ padding:12px 16px; border-top:1px solid #1e293b; vertical-align:top; }}
     .result-table tr:hover td {{ background:#162032; }}
-    .pass-name  {{ width:280px; min-width:220px; }}
+    .pass-name  {{ width:260px; min-width:200px; }}
     .pass-name strong {{ color:#e2e8f0; font-size:.9rem; }}
     .pass-name small  {{ color:#94a3b8; font-size:.78rem; }}
     .img-cell  {{ }}
@@ -179,10 +259,11 @@ def generate_report(all_results, branch):
                font-size:.75rem; font-weight:700; margin-top:6px; }}
     .badge-pass   {{ background:#14532d; color:#4ade80; }}
     .badge-fail   {{ background:#7f1d1d; color:#f87171; }}
+    .badge-nobase {{ background:#854d0e; color:#fef08a; }}
   </style>
 </head>
 <body>
-  <h1>🎨 Perpex Layout Validation Report</h1>
+  <h1>🎨 Perpex Visual Regression & Layout Report</h1>
   <p class="meta">
     {mode_label} &nbsp;·&nbsp; {timestamp} &nbsp;·&nbsp;
     {len(all_results)} devices
@@ -196,7 +277,7 @@ def generate_report(all_results, branch):
     print(f"\n  📄 Report → {REPORT_PATH}")
 
 
-# ── Focused 48-Pass Resolution Matrix ─────────────────────────────────────────
+# ── Device Test Matrix ────────────────────────────────────────────────────────
 
 THEME_DISTRIBUTION = {
     "fenix7":       ["theme1"],           # Vibrant Red (Default)
@@ -222,7 +303,7 @@ WEATHER_DISTRIBUTION = {
 }
 
 
-def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False):
+def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False, update_baselines=False):
     from test_ui.test_permutations import run_permutation_tests
     from test_ui.test_themes import run_theme_tests, THEME_PASSES, LOW_POWER_PASS
     from test_ui.test_weather import run_weather_tests, WEATHER_PASSES
@@ -230,13 +311,21 @@ def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False):
     from test_ui.layout_validator import validate_layout
     from test_ui.config_manager import set_properties
 
+    results = []
+
     # 1. Permutations: always run all 3 zero-duplicate passes (Metrics 1-21)
-    results = run_permutation_tests(dev_id, dev_name, res_info, output_dir)
+    raw_perms = run_permutation_tests(dev_id, dev_name, res_info, output_dir)
+    for p in raw_perms:
+        results.append(process_result_baseline(p, dev_id, update_baselines=update_baselines))
 
     # 2. Themes: run full or targeted distribution
     if full_mode:
-        results += run_theme_tests(dev_id, dev_name, res_info, output_dir)
-        results += run_weather_tests(dev_id, dev_name, res_info, output_dir)
+        raw_themes = run_theme_tests(dev_id, dev_name, res_info, output_dir)
+        for t in raw_themes:
+            results.append(process_result_baseline(t, dev_id, update_baselines=update_baselines))
+        raw_weathers = run_weather_tests(dev_id, dev_name, res_info, output_dir)
+        for w in raw_weathers:
+            results.append(process_result_baseline(w, dev_id, update_baselines=update_baselines))
     else:
         # Targeted Theme passes
         theme_ids = THEME_DISTRIBUTION.get(dev_id, [])
@@ -249,7 +338,7 @@ def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False):
                 img_path = os.path.join(output_dir, f"{dev_id}_{p['id']}.png")
                 built = build_app(dev_id, prg_path)
                 captured = False
-                val_result = {"pass": False, "issues": ["Build failed"]}
+                val_result = {"pass": False, "issues": ["Build failed"], "annotated_path": None}
                 if built:
                     captured = launch_simulator_and_screenshot(dev_id, prg_path, img_path, res_info)
                     if captured:
@@ -257,10 +346,10 @@ def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False):
                 res = dict(p)
                 res["pass_name"] = p["name"]
                 res["current_img"] = img_path if captured else None
-                res["zones_img"] = val_result["annotated_path"] if captured else None
-                res["passed"] = val_result["pass"]
-                res["issues"] = val_result["issues"]
-                results.append(res)
+                res["zones_img"] = val_result.get("annotated_path") if captured else None
+                res["passed"] = val_result.get("pass", False)
+                res["issues"] = list(val_result.get("issues", []))
+                results.append(process_result_baseline(res, dev_id, update_baselines=update_baselines))
 
         # Targeted Weather passes
         weather_ids = WEATHER_DISTRIBUTION.get(dev_id, [])
@@ -287,10 +376,10 @@ def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False):
                 res = dict(w)
                 res["pass_name"] = w["name"]
                 res["current_img"] = img_path if captured else None
-                res["zones_img"] = val_result["annotated_path"] if captured else None
-                res["passed"] = val_result["pass"]
-                res["issues"] = val_result["issues"]
-                results.append(res)
+                res["zones_img"] = val_result.get("annotated_path") if captured else None
+                res["passed"] = val_result.get("pass", False)
+                res["issues"] = list(val_result.get("issues", []))
+                results.append(process_result_baseline(res, dev_id, update_baselines=update_baselines))
 
     return results
 
@@ -298,16 +387,30 @@ def run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=False):
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
-    import argparse
-    parser = argparse.ArgumentParser(description="Perpex Layout Validation Test Harness")
-    parser.add_argument("--device", help="Run only on a specific device (e.g. fenix7, venu2, venusq2)")
+    parser = argparse.ArgumentParser(description="Perpex UI Layout Validation & Visual Regression Test Harness")
+    parser.add_argument("--device", help="Run only on a specific device (e.g. fenix7, venu2s, venusq2)")
     parser.add_argument("--full", action="store_true", help="Run full 21 passes on every device instead of 48-pass matrix")
+    parser.add_argument("--update-baselines", action="store_true", help="Capture and save baseline images into test_output/baselines")
     args = parser.parse_args()
 
     branch = get_current_branch()
     safe_branch = sanitise_branch(branch)
     output_dir = f"test_output/{safe_branch}"
     os.makedirs(output_dir, exist_ok=True)
+
+    if args.update_baselines:
+        print()
+        print("╔══════════════════════════════════════════════════════════════════╗")
+        print("║  📸  UPDATING VISUAL REFERENCE BASELINES                         ║")
+        print("╚══════════════════════════════════════════════════════════════════╝")
+        if branch != "main":
+            print(f"  ℹ️  Capturing baseline references on current branch: '{branch}'")
+        if os.path.isdir(BASELINES_DIR) and len(os.listdir(BASELINES_DIR)) > 0:
+            ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+            backup_dir = f"test_output/baselines_backup_{ts}"
+            shutil.copytree(BASELINES_DIR, backup_dir)
+            print(f"  📦 Existing baselines automatically backed up → {backup_dir}")
+        os.makedirs(BASELINES_DIR, exist_ok=True)
 
     target_devices = DEVICES
     if args.device:
@@ -318,12 +421,14 @@ def main():
 
     print()
     print("╔══════════════════════════════════════════════════════════════════╗")
-    print("║  🎨  PERPEX FOCUSED LAYOUT VALIDATION MATRIX                     ║")
+    print("║  🎨  PERPEX VISUAL VALIDATION MATRIX                             ║")
     print("╚══════════════════════════════════════════════════════════════════╝")
     print(f"  Branch  : {branch}")
     print(f"  Output  : {output_dir}")
     print(f"  Devices : {len(target_devices)} ({', '.join(d[0] for d in target_devices)})")
-    if args.full:
+    if args.update_baselines:
+        print(f"  Action  : CAPTURE BASELINES → {BASELINES_DIR}")
+    elif args.full:
         print(f"  Mode    : FULL EXHAUSTIVE (21 passes per device)")
     else:
         print(f"  Mode    : FOCUSED RESOLUTION MATRIX (~48 total passes across all devices)")
@@ -336,12 +441,15 @@ def main():
     try:
         for dev_id, res_info, dev_name in target_devices:
             print(f"\n📱 {dev_name} ({res_info})")
-            dev_results = run_device_passes(dev_id, dev_name, res_info, output_dir, full_mode=args.full)
+            dev_results = run_device_passes(
+                dev_id, dev_name, res_info, output_dir,
+                full_mode=args.full, update_baselines=args.update_baselines
+            )
             all_results.append((dev_id, res_info, dev_name, dev_results))
     finally:
         restore_properties()
 
-    generate_report(all_results, branch)
+    generate_report(all_results, branch, update_baselines=args.update_baselines)
 
     # Summary
     total  = sum(len(r[3]) for r in all_results)
@@ -353,7 +461,10 @@ def main():
 
     print()
     print("╔════════════════════════════════════════════════════════════════════════════════╗")
-    print(f"║  ✅ {passed}/{total} passed   ❌ {failed} failed")
+    if args.update_baselines:
+        print(f"║  🎉 {total} reference baselines captured & updated successfully!")
+    else:
+        print(f"║  {'✅' if failed == 0 else '❌'} {passed}/{total} passed   {f'❌ {failed} failed' if failed else '0 failed'}")
     print(f"║  Report → {REPORT_PATH}")
     print("╚════════════════════════════════════════════════════════════════════════════════╝")
 

@@ -26,6 +26,16 @@ module UIDrawer {
         }
 
         switch (w) {
+            case 240:
+                switch (slotId) {
+                    case 1: return centerX;
+                    case 2: return centerX - 42;
+                    case 3: return centerX + 42;
+                    case 4: return centerX - 42;
+                    case 5: return centerX + 42;
+                    case 6: return centerX;
+                }
+                break;
             case 260:
                 switch (slotId) {
                     case 1: return centerX;
@@ -77,6 +87,16 @@ module UIDrawer {
         }
 
         switch (w) {
+            case 240:
+                switch (slotId) {
+                    case 1: return centerY - 48;
+                    case 2: return centerY - 21;
+                    case 3: return centerY - 21;
+                    case 4: return centerY + 24;
+                    case 5: return centerY + 24;
+                    case 6: return centerY + 48;
+                }
+                break;
             case 260:
                 switch (slotId) {
                     case 1: return centerY - 50;
@@ -112,7 +132,9 @@ module UIDrawer {
     }
 
     function getSlotScale(w) {
-        if (w == 260) {
+        if (w == 240) {
+            return 240.0 / 260.0;
+        } else if (w == 260) {
             return 1.0;
         } else if (w == 280) {
             return 280.0 / 260.0;
@@ -215,34 +237,50 @@ module UIDrawer {
             }
             var battBmp = WatchUi.loadResource(battRes);
 
+            var dw = dc.getWidth();
+            var iconOffsetY = (13 * s).toNumber();
+            var textOffsetY = (9 * s).toNumber();
+            if (dw == 240) {
+                iconOffsetY = 11;
+                textOffsetY = 8;
+            }
+
             if (battBmp != null) {
                 var iconW = battBmp.getWidth();
                 var iconH = battBmp.getHeight();
-                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - (13 * s)) - iconH / 2).toNumber(), battBmp);
+                dc.drawBitmap((posX - iconW / 2).toNumber(), ((posY - iconOffsetY) - iconH / 2).toNumber(), battBmp);
             }
 
             dc.setColor(battColor, Graphics.COLOR_TRANSPARENT);
-if (customFont != null) {
+            if (customFont != null) {
                 var textW = dc.getTextWidthInPixels(battText, fontValue);
                 dc.drawText(posX - textW / 2, posY + (3 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_LEFT);
             } else {
-                dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+                dc.drawText(posX, posY + textOffsetY, fontValue, battText, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
             }
             return;
+        }
+
+        var dw = dc.getWidth();
+        var iconOffsetY = (13 * s).toNumber();
+        var textOffsetY = (9 * s).toNumber();
+        if (dw == 240) {
+            iconOffsetY = 11;
+            textOffsetY = 8;
         }
 
         var data = MetricProvider.getMetricData(slotType);
         var valStr = data[0];
 
-        drawMetricIcon(dc, slotType, posX, posY - (13 * s).toNumber(), s);
+        drawMetricIcon(dc, slotType, posX, posY - iconOffsetY, s);
 
-var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
+        var valColor = isLowPower ? 0x888888 : Graphics.COLOR_WHITE;
         dc.setColor(valColor, Graphics.COLOR_TRANSPARENT);
         if (customFont != null) {
             var textW = dc.getTextWidthInPixels(valStr, fontValue);
             dc.drawText(posX - textW / 2, posY + (3 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_LEFT);
         } else {
-            dc.drawText(posX, posY + (9 * s).toNumber(), fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+            dc.drawText(posX, posY + textOffsetY, fontValue, valStr, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
         }
     }
 

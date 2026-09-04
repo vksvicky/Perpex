@@ -104,21 +104,25 @@ def run_theme_tests(dev_id, dev_name, res_info, output_dir):
         prg_path  = f"bin/Visual_{dev_id}_{pid}.prg"
         img_path  = os.path.join(output_dir, f"{dev_id}_{pid}.png")
 
+        captured = False
+        val = {"pass": False, "issues": ["Build failed"], "annotated_path": None}
         if build_app(dev_id, prg_path):
-            launch_simulator_and_screenshot(dev_id, prg_path, img_path, res_info)
-
-        # By default all themes use the 7 standard slots
-        val = validate_layout(img_path, [1, 2, 3, 4, 5, 6, 7])
+            captured = launch_simulator_and_screenshot(dev_id, prg_path, img_path, res_info)
+            if captured:
+                val = validate_layout(img_path, [1, 2, 3, 4, 5, 6])
+            else:
+                val = {"pass": False, "issues": ["Simulator capture timed out / failed"], "annotated_path": None}
 
         results.append({
+            "id":           pid,
             "pass_name":    tpass["name"],
             "description":  tpass["description"],
             "slots":        [f"Theme: {tpass['name']}", "NightMode: 0"],
             "expected":     tpass["expected"],
-            "current_img":  img_path,
-            "zones_img":    val["annotated_path"],
-            "passed":       val["pass"],
-            "issues":       val["issues"],
+            "current_img":  img_path if captured else None,
+            "zones_img":    val.get("annotated_path") if captured else None,
+            "passed":       val.get("pass", False),
+            "issues":       list(val.get("issues", [])),
         })
 
     return results

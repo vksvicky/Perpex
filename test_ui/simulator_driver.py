@@ -15,12 +15,12 @@ def ensure_simulator_running(target_dev_id=None):
     # If switching to a different device, kill the existing simulator so it loads the new device window
     if target_dev_id and _CURRENT_DEVICE is not None and _CURRENT_DEVICE != target_dev_id:
         subprocess.run(["killall", "-9", "simulator", "ConnectIQ"], capture_output=True)
-        time.sleep(1)
+        time.sleep(1.5)
         _CURRENT_DEVICE = None
 
     app_path = os.path.join(SDK_PATH, "bin/ConnectIQ.app")
     subprocess.run(["open", app_path])
-    time.sleep(2)
+    time.sleep(4)
     if target_dev_id:
         _CURRENT_DEVICE = target_dev_id
 
@@ -89,25 +89,42 @@ def launch_simulator_and_screenshot(dev_id, prg_path, img_path, res_info=None):
         dev_id
     ]
     proc = subprocess.Popen(cmd_do, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    time.sleep(4)
+    time.sleep(5)
     
     os.makedirs(os.path.dirname(img_path) or ".", exist_ok=True)
+    raw_tmp = img_path + ".raw.png"
     
     captured = False
-    for attempt in range(5):
+    for attempt in range(6):
         bounds = get_simulator_window_bounds()
         if bounds:
             x, y, w, h = bounds
-            subprocess.run(["screencapture", "-R", f"{x},{y},{w},{h}", img_path])
+            subprocess.run(["screencapture", "-R", f"{x},{y},{w},{h}", raw_tmp])
         else:
-            subprocess.run(["screencapture", "-x", "-m", img_path])
+            subprocess.run(["screencapture", "-x", "-m", raw_tmp])
         
-        if os.path.exists(img_path):
-            success = _crop_to_watch_face(img_path, res_info, img_path, dev_id=dev_id, window_bounds=bounds)
+        if os.path.exists(raw_tmp):
+            success = _crop_to_watch_face(raw_tmp, res_info, img_path, dev_id=dev_id, window_bounds=bounds)
             if success:
                 captured = True
+                try:
+                    os.remove(raw_tmp)
+                except Exception:
+                    pass
                 break
         time.sleep(2.0)
+
+    if os.path.exists(raw_tmp):
+        try:
+            os.remove(raw_tmp)
+        except Exception:
+            pass
+
+    if not captured and os.path.exists(img_path):
+        try:
+            os.remove(img_path)
+        except Exception:
+            pass
 
     try:
         proc.terminate()
