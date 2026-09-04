@@ -117,45 +117,36 @@ except Exception:
 notes = f'''Perpex v{version} Release Notes
 
 What's New in v{version}
-• Added full support for 466x466 AMOLED resolution (Fenix 9 Pro 51mm)
-• Expanded device support across Fenix 8 Pro, Fenix 9, Enduro 3, and Venu series
-• Refined 6-slot grid spacing with increased vertical breathing room between rows
-• Calibrated Venu Sq 2 (320x360) inner ring track clearance for pixel-perfect alignment
-• Enhanced offline solar calculations (Sunrise/Sunset) using weather station position fallbacks
+• Full support for 466x466 AMOLED displays including Fenix 9 Pro 51mm
+• Expanded compatibility for Fenix 8 Pro, Fenix 9, Enduro 3, and Venu series
+• Refined 6-slot grid spacing with generous breathing room between data rows
+• Optimized layout clearance for rectangular AMOLED screens like Venu Sq 2
+• Enhanced offline sunrise and sunset solar calculations
 
-Supported Icons and Metrics in Resources
-• icon_battery: Dynamic battery gauge with color thresholds (Green above 40%, Yellow under 40%, Red 20% or below)
-• icon_heart: Real-time pulse monitoring with live animated pulsing heart indicator (BPM)
-• icon_steps: Daily cumulative step count with active progress tracking
-• icon_step_goal: Target icon showing percentage completion toward your daily step goal
-• icon_flame: Active metabolic calorie burn expenditure (kCal)
-• icon_distance: Total daily walking and running distance displayed in kilometers (KM)
-• icon_floors: Total vertical flights of stairs climbed today
-• icon_active_mins: Stopwatch icon for weekly moderate and vigorous intensity activity minutes
-• icon_stress: Real-time all-day physiological stress score (0–100)
-• icon_bluetooth: Phone connectivity indicator and unread notification counter
-• icon_altitude: Mountain icon tracking real-time elevation in meters above sea level
-• icon_barometer: Gauge icon monitoring ambient atmospheric pressure in hectopascals (hPa)
-• icon_weather_temp: Thermometer icon with configurable Celsius (°C) and Fahrenheit (°F)
-• icon_weather_cond: Dynamic weather icon mapping automatically to current outdoor conditions
-• icon_raindrop: Precipitation probability percentage (0–100%)
-• icon_weather_sunny: Clear and sunny skies
-• icon_weather_partly_cloudy: Sun and cloud cover indicator for fair weather
-• icon_weather_cloudy: Overcast conditions with dense cloud cover
-• icon_weather_rain: Rain and showers indicator
-• icon_weather_thunderstorm: Severe weather and thunderstorm warning
-• icon_weather_snow: Snowflake icon for freezing temperatures and snowfall
-• icon_weather_wind: Wind velocity converted to nautical knots (kt) for outdoor navigation
-• icon_sunrise: Civil dawn time calculation with automatic GPS and weather fallback
-• icon_sunset: Civil dusk time calculation with automatic GPS and weather fallback
-• icon_body_battery: Lightning bolt battery icon for Body Battery energy reserve (0–100%)
-• icon_recovery_time: Recommended recovery hours remaining before your next workout
-• icon_vo2max: Cardiovascular aerobic fitness score for running and cycling
+Supported Data Slots and Metrics
+• Battery: Dynamic gauge with smart green, yellow, and red charge thresholds
+• Heart Rate: Continuous pulse tracking with animated heart indicator
+• Steps: Daily step tracking toward your active goal
+• Step Goal %: Percentage progress toward your daily step target
+• Active Calories: Estimated active calorie expenditure burned throughout the day
+• Distance: Total walking and running distance in kilometers
+• Floors Climbed: Vertical flights of stairs climbed today
+• Active Minutes: Weekly moderate and vigorous intensity activity minutes
+• Stress Level: Real-time all-day physiological stress score
+• Notifications: Smartphone connectivity status and unread alert count
+• Altitude: Real-time elevation tracking above sea level
+• Barometer: Ambient atmospheric pressure monitoring in hPa
+• Weather Temperature: Current outdoor temperature in Celsius or Fahrenheit
+• Weather Condition: Condition-aware display for rain probability, temperature, humidity, and wind speed
+• Sunrise and Sunset: Solar event times with automatic offline fallback
+• Body Battery: Real-time energy reserve tracking from 0 to 100%
+• Recovery Time: Recommended rest hours remaining before your next workout
+• VO2 Max: Cardiovascular fitness and performance capacity score
 
-Themes and Display Features
-• 6 Color Themes: Red (Default), Teal, Warm Orange, Electric Green, Gold, and Pure White
-• Night Mode (Tactical Red, Night Amber, Stealth Green) with automatic solar schedule dimming
-• AMOLED Burn-In Protection: Always-On Display (AOD) compliant with Garmin's under 10% active pixel threshold
+Themes and Display
+• 6 Accent Themes: Vibrant Red, Teal, Warm Orange, Electric Green, Gold, and Pure White
+• Automatic Night Mode: Solar-timed stealth red, amber, or green night view
+• AMOLED Always-On Display: Strict burn-in protection under 10% active pixel load
 '''
 
 with open(out_path, 'w') as f:
