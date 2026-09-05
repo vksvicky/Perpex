@@ -16,10 +16,10 @@ module UIDrawer {
         if (w == 320) {
             switch (slotId) {
                 case 1: return centerX;
-                case 2: return centerX - 52;
-                case 3: return centerX + 52;
-                case 4: return centerX - 52;
-                case 5: return centerX + 52;
+                case 2: return centerX - 46;
+                case 3: return centerX + 46;
+                case 4: return centerX - 46;
+                case 5: return centerX + 46;
                 case 6: return centerX;
             }
             return centerX;
@@ -29,40 +29,40 @@ module UIDrawer {
             case 240:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - 42;
-                    case 3: return centerX + 42;
-                    case 4: return centerX - 42;
-                    case 5: return centerX + 42;
+                    case 2: return centerX - 34;
+                    case 3: return centerX + 34;
+                    case 4: return centerX - 34;
+                    case 5: return centerX + 34;
                     case 6: return centerX;
                 }
                 break;
             case 260:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - 44;
-                    case 3: return centerX + 44;
-                    case 4: return centerX - 44;
-                    case 5: return centerX + 44;
+                    case 2: return centerX - 37;
+                    case 3: return centerX + 37;
+                    case 4: return centerX - 37;
+                    case 5: return centerX + 37;
                     case 6: return centerX;
                 }
                 break;
             case 280:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - 47;
-                    case 3: return centerX + 47;
-                    case 4: return centerX - 47;
-                    case 5: return centerX + 47;
+                    case 2: return centerX - 40;
+                    case 3: return centerX + 40;
+                    case 4: return centerX - 40;
+                    case 5: return centerX + 40;
                     case 6: return centerX;
                 }
                 break;
             default:
                 switch (slotId) {
                     case 1: return centerX;
-                    case 2: return centerX - (44 * s).toNumber();
-                    case 3: return centerX + (44 * s).toNumber();
-                    case 4: return centerX - (44 * s).toNumber();
-                    case 5: return centerX + (44 * s).toNumber();
+                    case 2: return centerX - (37 * s).toNumber();
+                    case 3: return centerX + (37 * s).toNumber();
+                    case 4: return centerX - (37 * s).toNumber();
+                    case 5: return centerX + (37 * s).toNumber();
                     case 6: return centerX;
                 }
                 break;
@@ -76,12 +76,12 @@ module UIDrawer {
 
         if (w == 320 && h == 360) {
             switch (slotId) {
-                case 1: return centerY - 62;
-                case 2: return centerY - 25;
-                case 3: return centerY - 25;
+                case 1: return centerY - 54;
+                case 2: return centerY - 28;
+                case 3: return centerY - 28;
                 case 4: return centerY + 28;
                 case 5: return centerY + 28;
-                case 6: return centerY + 62;
+                case 6: return centerY + 54;
             }
             return centerY;
         }
@@ -89,42 +89,42 @@ module UIDrawer {
         switch (w) {
             case 240:
                 switch (slotId) {
-                    case 1: return centerY - 48;
-                    case 2: return centerY - 24;
-                    case 3: return centerY - 24;
-                    case 4: return centerY + 26;
-                    case 5: return centerY + 26;
-                    case 6: return centerY + 48;
+                    case 1: return centerY - 40;
+                    case 2: return centerY - 22;
+                    case 3: return centerY - 22;
+                    case 4: return centerY + 22;
+                    case 5: return centerY + 22;
+                    case 6: return centerY + 40;
                 }
                 break;
             case 260:
                 switch (slotId) {
-                    case 1: return centerY - 52;
-                    case 2: return centerY - 25;
-                    case 3: return centerY - 25;
-                    case 4: return centerY + 27;
-                    case 5: return centerY + 27;
-                    case 6: return centerY + 52;
+                    case 1: return centerY - 43;
+                    case 2: return centerY - 24;
+                    case 3: return centerY - 24;
+                    case 4: return centerY + 24;
+                    case 5: return centerY + 24;
+                    case 6: return centerY + 43;
                 }
                 break;
             case 280:
                 switch (slotId) {
-                    case 1: return centerY - 56;
-                    case 2: return centerY - 27;
-                    case 3: return centerY - 27;
-                    case 4: return centerY + 29;
-                    case 5: return centerY + 29;
-                    case 6: return centerY + 56;
+                    case 1: return centerY - 46;
+                    case 2: return centerY - 26;
+                    case 3: return centerY - 26;
+                    case 4: return centerY + 26;
+                    case 5: return centerY + 26;
+                    case 6: return centerY + 46;
                 }
                 break;
             default:
                 switch (slotId) {
-                    case 1: return centerY - (52 * s).toNumber();
-                    case 2: return centerY - (25 * s).toNumber();
-                    case 3: return centerY - (25 * s).toNumber();
-                    case 4: return centerY + (27 * s).toNumber();
-                    case 5: return centerY + (27 * s).toNumber();
-                    case 6: return centerY + (52 * s).toNumber();
+                    case 1: return centerY - (43 * s).toNumber();
+                    case 2: return centerY - (24 * s).toNumber();
+                    case 3: return centerY - (24 * s).toNumber();
+                    case 4: return centerY + (24 * s).toNumber();
+                    case 5: return centerY + (24 * s).toNumber();
+                    case 6: return centerY + (43 * s).toNumber();
                 }
                 break;
         }
@@ -240,11 +240,14 @@ module UIDrawer {
             var battBmp = ThemeManager.getCachedResource(battRes);
 
             var dw = dc.getWidth();
-            var iconOffsetY = (13 * s).toNumber();
-            var textOffsetY = (9 * s).toNumber();
+            var iconOffsetY = (11 * s).toNumber();
+            var textOffsetY = (8 * s).toNumber();
             if (dw == 240) {
-                iconOffsetY = 11;
-                textOffsetY = 8;
+                iconOffsetY = 10;
+                textOffsetY = 7;
+            } else if (dw == 280) {
+                iconOffsetY = 12;
+                textOffsetY = 9;
             }
 
             if (battBmp != null) {
@@ -264,11 +267,14 @@ module UIDrawer {
         }
 
         var dw = dc.getWidth();
-        var iconOffsetY = (13 * s).toNumber();
-        var textOffsetY = (9 * s).toNumber();
+        var iconOffsetY = (11 * s).toNumber();
+        var textOffsetY = (8 * s).toNumber();
         if (dw == 240) {
-            iconOffsetY = 11;
-            textOffsetY = 8;
+            iconOffsetY = 10;
+            textOffsetY = 7;
+        } else if (dw == 280) {
+            iconOffsetY = 12;
+            textOffsetY = 9;
         }
 
         var data = MetricProvider.getMetricData(slotType);

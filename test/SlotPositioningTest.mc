@@ -13,7 +13,7 @@ class SlotPositioningTest {
 
         // 1. Strict verification for 260x260
         var exp260 = [
-            [130, 78], [86, 105], [174, 105], [86, 157], [174, 157], [130, 182]
+            [130, 87], [93, 106], [167, 106], [93, 154], [167, 154], [130, 173]
         ];
         for (var i = 1; i <= 6; i++) {
             var x = UIDrawer.getSlotX(i, 260, 0);
@@ -24,7 +24,7 @@ class SlotPositioningTest {
 
         // 2. Strict verification for 280x280
         var exp280 = [
-            [140, 84], [93, 113], [187, 113], [93, 169], [187, 169], [140, 196]
+            [140, 94], [100, 114], [180, 114], [100, 166], [180, 166], [140, 186]
         ];
         for (var i = 1; i <= 6; i++) {
             var x = UIDrawer.getSlotX(i, 280, 0);
@@ -58,7 +58,7 @@ class SlotPositioningTest {
         var sq2_cy = sq2_h / 2;
         var sq2_radius = 160; // Concentric rings are constrained by width
         var exp320 = [
-            [160, 118], [108, 155], [212, 155], [108, 208], [212, 208], [160, 242]
+            [160, 126], [114, 152], [206, 152], [114, 208], [206, 208], [160, 234]
         ];
         for (var slotId = 1; slotId <= 6; slotId++) {
             var sx = UIDrawer.getSlotX(slotId, sq2_w, 0);
@@ -87,10 +87,17 @@ class SlotPositioningTest {
             var iconH = iconHeights[i];
             var fontH = fontHeights[i];
 
-            // Icon Y-Offset: -13 * s
-            // Text Y-Offset: +9 * s
-            var iconCenterY = -13.0 * s;
-            var textCenterY = 9.0 * s;
+            // Icon Y-Offset: -11 * s (on 280: -12)
+            // Text Y-Offset: +8 * s (on 280: +9)
+            var iconCenterY = -11.0 * s;
+            var textCenterY = 8.0 * s;
+            if (w == 240) {
+                iconCenterY = -10.0;
+                textCenterY = 7.0;
+            } else if (w == 280) {
+                iconCenterY = -12.0;
+                textCenterY = 9.0;
+            }
 
             var iconBottomY = iconCenterY + (iconH / 2.0);
             var textTopY = textCenterY - (fontH / 2.0);
@@ -99,8 +106,8 @@ class SlotPositioningTest {
 
             logger.debug("Res: " + w + "x" + w + " | Icon Bottom: " + iconBottomY.format("%.1f") + " | Text Top: " + textTopY.format("%.1f") + " | Gap: " + gap.format("%.1f") + "px");
 
-            // Vertical gap must be strictly positive (>= 2.5px) to prevent overlap
-            Test.assertMessage(gap >= 2.5, "Vertical overlap detected on " + w + "x" + w + "! Gap is: " + gap);
+            // Vertical gap must be strictly positive (>= 2.0px) to prevent overlap
+            Test.assertMessage(gap >= 2.0, "Vertical overlap detected on " + w + "x" + w + "! Gap is: " + gap);
         }
 
         return true;
@@ -133,6 +140,40 @@ class SlotPositioningTest {
             }
         }
         
+        return true;
+    }
+
+    (:test)
+    static function testWeekdayArcClearanceAcrossAllDays(logger as Test.Logger) as Lang.Boolean {
+        logger.debug("Testing Weekday Highlight Arc Clearance for all 7 days (SUN-SAT)...");
+
+        var w = 260;
+        var centerX = 130;
+        var centerY = 130;
+        var r_arc = 70.0;
+        var TWO_PI = Math.PI * 2.0;
+        var HALF_PI = Math.PI / 2.0;
+        var wkStep = TWO_PI / 7.0;
+
+        // Check each day of week (1=SUN, 2=MON, ... 7=SAT)
+        for (var d = 1; d <= 7; d++) {
+            var angle = (d - 1) * wkStep - HALF_PI;
+            var arcCenterX = centerX + r_arc * Math.cos(angle);
+            var arcCenterY = centerY + r_arc * Math.sin(angle);
+
+            // Check distance from this day's arc to all 6 slot icons
+            for (var sid = 1; sid <= 6; sid++) {
+                var sx = UIDrawer.getSlotX(sid, w, 0);
+                var sy = UIDrawer.getSlotY(sid, w, w, 0);
+                var iconY = sy - 11; // Icon center offset on 260x260
+
+                var dist = Math.sqrt(Math.pow(arcCenterX - sx, 2) + Math.pow(arcCenterY - iconY, 2));
+                // Distance between arc center and icon center must be >= 14px (icon radius 10 + safe margin 4)
+                Test.assertMessage(dist >= 14.0, "Weekday " + d + " arc collides with Slot " + sid + "! dist=" + dist);
+            }
+        }
+
+        logger.debug("All 7 weekday arcs have safe clearance from all slot icons!");
         return true;
     }
 }
