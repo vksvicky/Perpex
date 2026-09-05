@@ -6,13 +6,37 @@ import Toybox.WatchUi;
 
 module ThemeManager {
 
+    var _propCache = {};
+    var _bmpCache = {};
+
+    function invalidateCache() {
+        _propCache = {};
+        _bmpCache = {};
+    }
+
+    function getCachedResource(resId) {
+        if (_bmpCache.hasKey(resId)) {
+            return _bmpCache[resId];
+        }
+        var bmp = WatchUi.loadResource(resId);
+        _bmpCache[resId] = bmp;
+        return bmp;
+    }
+
     function getPropertyVal(key, defaultVal) {
+        if (_propCache.hasKey(key)) {
+            return _propCache[key];
+        }
         try {
             if (Toybox.Application has :Properties) {
                 var val = Properties.getValue(key);
-                if (val != null) { return val; }
+                if (val != null) {
+                    _propCache[key] = val;
+                    return val;
+                }
             }
         } catch (e) {}
+        _propCache[key] = defaultVal;
         return defaultVal;
     }
 
@@ -77,14 +101,16 @@ module ThemeManager {
     }
 
     function getThemeDrawable(redRes, tealRes, orangeRes, greenRes, goldRes, whiteRes, themeId) {
+        var res = redRes;
         switch (themeId) {
-            case 2: return WatchUi.loadResource(tealRes);
-            case 3: return WatchUi.loadResource(orangeRes);
-            case 4: return WatchUi.loadResource(greenRes);
-            case 5: return WatchUi.loadResource(goldRes);
-            case 6: return WatchUi.loadResource(whiteRes);
-            default: return WatchUi.loadResource(redRes);
+            case 2: res = tealRes; break;
+            case 3: res = orangeRes; break;
+            case 4: res = greenRes; break;
+            case 5: res = goldRes; break;
+            case 6: res = whiteRes; break;
+            default: res = redRes; break;
         }
+        return getCachedResource(res);
     }
 
     function loadThemedBitmap(baseName, themeId) {

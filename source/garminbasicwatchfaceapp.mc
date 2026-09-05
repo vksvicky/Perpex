@@ -17,6 +17,7 @@ class GarminBasicWatchFaceApp extends Application.AppBase {
     }
 
     function onSettingsChanged() {
+        ThemeManager.invalidateCache();
         WatchUi.requestUpdate();
     }
 

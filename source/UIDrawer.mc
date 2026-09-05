@@ -161,14 +161,16 @@ module UIDrawer {
                 var sec = System.getClockTime().sec;
                 var isPulseBeat = isActivityRunning ? (sec % 2 == 0) : false;
 
+                var hrRes = Rez.Drawables.icon_heart_red;
                 switch (themeId) {
-                    case 2: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_teal : Rez.Drawables.icon_heart_teal); break;
-                    case 3: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_orange : Rez.Drawables.icon_heart_orange); break;
-                    case 4: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_green : Rez.Drawables.icon_heart_green); break;
-                    case 5: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_gold : Rez.Drawables.icon_heart_gold); break;
-                    case 6: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_white : Rez.Drawables.icon_heart_white); break;
-                    default: bmp = WatchUi.loadResource(isPulseBeat ? Rez.Drawables.icon_heart_pulse_red : Rez.Drawables.icon_heart_red); break;
+                    case 2: hrRes = isPulseBeat ? Rez.Drawables.icon_heart_pulse_teal : Rez.Drawables.icon_heart_teal; break;
+                    case 3: hrRes = isPulseBeat ? Rez.Drawables.icon_heart_pulse_orange : Rez.Drawables.icon_heart_orange; break;
+                    case 4: hrRes = isPulseBeat ? Rez.Drawables.icon_heart_pulse_green : Rez.Drawables.icon_heart_green; break;
+                    case 5: hrRes = isPulseBeat ? Rez.Drawables.icon_heart_pulse_gold : Rez.Drawables.icon_heart_gold; break;
+                    case 6: hrRes = isPulseBeat ? Rez.Drawables.icon_heart_pulse_white : Rez.Drawables.icon_heart_white; break;
+                    default: hrRes = isPulseBeat ? Rez.Drawables.icon_heart_pulse_red : Rez.Drawables.icon_heart_red; break;
                 }
+                bmp = ThemeManager.getCachedResource(hrRes);
                 break;
             case 3: bmp = ThemeManager.loadThemedBitmap("icon_steps", themeId); break;
             case 4: bmp = ThemeManager.loadThemedBitmap("icon_step_goal", themeId); break;
@@ -235,7 +237,7 @@ module UIDrawer {
                 case 0xFF8800: battRes = Rez.Drawables.icon_battery_orange; break;
                 case 0x00FF66: battRes = Rez.Drawables.icon_battery_green; break;
             }
-            var battBmp = WatchUi.loadResource(battRes);
+            var battBmp = ThemeManager.getCachedResource(battRes);
 
             var dw = dc.getWidth();
             var iconOffsetY = (13 * s).toNumber();
@@ -305,6 +307,16 @@ module UIDrawer {
         drawSingleDataSlot(dc, s6, 6, getSlotX(6, w, aodOffsetX), getSlotY(6, w, h, aodOffsetY), sc, customFont, isLowPower);
     }
 
+    var _cachedDay = -1;
+    var _cachedMonth = -1;
+    var _cachedWDay = -1;
+    var _degCenter1 = 0;
+    var _degCenter2 = 0;
+    var _degCenter3 = 0;
+
+    var _polyBuf4 = [[0, 0], [0, 0], [0, 0], [0, 0]];
+    var _polyBuf5 = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]];
+
     function drawConcentricRings(dc, now, dialBg, isLowPower, centerX, centerY) {
         if (isLowPower) { return; } 
 
@@ -325,49 +337,60 @@ module UIDrawer {
 
         dc.setPenWidth(4);
 
+        if (now.day != _cachedDay) {
+            var dayStep  = TWO_PI / 31.0;
+            var angle1 = (now.day - 1) * dayStep - HALF_PI;
+            _degCenter1 = ((- (angle1 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
+            _cachedDay = now.day;
+        }
+
         var r1       = (96 * scale).toNumber(); 
-        var dayStep  = TWO_PI / 31.0;
-        var d = now.day;
-        var angle1 = (d - 1) * dayStep - HALF_PI;
-        var degCenter1 = ((- (angle1 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
-        
         var themeAccent = isLowPower ? 0x555555 : ThemeManager.getThemeAccentColor();
         dc.setColor(themeAccent, Graphics.COLOR_TRANSPARENT);
         var r1_arc = r1 - (5 * scale).toNumber();
-        dc.drawArc(centerX, centerY, r1_arc, Graphics.ARC_COUNTER_CLOCKWISE, (degCenter1 - 4 + 360) % 360, (degCenter1 + 4 + 360) % 360);
+        dc.drawArc(centerX, centerY, r1_arc, Graphics.ARC_COUNTER_CLOCKWISE, (_degCenter1 - 4 + 360) % 360, (_degCenter1 + 4 + 360) % 360);
+
+        if (now.month != _cachedMonth) {
+            var monStep  = TWO_PI / 12.0;
+            var angle2 = (now.month - 1) * monStep - HALF_PI;
+            _degCenter2 = ((- (angle2 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
+            _cachedMonth = now.month;
+        }
 
         var r2       = (117 * scale).toNumber();
-        var m = now.month;
-        var monStep  = TWO_PI / 12.0;
-        var angle2 = (m - 1) * monStep - HALF_PI;
-        var degCenter2 = ((- (angle2 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
-        
         var r2_arc = r2 - (5 * scale).toNumber();
-        dc.drawArc(centerX, centerY, r2_arc, Graphics.ARC_COUNTER_CLOCKWISE, (degCenter2 - 10 + 360) % 360, (degCenter2 + 10 + 360) % 360);
+        dc.drawArc(centerX, centerY, r2_arc, Graphics.ARC_COUNTER_CLOCKWISE, (_degCenter2 - 10 + 360) % 360, (_degCenter2 + 10 + 360) % 360);
+
+        if (now.day_of_week != _cachedWDay) {
+            var wkStep  = TWO_PI / 7.0;
+            var angle3 = (now.day_of_week - 1) * wkStep - HALF_PI;
+            _degCenter3 = ((- (angle3 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
+            _cachedWDay = now.day_of_week;
+        }
 
         var r3       = (75 * scale).toNumber();
-        var wkStep  = TWO_PI / 7.0;
-        var w_day = now.day_of_week;
-        var angle3 = (w_day - 1) * wkStep - HALF_PI;
-        var degCenter3 = ((- (angle3 * 180.0 / Math.PI)).toNumber() % 360 + 360) % 360;
-        
         var r3_arc = r3 - (5 * scale).toNumber();
-        dc.drawArc(centerX, centerY, r3_arc, Graphics.ARC_COUNTER_CLOCKWISE, (degCenter3 - 16 + 360) % 360, (degCenter3 + 16 + 360) % 360);
+        dc.drawArc(centerX, centerY, r3_arc, Graphics.ARC_COUNTER_CLOCKWISE, (_degCenter3 - 16 + 360) % 360, (_degCenter3 + 16 + 360) % 360);
     }
 
     function drawRotatedPolygon(dc, cx, cy, cosA, sinA, pts, color) {
         var count = pts.size();
-        var result = new [count];
+        var buf = (count == 4) ? _polyBuf4 : (count == 5 ? _polyBuf5 : new [count]);
         for (var i = 0; i < count; i++) {
             var p = pts[i];
             var perp = p[0];
             var along = p[1];
             var px = (cx + along * cosA - perp * sinA).toNumber();
             var py = (cy + along * sinA + perp * cosA).toNumber();
-            result[i] = [px, py];
+            if (count == 4 || count == 5) {
+                buf[i][0] = px;
+                buf[i][1] = py;
+            } else {
+                buf[i] = [px, py];
+            }
         }
         dc.setColor(color, Graphics.COLOR_TRANSPARENT);
-        dc.fillPolygon(result);
+        dc.fillPolygon(buf);
     }
 
     function drawHands(dc, hour, min, sec, isLowPower, centerX, centerY) {

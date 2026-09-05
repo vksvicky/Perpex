@@ -5,6 +5,7 @@ using Toybox.Time;
 using Toybox.Time.Gregorian;
 
 class GarminBasicWatchFaceView extends WatchUi.WatchFace {
+    private var origCenterX, origCenterY;
     private var centerX, centerY;
     private var radius;
     private const COLOR_BG = Graphics.COLOR_BLACK;
@@ -22,18 +23,16 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
     function onLayout(dc) {
         var w = dc.getWidth();
         var h = dc.getHeight();
-        centerX = w / 2;
-        centerY = h / 2;
+        origCenterX = w / 2;
+        origCenterY = h / 2;
+        centerX = origCenterX;
+        centerY = origCenterY;
         radius  = (w < h ? w : h) / 2;
         
         dialBg = WatchUi.loadResource(Rez.Drawables.dial_bg);
 
-        var fontMap = {
-            320 => Rez.Fonts.SystemLike_14
-        };
-
-        if (fontMap.hasKey(w)) {
-            customFont = WatchUi.loadResource(fontMap[w]);
+        if (w == 320) {
+            customFont = WatchUi.loadResource(Rez.Fonts.SystemLike_14);
         } else {
             customFont = null;
         }
@@ -55,11 +54,6 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
         var now       = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var clockTime = System.getClockTime();
 
-        var w = dc.getWidth();
-        var h = dc.getHeight();
-        centerX = w / 2;
-        centerY = h / 2;
-        
         var aodOffsetX = 0;
         var aodOffsetY = 0;
         
@@ -69,10 +63,10 @@ class GarminBasicWatchFaceView extends WatchUi.WatchFace {
             else if (shiftState == 1) { aodOffsetX = 2; aodOffsetY = -2; }
             else if (shiftState == 2) { aodOffsetX = 2; aodOffsetY = 2; }
             else if (shiftState == 3) { aodOffsetX = -2; aodOffsetY = 2; }
-            
-            centerX += aodOffsetX;
-            centerY += aodOffsetY;
         }
+
+        centerX = origCenterX + aodOffsetX;
+        centerY = origCenterY + aodOffsetY;
 
         dc.setColor(COLOR_BG, COLOR_BG);
         dc.clear();

@@ -97,8 +97,8 @@ fi
 
 mkdir -p bin
 
-echo "🚀 Compiling multi-device store package with monkeyc..."
-"$SDK_PATH/bin/monkeyc" -e -y "$KEY_PATH" -o "$OUTPUT_IQ" -f monkey.jungle -r
+echo "🚀 Compiling multi-device store package with monkeyc (Release, -O 2 optimizations)..."
+"$SDK_PATH/bin/monkeyc" -e -y "$KEY_PATH" -o "$OUTPUT_IQ" -f monkey.jungle -r -O 2
 
 # ─────────────────────────────────────────────────────────────────────────────
 # GENERATE COPY-PASTE GARMIN STORE RELEASE NOTES
